@@ -1,5 +1,6 @@
-package com.example.mealmateBackend.users;
+package com.example.mealmateBackend.user;
 
+import com.example.mealmateBackend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

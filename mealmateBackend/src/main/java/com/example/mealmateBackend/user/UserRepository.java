@@ -1,5 +1,6 @@
-package com.example.mealmateBackend.users;
+package com.example.mealmateBackend.user;
 
+import com.example.mealmateBackend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

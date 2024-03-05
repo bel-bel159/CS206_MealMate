@@ -1,4 +1,4 @@
-package com.example.mealmateBackend.users;
+package com.example.mealmateBackend.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
