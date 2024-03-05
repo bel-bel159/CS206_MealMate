@@ -3,6 +3,12 @@ package com.example.mealmateBackend.user;
 import com.example.mealmateBackend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-    // Custom query methods can be defined here
+import java.util.Optional;
+
+
+public interface UserRepository extends JpaRepository<User, String> {
+    // Custom query methods defined here
+    Optional<User> findByEmail(String email);
+
+
 }
