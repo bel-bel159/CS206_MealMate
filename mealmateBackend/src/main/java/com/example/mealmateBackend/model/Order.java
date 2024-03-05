@@ -2,14 +2,14 @@ package com.example.mealmateBackend.model;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Data
-@Table(name = "Order")
+@Table(name = "Orders")
 public class Order {
     public enum OrderStatus {ORDER_SENT, PREPARING, COLLECTED, DELIVERED}
 
