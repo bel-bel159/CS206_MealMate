@@ -1,12 +1,19 @@
 import React from "react";
 import "./style.css";
+import mealmateLogoYellow from "./Assets/mealmateLogoYellow.png";
 
 function Signup() {
   return (
-    <div className="Signup d-flex justify-content-center align-items-center vh-100 bg-dark">
+    <div className="Signup d-flex justify-content-center align-items-center vh-100 bg-white">
       <div className="form_container p-5 rounded bg-white">
         <form>
-          <h3 className="text-center mb-4">Sign Up</h3>
+          <div className="d-flex justify-content-center align-items-center vh-20">
+            <img
+              src={mealmateLogoYellow}
+              alt="LogoYellow"
+              style={{ width: "200px", height: "auto" }}
+            />
+          </div>
           <div className="mb-3 ">
             <label htmlFor="email" className="form-label">
               Email:

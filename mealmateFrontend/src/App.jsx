@@ -4,14 +4,14 @@ import Login from "./Login.jsx";
 import Signup from "./Signup.jsx";
 import Home from "./Home.jsx";
 import Notification from "./Notification.jsx";
-
+import Navbar from "./components/Navbar.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
     
     <BrowserRouter>
-      
+      <Navbar />
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
