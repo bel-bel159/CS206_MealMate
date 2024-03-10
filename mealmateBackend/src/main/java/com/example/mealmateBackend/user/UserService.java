@@ -1,23 +1,18 @@
 package com.example.mealmateBackend.user;
 
 import com.example.mealmateBackend.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
 
-    private final UserRepository userRepository;
+public interface UserService {
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    User createUser(User user);
+    User updateUser(String email, User userUpdates) throws UserNotFoundException;
+    User findUserByEmail(String email) throws UserNotFoundException;
+    void deleteUserByEmail(String email);
+    List<User> findAllUsers();
 
-    // Example method to add a new user
-    public User addUser(User user) {
-        return userRepository.save(user);
-    }
-    
-    // Additional service methods as needed
 }
