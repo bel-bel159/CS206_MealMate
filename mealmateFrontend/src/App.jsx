@@ -7,6 +7,7 @@ import Notification from "./Notification.jsx";
 import Navbar from "./components/Navbar.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Restaurant from "./Restaurant.jsx";
+import Cart from "./Cart.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/notifications" element={<Notification />}></Route>
         <Route path="/restaurant" element={<Restaurant />}></Route>
+        <Route path="/cart" element={<Cart />}></Route>
       </Routes>
     </BrowserRouter>
   );
