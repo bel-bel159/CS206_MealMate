@@ -56,7 +56,7 @@ function Signup() {
           </div>
 
           <div className="d-grid">
-            <button className="btn btn-dark btn-lg">Sign Up</button>
+            <button className="btn btn-lg" style={{ backgroundColor: '#FFC218' }}>Sign Up</button>
           </div>
         </form>
       </div>

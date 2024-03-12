@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import mealmateLogoYellow from "./Assets/mealmateLogoYellow.png";
+import "./style.css";
 
 function Login() {
   return (
@@ -42,7 +43,7 @@ function Login() {
             </label>
           </div>
           <div className="d-grid">
-            <button className="btn btn-dark btn-lg">Log in</button>
+            <button className="btn btn-lg" style={{ backgroundColor: '#FFC218' }}>Log in</button>
           </div>
           <div className="container">
             <div className="row">
