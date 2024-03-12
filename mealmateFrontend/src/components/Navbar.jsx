@@ -6,7 +6,7 @@ import bell from "../Assets/bell.svg";
 const Navbar = () => {
 
   const location = useLocation();
-  if (location.pathname === "/restaurant") {
+  if (location.pathname === "/restaurant" || location.pathname === "/cart") {
     return null;
   }
   return (
