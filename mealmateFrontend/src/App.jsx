@@ -8,11 +8,13 @@ import Navbar from "./components/Navbar.jsx";
 import Restaurant from "./Restaurant.jsx";
 import Cart from "./Cart.jsx";
 import { BottomNavbar } from "./components/BottomNavbar.jsx";
+import Profile from "./Profile.jsx";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ShowNavbar from "./ShowNavbar.jsx";
+import ShowNavbar from "./components/ShowNavbar.jsx";
+import ShowBottomNavbar from "./components/ShowBottomNavBar.jsx";
 
 function App() {
   return (
@@ -28,8 +30,11 @@ function App() {
         <Route path="/notification" element={<Notification />}></Route>
         <Route path="/restaurant" element={<Restaurant />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
       </Routes>
-      <BottomNavbar />
+      <ShowBottomNavbar>
+        <BottomNavbar />
+      </ShowBottomNavbar>
     </BrowserRouter>
   );
 }
