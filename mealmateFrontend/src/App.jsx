@@ -11,6 +11,7 @@ import Cart from "./Cart.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Checkout from "./Checkout.jsx";
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
         <Route path="/notifications" element={<Notification />}></Route>
         <Route path="/restaurant" element={<Restaurant />}></Route>
         <Route path="/cart" element={<Cart />}></Route>
+        <Route path="/home" element={<Home />}></Route>
+        <Route path="/checkout" element={<Checkout />}></Route>
       </Routes>
     </BrowserRouter>
   );

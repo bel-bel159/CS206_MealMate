@@ -11,25 +11,37 @@ import zlmltbottom from "./Assets/zlmltbottom.png"
 import cart from "./Assets/cart.png"
 import star from "./Assets/star.png"
 import { Container, Row, Col, Card, Button, Image } from 'react-bootstrap';
+import { useState } from "react";
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function Restaurant() {
+
+  const navigate = useNavigate();
+
+  //hardcode the no. of items in cart
+  const [cartCount, setCartCount] = useState(0);
+
   return (
-    <div className="header bg-light">
-      <div className="d-flex justify-content-end align-items-center" style={{ width: "100%", height: "50px" }}>
-        <button style={{ background: 'none', border: 'none', marginRight: '380px' }}>
+    <div className="header bg-light" style={{ width: "100%", height: "50px", boxShadow: '0 2px 4px rgba(0,0,0,0,1)' }}>
+      <div className="d-flex justify-content-between align-items-center" style={{ width: "100%", height: "50px", position: 'relative' }}>
+        <button style={{ background: 'none', border: 'none' }}>
           <img
             src={backbutton}
             alt="Back"
             style={{ width: "30px", height: "auto" }} // Adjust size as needed
+            onClick={() => navigate(-1)}
           />
         </button>
+        <div style={{ position: 'absolute', width: "100%", textAlign: 'center', fontWeight: 'bold'}}>
+          Zhang Liang Mala Tang Bencoolen
+        </div>
       </div>
-      <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
-        <img
-          src={zlmlt}
-          alt="Background"
-          style={{ width: "425px", height: "auto", zIndex: 1 }}
-        />
+      <div style={{ position: 'relative', width: '100%', marginTop: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <img
+        src={zlmlt}
+        alt="Background"
+        style={{ width: "100%", height: "auto", objectFit: "cover" }}
+      />
         <Card.Header 
           className="d-flex flex-row align-items-center justify-content-center" // Added justify-content-center for centering content
           style={{
@@ -90,131 +102,139 @@ function Restaurant() {
       </div>
       <div className="content-below" style={{ marginTop: '80px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         {/* First Row of Cards */}
-        <div className="card-row" style={{ display: 'flex', justifyContent: 'space-around', width: '90%', marginBottom: '20px' }}>
-          {/* Card and Name Wrapper for the First Card */}
-          <div style={{ width: '40%' }}> {/* This wrapper aligns the name with the card */}
-            <div className="card" style={{
-              position: 'relative',
-              height: '150px',
-              backgroundImage: `url(${tomatosoup})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              borderRadius: '15px',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '20px',
-            }}>
-              <button style={{
-                position: 'absolute',
-                bottom: '-15px',
-                right: '-15px',
-                backgroundColor: '#FFC218',
-                borderRadius: '50%',
-                width: '30px',
-                height: '30px',
-                border: 'none',
+        <div className="card-row" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '90%', marginBottom: '20px' }}>
+          {/* Wrapper for both cards to help with centering */}
+          <div style={{ display: 'flex', justifyContent: 'flex-start', width: 'auto', gap: '20px' }}> {/* Adjust maxWidth as needed */}
+            {/* Card and Name Wrapper for the First Card */}
+            <div style={{ width: '150px', marginRight: '10px'}}>
+              <div className="card" style={{
+                position: 'relative',
+                height: '150px',
+                width: '100%', /* Use 100% of the parent div to control size */
+                backgroundImage: `url(${tomatosoup})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                borderRadius: '15px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}>
-                +
-              </button>
+                <button style={{
+                  position: 'absolute',
+                  bottom: '-15px',
+                  right: '-15px',
+                  backgroundColor: '#FFC218',
+                  borderRadius: '50%',
+                  width: '30px',
+                  height: '30px',
+                  border: 'none',
+                }} onClick={() => setCartCount(cartCount + 1)} >
+                  +
+                </button>
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '10px' }}>Tomato Soup Base</div>
             </div>
-            <div style={{ textAlign: 'center', marginTop: '10px' }}>Tomato Soup Base</div> {/* Soup Name */}
-          </div>
 
-          {/* Card and Name Wrapper for the Second Card */}
-          <div style={{ width: '40%' }}> {/* This wrapper aligns the name with the card */}
-            <div className="card" style={{
-              position: 'relative',
-              height: '150px',
-              backgroundImage: `url(${tomyumsoup})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              borderRadius: '15px',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '20px',
-            }}>
-              <button style={{
-                position: 'absolute',
-                bottom: '-15px',
-                right: '-15px',
-                backgroundColor: '#FFC218',
-                borderRadius: '50%',
-                width: '30px',
-                height: '30px',
-                border: 'none',
+            {/* Card and Name Wrapper for the Second Card */}
+            <div style={{ width: '150px' }}>
+              <div className="card" style={{
+                position: 'relative',
+                height: '150px',
+                width: '100%', /* Use 100% of the parent div to control size */
+                backgroundImage: `url(${tomyumsoup})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                borderRadius: '15px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '20px',
               }}>
-                +
-              </button>
+                <button style={{
+                  position: 'absolute',
+                  bottom: '-15px',
+                  right: '-15px',
+                  backgroundColor: '#FFC218',
+                  borderRadius: '50%',
+                  width: '30px',
+                  height: '30px',
+                  border: 'none',
+                }} onClick={() => setCartCount(cartCount + 1)} >
+                  +
+                </button>
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '10px' }}>TomYum Soup Base</div>
             </div>
-            <div style={{ textAlign: 'center', marginTop: '10px' }}>TomYum Soup Base</div> {/* Soup Name */}
           </div>
         </div>
         {/* Second Row of Cards */}
-        <div className="card-row" style={{ display: 'flex', justifyContent: 'space-around', width: '90%', marginBottom: '20px' }}>
+        <div className="card-row" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '90%', marginBottom: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-start', width: 'auto', gap: '20px' }}> 
           {/* Card and Name Wrapper for the First Card */}
-          <div style={{ width: '40%' }}> {/* This wrapper aligns the name with the card */}
-            <div className="card" style={{
-              position: 'relative',
-              height: '150px',
-              backgroundImage: `url(${malasoup})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              borderRadius: '15px',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '20px',
-            }}>
-              <button style={{
-                position: 'absolute',
-                bottom: '-15px',
-                right: '-15px',
-                backgroundColor: '#FFC218',
-                borderRadius: '50%',
-                width: '30px',
-                height: '30px',
-                border: 'none',
+          <div style={{ width: '150px', marginRight: '10px' }}>
+              <div className="card" style={{
+                position: 'relative',
+                height: '150px',
+                width: '150px', /* Use 100% of the parent div to control size */
+                backgroundImage: `url(${malasoup})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                borderRadius: '15px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '20px',
               }}>
-                +
-              </button>
+                <button style={{
+                  position: 'absolute',
+                  bottom: '-15px',
+                  right: '-15px',
+                  backgroundColor: '#FFC218',
+                  borderRadius: '50%',
+                  width: '30px',
+                  height: '30px',
+                  border: 'none',
+                }} onClick={() => setCartCount(cartCount + 1)} >
+                  +
+                </button>
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '10px' }}>Mala Xiang Guo</div>
             </div>
-            <div style={{ textAlign: 'center', marginTop: '10px' }}>Mala Xiang Guo</div> {/* Soup Name */}
-          </div>
 
-          {/* Card and Name Wrapper for the Second Card */}
-          <div style={{ width: '40%' }}> {/* This wrapper aligns the name with the card */}
-            <div className="card" style={{
-              position: 'relative',
-              height: '150px',
-              backgroundImage: `url(${mushroomsoup})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              borderRadius: '15px',
-              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '20px',
-            }}>
-              <button style={{
-                position: 'absolute',
-                bottom: '-15px',
-                right: '-15px',
-                backgroundColor: '#FFC218',
-                borderRadius: '50%',
-                width: '30px',
-                height: '30px',
-                border: 'none',
+            {/* Card and Name Wrapper for the Second Card */}
+            <div style={{ width: '150px' }}>
+              <div className="card" style={{
+                position: 'relative',
+                height: '150px',
+                width: '150px', /* Use 100% of the parent div to control size */
+                backgroundImage: `url(${mushroomsoup})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                borderRadius: '15px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '20px',
               }}>
-                +
-              </button>
+                <button style={{
+                  position: 'absolute',
+                  bottom: '-15px',
+                  right: '-15px',
+                  backgroundColor: '#FFC218',
+                  borderRadius: '50%',
+                  width: '30px',
+                  height: '30px',
+                  border: 'none',
+                }} onClick={() => setCartCount(cartCount + 1)} >
+                  +
+                </button>
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '10px' }}>Mushroom Base</div>
             </div>
-            <div style={{ textAlign: 'center', marginTop: '10px' }}>Mushroom Base</div> {/* Soup Name */}
           </div>
         </div>
       </div>
@@ -227,24 +247,44 @@ function Restaurant() {
       <button
         style={{
           position: 'absolute',
-          bottom: '100px', // Adjust the position as needed
+          top: '-10px', // Adjust the position as needed
           left: '10%', // Adjust for positioning closer to the left, slightly overlapping with the image
           backgroundColor: '#FFC218', // Use your desired button color
           borderRadius: '50%',
-          width: '60px', // Diameter of the button, adjust as needed
-          height: '60px', // Diameter of the button, adjust as needed
+          width: '70px', // Diameter of the button, adjust as needed
+          height: '70px', // Diameter of the button, adjust as needed
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           border: 'none',
           zIndex: 1000, // Ensuring it's on top
         }}
+        onClick={() => navigate('/cart')}
       >
         <img
           src={cart} // Ensure this is the correct path to your image
           alt="Cart"
-          style={{ width: "30px", height: "auto" }} // Adjust icon size as needed
+          style={{ width: "40px", height: "auto" }} // Adjust icon size as needed
         />
+        {cartCount > 0 && (
+          <span style={{
+            position: 'absolute',
+            top: '0',
+            right: '0',
+            backgroundColor: 'red',
+            color: 'white',
+            borderRadius: '50%',
+            width: '20px',
+            height: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '12px',
+            border: '2px solid #FFC218', // Match the button color
+          }}>
+            {cartCount} {/* Display the dynamic count */}
+          </span>
+        )}
       </button>
     </div>
   </div>
