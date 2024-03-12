@@ -1,0 +1,104 @@
+.home-page {
+    margin: 0 auto;
+    background-color: #FEFBF7;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .promotion-banner {
+    width: 100%; /* Make the banner full width of the container */
+    overflow: hidden; /* In case the image is larger than the container */
+  }
+  
+  .promotion-image {
+    width: 100%; /* Make the image full width of its container */
+    height: auto; /* Maintain the aspect ratio of the image */
+    display: block; /* Remove any extra space below the image */
+  }
+  
+  .search-and-delivery-container {
+    position: relative; /* Needed for absolute positioning of children */
+  }
+  
+  /* Style for the dropdown menu */
+  .list-group {
+    position: absolute;
+    top: 100%; /* Position it right below the search input */
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Make sure it sits on top of other content */
+  }
+
+  /*filter*/
+  .filter-btn-container {
+    position: relative;
+    top: 15px; /* Adjust to match your layout */
+    right: 40px; /* Adjust to match your layout */
+  }
+  
+ .cuisine-categories .icon-wrapper img {
+  display: block; /* Remove any extra space below the image */
+  width: 50%; /* Size of the icon relative to the wrapper */
+  height: auto; /* Keep the aspect ratio */
+ }
+
+ .slick-slider {
+    margin-top: 30px; /* Adjust this value to move the slider down */
+    margin-bottom: 20px;
+  }
+
+  /* Apply the same class to both buttons */
+  .button-standard {
+    padding: .375rem .75rem; /* Standard Bootstrap padding for buttons */
+    font-size: 1rem; /* Standard font size for buttons */
+    line-height: 1.5; /* Standard line height for buttons */
+    border-radius: .25rem; /* Standard border radius for buttons */
+    text-align: center; /* Centers text in the button */
+  }
+  
+  /* Individual button colors can still be customized */
+  .button-close {
+    background-color: gray;
+    color: white;
+    /* Add any other specific styles for the close button here */
+  }
+  
+  .button-done {
+    background-color: #FFC107;
+    color: white;
+    /* Add any other specific styles for the done button here */
+  }
+
+  
+  /* PopularFoods */
+  .popular-foods-container {
+    display: flex;
+    justify-content: space-around;
+    background-color: #FFC107; /* Adjust the color code to your theme yellow */
+    padding: 10px 0;
+  }
+  
+  .popular-food-item {
+    text-align: center;
+  }
+  
+  .popular-food-item .food-image-container {
+    background-color: #ffffff; /* White background */
+    border-radius: 20%; /* Makes the image container circular */
+    display: inline-block;
+    padding: 10px; /* Adjust the padding as needed */
+  }
+  
+  .popular-food-item img {
+    width: 90px; /* Adjust the size as needed */
+    height: auto; /* Keep the aspect ratio of the image */
+  }
+
+/* and Footer below accordingly */
+  

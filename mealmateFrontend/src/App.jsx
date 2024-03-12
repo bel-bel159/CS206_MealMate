@@ -5,8 +5,11 @@ import Signup from "./Signup.jsx";
 import Home from "./Home.jsx";
 import Notification from "./Notification.jsx";
 import Navbar from "./components/Navbar.jsx";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Restaurant from "./Restaurant.jsx";
+
+import "bootstrap/dist/css/bootstrap.min.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function App() {
   return (
