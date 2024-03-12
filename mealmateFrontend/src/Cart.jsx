@@ -2,12 +2,15 @@ import React from "react";
 import "./style.css";
 import backbutton from "./Assets/backbutton.png"
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
 
+    const navigate = useNavigate();
+
     // const [cartItems, setCartItems] = useState([]);
     const [cartItems, setCartItems] = useState([
-        { id: 1, name: "Sample Item", quantity: 0 },
+        { id: 1, name: "Sample Item", quantity: 1 },
     ]);
 
     const hasItemsInCart = cartItems.some(item => item.quantity > 0);
@@ -29,15 +32,16 @@ const Cart = () => {
 
     return (
         <div className="header bg-light" style={{ width: "100%", height: "50px", boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-            <div className="d-flex justify-content-between align-items-center" style={{ width: "100%", height: "50px" }}>
-                <button style={{ background: 'none', border: 'none' }}>
+            <div className="d-flex justify-content-between align-items-center" style={{ width: "100%", height: "50px", position: 'relative' }}>
+                <button style={{ background: 'none', border: 'none', cursor: 'pointer', transform: 'translateY(20%)'}}>
                     <img
                     src={backbutton}
                     alt="Back"
                     style={{ width: "30px", height: "auto" }} // Adjust size as needed
+                    onClick={() => navigate(-1)}
                     />
                 </button>
-                <div style={{ position: 'absolute', width: "100%", textAlign: 'center' , fontWeight: 'bold'}}>
+                <div style={{ position: 'absolute', width: "100%", top: '50%', transform: 'translateY(-30%)', textAlign: 'center' , fontWeight: 'bold'}}>
                     My Cart
                 </div>
                 {/* If you plan to add another element (like a cart icon) on the right, you can add it here. */}
@@ -76,7 +80,7 @@ const Cart = () => {
                       border: 'none',
                       fontWeight: 'bold',
                       marginRight: '10px'
-                    }}>
+                    }} onClick={() => navigate('/checkout')}>
                       View
                     </button>
                   </div>
@@ -90,7 +94,8 @@ const Cart = () => {
                         There are currently no items in your basket.
                     </div>
                     <hr style={{ width: '100%', marginBottom: '20px', color: '#FFC218'}} />
-                    <button style={{ padding: '10px 20px', cursor: 'pointer', backgroundColor: '#FFC218', borderRadius: '20px', border: 'none' }}>
+                    <button style={{ padding: '10px 20px', cursor: 'pointer', backgroundColor: '#FFC218', borderRadius: '20px', border: 'none' }} 
+                    onClick={() => navigate('/home')}>
                         Explore Options
                     </button>
                 </div>
