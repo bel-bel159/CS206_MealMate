@@ -44,7 +44,7 @@
   
  .cuisine-categories .icon-wrapper img {
   display: block; /* Remove any extra space below the image */
-  width: 50%; /* Size of the icon relative to the wrapper */
+  width: 60%; /* Size of the icon relative to the wrapper */
   height: auto; /* Keep the aspect ratio */
  }
 
@@ -101,4 +101,19 @@
   }
 
 /* and Footer below accordingly */
+
+/* Assuming .home-container is your main content container */
+  .home-container {
+    padding-bottom: 100px; /* Use a value that is at least the height of your footer */
+    overflow-y: auto; /* Enables vertical scrolling if content is taller than the screen */
+  }
+  
+  /* Ensure that the footer has a fixed position at the bottom of the screen */
+  .footer-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    /* Define the height of your footer here if it's not already set */
+    height: 80px; /* Adjust as needed */
+  }
   

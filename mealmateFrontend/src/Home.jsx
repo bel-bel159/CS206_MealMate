@@ -11,6 +11,11 @@ import chinese from './Assets/chinese.png';
 import western from './Assets/western.png';
 import thai from './Assets/thai.png';
 import japanese from './Assets/japanese.png';
+import korean from './Assets/korean.png';
+import singaporean from './Assets/singaporean.png';
+import vietnamese from './Assets/vietnamese.png';
+import halal from './Assets/halal.png';
+
 import nasiLemak from './Assets/nasiLemak.png';
 import mcdonald from './Assets/mcdonald.png';
 import pasta from './Assets/pasta.png';
@@ -66,8 +71,19 @@ const CuisineCategories = () => {
         <div className="icon-wrapper">
           <div><img src={thai} alt="Thai" />Thai</div>
         </div>
-          
-         
+        <div className="icon-wrapper">
+          <div><img src={singaporean} alt="Singaporean" />Singaporean</div>
+        </div>
+        <div className="icon-wrapper">
+          <div><img src={korean} alt="Korean" />Korean</div>
+        </div>
+        <div className="icon-wrapper">
+          <div><img src={vietnamese} alt="Vietnamese" />Vietnamese</div>
+        </div>
+        <div className="icon-wrapper">
+          <div><img src={halal} alt="Halal" />Halal</div>
+        </div>
+      
       </Slider>
     </div>
   );
