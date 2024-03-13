@@ -127,7 +127,7 @@ const FilterModal = ({ show, onHide, onFilter }) => {
 
   const handleDone = () => {
     handleFilter(); // Assuming this applies the filter
-    navigate('/restaurant'); // Navigate to the restaurant route
+    navigate('/filter-results'); // Navigate to the restaurant route
   };
 
   return (
