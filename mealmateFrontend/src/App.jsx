@@ -9,10 +9,9 @@ import Restaurant from "./Restaurant.jsx";
 import Cart from "./Cart.jsx";
 import { BottomNavbar } from "./components/BottomNavbar.jsx";
 import Profile from "./Profile.jsx";
+import FilterResults from "./FilterResults.jsx"
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import ShowNavbar from "./components/ShowNavbar.jsx";
 import ShowBottomNavbar from "./components/ShowBottomNavBar.jsx";
 import Checkout from "./Checkout.jsx";
@@ -35,6 +34,7 @@ function App() {
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/home" element={<Home />}></Route>
         <Route path="/checkout" element={<Checkout />}></Route>
+        <Route path="/filter-results" element={<FilterResults />} />
       </Routes>
       <ShowBottomNavbar>
         <BottomNavbar />

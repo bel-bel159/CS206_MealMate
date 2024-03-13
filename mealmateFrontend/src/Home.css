@@ -116,4 +116,63 @@
     /* Define the height of your footer here if it's not already set */
     height: 80px; /* Adjust as needed */
   }
+
+.home-container .restaurant-list {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.home-container .restaurant-image {
+  width: 100px; /* Adjust size as needed */
+  height: auto;
+  margin-right: 10px; /* Add space between image and details */
+}
+
+.restaurant-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFC107; /* Your theme yellow color */
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px; /* Rounded corners */
+  }
   
+  .restaurant-list {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .restaurant-item {
+    display: flex;
+    align-items: center; /* Aligns items vertically */
+    background-color: #FFC107; /* Yellow background */
+    margin-bottom: 10px; /* Space between items */
+    border-radius: 10px; /* Rounded corners for the card */
+    overflow: hidden; /* Prevents content from spilling outside the border-radius */
+  }
+  
+  .restaurant-details {
+    flex-grow: 1; /* Allows the details to fill the remaining space */
+    padding: 10px; /* Padding inside the details section */
+  }
+  
+  .restaurant-details div {
+    font-size: 0.9em; /* Smaller font size for the details */
+    color: #333; /* Dark text color for better readability */
+  }
+  
+  .restaurant-like {
+    padding: 10px; /* Space around the heart icon */
+    font-size: 1.5rem; /* Size of the heart icon */
+    color: #FFFFFF; /* Color of the heart icon, light gray for unliked state */
+  }
+  
+  .restaurant-like .fa-heart {
+    cursor: pointer; /* Changes the cursor to indicate the icon is clickable */
+  }
+  
+  .restaurant-like .fa-heart:hover {
+    color: #ff4466; /* Changes the color when hovered, adjust as needed */
+  }
