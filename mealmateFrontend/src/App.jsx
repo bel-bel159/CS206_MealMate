@@ -15,7 +15,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import ShowNavbar from "./components/ShowNavbar.jsx";
 import ShowBottomNavbar from "./components/ShowBottomNavBar.jsx";
 import Checkout from "./Checkout.jsx";
-
+import Track from "./Track.jsx";
+import ConfirmOrder from "./ConfirmOrder.jsx";
 
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
         <Route path="/home" element={<Home />}></Route>
         <Route path="/checkout" element={<Checkout />}></Route>
         <Route path="/filter-results" element={<FilterResults />} />
+        <Route path="/track" element={<Track />}></Route>
+        <Route path="/confirm" element={<ConfirmOrder />}></Route>
       </Routes>
       <ShowBottomNavbar>
         <BottomNavbar />
