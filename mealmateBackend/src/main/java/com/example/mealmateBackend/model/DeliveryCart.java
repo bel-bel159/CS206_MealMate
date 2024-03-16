@@ -22,18 +22,14 @@ public class DeliveryCart {
     @Column(nullable = true)
     private float totalPrice;
 
-    @Column(nullable = true)
-    private String location;
-
     public DeliveryCart() {
     }
 
-    public DeliveryCart(Long deliveryCartId, Long ordererId, List<Long> orderItemsId, float totalPrice, String location) {
+    public DeliveryCart(Long deliveryCartId, Long ordererId, List<Long> orderItemsId, float totalPrice) {
         this.deliveryCartId = deliveryCartId;
         this.ordererId = ordererId;
         this.orderItemsId = orderItemsId;
         this.totalPrice = totalPrice;
-        this.location = location;
     }
 
 
