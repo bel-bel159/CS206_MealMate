@@ -1,12 +1,16 @@
 package com.example.mealmateBackend.user;
 import com.example.mealmateBackend.model.User;
-import com.example.mealmateBackend.security.*;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RestController
@@ -15,6 +19,7 @@ public class UserController {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
+    private UserRepository userRepository;
 
     @Autowired
     public UserController(UserService userService, PasswordEncoder passwordEncoder) {
@@ -72,4 +77,46 @@ public class UserController {
         }
         return ResponseEntity.ok(users);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginDto loginDto) {
+        User user = userRepository.findByEmail(loginDto.getEmail())
+            .orElseThrow(() -> new UsernameNotFoundException("User not found with email " + loginDto.getEmail()));
+
+        boolean isPasswordMatch = passwordEncoder.matches(loginDto.getPassword(), user.getPassword());
+        if (!isPasswordMatch) {
+            throw new BadCredentialsException("Invalid email/password supplied");
+        }
+        
+        // Here you would handle login success, like creating a JWT token or a session
+        // For simplicity, let's just return the user info (without password)
+        user.setPassword(null);
+        return ResponseEntity.ok(user);
+    }
+
+    // @PostMapping("/login")
+    // public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials) {
+    //     String email = credentials.get("email");
+    //     String password = credentials.get("password");
+
+    //     // You may want to add null checks and respond with bad request if email or password are missing
+    //     if (email == null || password == null) {
+    //         return ResponseEntity.badRequest().body("Email and password must be provided.");
+    //     }
+
+    //     User user = userRepository.findByEmail(email)
+    //             .orElseThrow(() -> new UsernameNotFoundException("User not found with email " + email));
+
+    //     boolean isPasswordMatch = passwordEncoder.matches(password, user.getPassword());
+    //     if (!isPasswordMatch) {
+    //         throw new BadCredentialsException("Invalid email/password supplied");
+    //     }
+        
+    //     // Here you would handle login success, like creating a JWT token or a session
+    //     // For simplicity, let's just return the user info (without password)
+    //     user.setPassword(null);
+    //     return ResponseEntity.ok(user);
+    // }
+
+
 }

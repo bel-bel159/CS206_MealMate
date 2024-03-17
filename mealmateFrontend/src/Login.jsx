@@ -1,13 +1,51 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import mealmateLogoYellow from "./Assets/mealmateLogoYellow.png";
 import "./style.css";
 
 function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const userData = {
+      email: email,
+      password: password
+    };
+
+    fetch('http://localhost:8080/users/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    })
+    .then(response => {
+      console.log('Response received:', response); // Logs the response object
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // handle success
+      console.log('Success: ', data);
+      navigate('/home');
+    })
+    .catch(error => {
+      console.error('There has been a problem with your fetch operation:', error);
+    });
+
+  };
+
+
   return (
     <div className="Login d-flex justify-content-center align-items-center vh-100 bg-white">
       <div className="form_container p-5 rounded bg-white">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="d-flex justify-content-center align-items-center vh-20">
             <img
               src={mealmateLogoYellow}
@@ -24,6 +62,8 @@ function Login() {
               type="email"
               placeholder="Enter Email"
               className="form-control rounded-4"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-3">
@@ -34,6 +74,8 @@ function Login() {
               type="password"
               placeholder="Enter Password"
               className="form-control rounded-4"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="mb-3 form-check">
@@ -43,7 +85,7 @@ function Login() {
             </label>
           </div>
           <div className="d-grid">
-            <button className="btn btn-lg" style={{ backgroundColor: '#FFC218' }}>Log in</button>
+            <button type="submit" className="btn btn-lg" style={{ backgroundColor: '#FFC218' }}>Log in</button>
           </div>
           <div className="container">
             <div className="row">
