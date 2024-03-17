@@ -16,7 +16,7 @@ public class DeliveryCart {
     @Column(nullable = false)
     private Long ordererId;
 
-    @Column(nullable = true)
+    @ElementCollection
     private List<Long> orderItemsId;
 
     @Column(nullable = true)

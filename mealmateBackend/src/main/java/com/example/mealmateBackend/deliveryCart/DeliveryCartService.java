@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface DeliveryCartService {
-    DeliveryCart createDeliverCart(DeliveryCart deliveryCart);
+    DeliveryCart createDeliveryCart(DeliveryCart deliveryCart);
     DeliveryCart updateDeliveryCart(Long cartId, Long orderId);
     DeliveryCart findDeliveryCartById(Long deliveryCartId);
     void deleteDeliveryCartById(Long deliveryCartId);

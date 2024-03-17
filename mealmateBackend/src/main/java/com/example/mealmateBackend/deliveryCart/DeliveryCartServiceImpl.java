@@ -1,12 +1,13 @@
 package com.example.mealmateBackend.deliveryCart;
 
-import com.example.mealmateBackend.model.DeliverCart;
+import com.example.mealmateBackend.model.DeliveryCart;
 import com.example.mealmateBackend.model.OrderItem;
 import com.example.mealmateBackend.orderItem.OrderItemService;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -16,46 +17,46 @@ public class DeliveryCartServiceImpl implements DeliveryCartService {
     private final OrderItemService orderItemService;
 
     @Autowired
-    public DeliveryCartServiceImpl(DeliveryCartRepository deliveryCartRepository) {
+    public DeliveryCartServiceImpl(DeliveryCartRepository deliveryCartRepository, OrderItemService orderItemService) {
         this.deliveryCartRepository = deliveryCartRepository;
         this.orderItemService = orderItemService;
     }
 
     @Override
-    public DeliverCart createDeliveryCart(DeliverCart deliveryCart) {
+    public DeliveryCart createDeliveryCart(DeliveryCart deliveryCart) {
         return deliveryCartRepository.save(deliveryCart);
     }
 
     @Override
     @Transactional
-    public DeliverCart updateDeliveryCart(Long deliveryCartId, Long orderId) throws DeliveryCartNotFoundException {
-        DeliverCart deliveryCart = findDeliveryCartById(deliveryCartId);
+    public DeliveryCart updateDeliveryCart(Long deliveryCartId, Long orderId) throws DeliveryCartNotFoundException {
+        DeliveryCart deliveryCart = findDeliveryCartById(deliveryCartId);
         OrderItem orderItem = orderItemService.findItemById(orderId);
 
         List<Long> itemList = deliveryCart.getOrderItemsId();
         itemList.add(orderId);
 
-        double totalPrice = deliveryCart.getTotalPrice() + orderItem.getItemPrice();
+        float totalPrice = deliveryCart.getTotalPrice() + orderItem.getItemPrice();
         deliveryCart.setTotalPrice(totalPrice);
 
         return deliveryCart;
     }
 
     @Override
-    public DeliverCart findDeliveryCartById(Long deliveryCartId) throws DeliveryCartNotFoundException {
+    public DeliveryCart findDeliveryCartById(Long deliveryCartId) throws DeliveryCartNotFoundException {
         return deliveryCartRepository.findById(deliveryCartId)
                 .orElseThrow(() -> new DeliveryCartNotFoundException("DeliveryCart with id " + deliveryCartId + " not found."));
     }
 
     @Override
     public void deleteDeliveryCartById(Long deliveryCartId) {
-        DeliverCart deliveryCart = deliveryCartRepository.findById(deliveryCartId)
+        DeliveryCart deliveryCart = deliveryCartRepository.findById(deliveryCartId)
                 .orElseThrow(() -> new DeliveryCartNotFoundException("DeliveryCart with id " + deliveryCartId + " not found."));
         deliveryCartRepository.delete(deliveryCart);
     }
 
     @Override
-    public List<DeliverCart> findAllDeliveryCarts() {
+    public List<DeliveryCart> findAllDeliveryCarts() {
         return deliveryCartRepository.findAll();
     }
 

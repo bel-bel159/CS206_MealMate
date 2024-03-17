@@ -1,6 +1,7 @@
 package com.example.mealmateBackend.deliveryCart;
 
 import com.example.mealmateBackend.model.DeliveryCart;
+import com.example.mealmateBackend.orderItem.OrderItemNotFoundException;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,6 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/deliveryCarts") // Base path for all endpoints in this controller
 public class DeliveryCartController {
-{
-
     private final DeliveryCartService deliveryCartService;
 
     @Autowired
@@ -23,7 +22,7 @@ public class DeliveryCartController {
 
     @PostMapping
     public ResponseEntity<?> createDeliveryCart(@Valid @RequestBody DeliveryCart deliveryCart) {
-        DeliveryCart createdDeliveryCart = deliveryCartService.createDeliverCart(deliveryCart);
+        DeliveryCart createdDeliveryCart = deliveryCartService.createDeliveryCart(deliveryCart);
         return ResponseEntity.ok(createdDeliveryCart);
     }
 
@@ -42,9 +41,7 @@ public class DeliveryCartController {
         try {
             DeliveryCart updatedDeliveryCart = deliveryCartService.updateDeliveryCart(deliveryCartId, orderId);
             return ResponseEntity.ok(updatedDeliveryCart);
-        } catch (DeliveryCartNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        } catch (OrderItemNotFoundException e) {
+        } catch (DeliveryCartNotFoundException | OrderItemNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }

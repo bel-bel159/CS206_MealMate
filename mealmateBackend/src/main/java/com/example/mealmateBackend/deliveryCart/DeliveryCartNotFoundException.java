@@ -11,7 +11,7 @@ public class DeliveryCartNotFoundException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    public DeliveryCartNotFoundException(Long deliveryCartId) {
+    public DeliveryCartNotFoundException(String deliveryCartId) {
         super("Could not find Delivery Cart with ID: " + deliveryCartId);
     }
 
