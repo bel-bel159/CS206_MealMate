@@ -1,12 +1,85 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "./style.css";
 import mealmateLogoYellow from "./Assets/mealmateLogoYellow.png";
 
 function Signup() {
+  const [email, setEmail] = useState('');
+  const [isEmailValid, setEmailValid] = useState(true);
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const navigate = useNavigate(); 
+
+  const handleSignup = (event) => {
+    event.preventDefault();
+
+    // Add validation for passwords or any other fields if necessary
+    const isEmailValid = (email) => {
+      // Simple email regex for demonstration
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+      return re.test(email.toLowerCase());
+    };
+
+    const isPasswordStrong = (password) => {
+      // Example regex: at least one number, one lowercase and one uppercase letter, and at least 8 characters
+      const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/; 
+      return re.test(password);
+    };
+    
+    // Inside handleSignup function before setting userData
+    if (!isEmailValid(email)) {
+      alert("Please enter a valid email address!");
+      return;
+    }
+    
+    if (!isPasswordStrong(password)) {
+      alert("Password is not strong enough! Password should have at least one number, one lowercase, one uppercase letter, and at least 8 characters.");
+      return;
+    }
+    
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    const userData = {
+      email: email,
+      name: name,
+      password: password
+    };
+
+    fetch('http://localhost:8080/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    })
+    .then(response => {
+      console.log('Response received:', response); // Logs the response object
+      if (!response.ok) {
+        throw new Error('Signup failed');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Success:', data); // This should log the data from the response body
+      navigate('/login');
+    })
+    .catch(error => {
+      console.error('Error during signup:', error);
+      alert(error.message);
+    });
+  };
+
+
   return (
     <div className="Signup d-flex justify-content-center align-items-center vh-100 bg-white">
       <div className="form_container p-5 rounded bg-white">
-        <form>
+        <form onSubmit={handleSignup}>
           <div className="d-flex justify-content-center align-items-center vh-20">
             <img
               src={mealmateLogoYellow}
@@ -22,16 +95,25 @@ function Signup() {
               type="email "
               placeholder="Enter Email"
               className="form-control rounded-4"
+              value={email} 
+              onChange={e => setEmail(e.target.value)}
             />
+            {!isEmailValid && (
+              <div className="text-danger">
+                Invalid email. Please enter a valid email address.
+              </div>
+            )}
           </div>
           <div className="mb-3">
-            <label htmlFor="username" className="form-label">
-              Username:
+            <label htmlFor="name" className="form-label">
+              Name:
             </label>
             <input
-              type="username"
-              placeholder="Enter Username"
+              type="name"
+              placeholder="Enter Name"
               className="form-control rounded-4"
+              value={name}
+              onChange={e => setName(e.target.value)}
             />
           </div>
           <div className="mb-3">
@@ -42,6 +124,8 @@ function Signup() {
               type="password"
               placeholder="Enter Password"
               className="form-control rounded-4"
+              value={password} 
+              onChange={e => setPassword(e.target.value)}
             />
           </div>
           <div className="mb-3">
@@ -49,14 +133,18 @@ function Signup() {
               Confirm Password
             </label>
             <input
-              type="Confirm password"
+              type="password"
               placeholder="Confirm Password"
               className="form-control rounded-4"
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
             />
           </div>
 
           <div className="d-grid">
-            <button className="btn btn-lg" style={{ backgroundColor: '#FFC218' }}>Sign Up</button>
+            <button type="submit" className="btn btn-lg" style={{ backgroundColor: '#FFC218' }}>
+              Sign Up
+            </button>
           </div>
         </form>
       </div>

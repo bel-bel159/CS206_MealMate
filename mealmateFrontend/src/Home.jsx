@@ -21,6 +21,8 @@ import mcdonald from './Assets/mcdonald.png';
 import pasta from './Assets/pasta.png';
 import magnifyingGlass from './Assets/magnifyingGlass.svg';
 import './Home.css';
+import "./style.css";
+
 
 // Promotion banner component
 const Promotion = () => (
