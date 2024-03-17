@@ -20,7 +20,7 @@ public class DeliveryCartController {
         this.deliveryCartService = deliveryCartService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> createDeliveryCart(@Valid @RequestBody DeliveryCart deliveryCart) {
         DeliveryCart createdDeliveryCart = deliveryCartService.createDeliveryCart(deliveryCart);
         return ResponseEntity.ok(createdDeliveryCart);
