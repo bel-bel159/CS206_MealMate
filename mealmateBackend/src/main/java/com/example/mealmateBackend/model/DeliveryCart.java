@@ -11,6 +11,7 @@ import java.util.List;
 @Table(name = "DeliveryCart")
 public class DeliveryCart {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deliveryCartId;
 
     @Column(nullable = false)

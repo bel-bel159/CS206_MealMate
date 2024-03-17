@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/orderItem")
+@RequestMapping("/orderItems")
 public class OrderItemController {
 
     private final OrderItemService orderItemService;
