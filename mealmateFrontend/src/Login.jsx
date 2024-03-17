@@ -24,21 +24,19 @@ function Login() {
       body: JSON.stringify(userData),
     })
     .then(response => {
-      console.log('Response received:', response); // Logs the response object
+      console.log(response)
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Login failed with status: ' + response.status);
       }
-      return response.json();
+      return response.text();
     })
     .then(data => {
-      // handle success
-      console.log('Success: ', data);
+      console.log('Login successful:', data);
       navigate('/home');
     })
     .catch(error => {
-      console.error('There has been a problem with your fetch operation:', error);
+      console.error('Login error:', error);
     });
-
   };
 
 
