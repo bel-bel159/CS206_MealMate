@@ -40,7 +40,7 @@ public class OrderItemController {
         return ResponseEntity.ok(updatedItem);
     }
 
-    @GetMapping("/{itemId")
+    @GetMapping("/{itemId}")
     public ResponseEntity<OrderItem> findItemById(@PathVariable Long itemId) {
         OrderItem item = orderItemService.findItemById(itemId);
         return ResponseEntity.ok(item);
