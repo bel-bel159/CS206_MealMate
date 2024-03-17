@@ -37,7 +37,8 @@ public class DeliveryCartController {
     }
 
     @PutMapping("/update/{deliveryCartId}")
-    public ResponseEntity<?> updateDeliveryCart(@PathVariable Long deliveryCartId, @RequestBody Long orderId) {
+    public ResponseEntity<?> updateDeliveryCart(@PathVariable Long deliveryCartId, @RequestBody DeliveryCartDto deliveryCartDTO) {
+        long orderId = deliveryCartDTO.getOrderItemsId().get(0);
         try {
             DeliveryCart updatedDeliveryCart = deliveryCartService.updateDeliveryCart(deliveryCartId, orderId);
             return ResponseEntity.ok(updatedDeliveryCart);

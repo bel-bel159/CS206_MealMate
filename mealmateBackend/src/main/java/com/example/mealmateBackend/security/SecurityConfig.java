@@ -32,6 +32,7 @@ public class SecurityConfig {
             // other configuration details
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/users/**").permitAll() // Allow anyone to access "/users/** */"
+                    .requestMatchers("/deliveryCarts/**").permitAll() // Allow anyone to access "/deliveryCarts/**"
 
                 .anyRequest().authenticated() // All other paths require authentication
             )
