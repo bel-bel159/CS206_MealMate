@@ -85,6 +85,7 @@ function Login() {
             </label>
           </div>
           <div className="d-grid">
+          <a href="/" className="btn btn-lg" style={{ backgroundColor: '#FFC218' }}>Log in</a>
             <button type="submit" className="btn btn-lg" style={{ backgroundColor: '#FFC218' }}>Log in</button>
           </div>
           <div className="container">
