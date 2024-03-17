@@ -1,6 +1,6 @@
 package com.example.mealmateBackend.user;
-
 import com.example.mealmateBackend.model.User;
+import com.example.mealmateBackend.security.*;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping  
+    @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
         try {
             // Before saving, you might want to manually encode the password or handle other pre-save logic.
@@ -34,7 +34,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/email/{email}")
+    @GetMapping("/get/{email}")
     public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
         try {
             User user = userService.findUserByEmail(email);
