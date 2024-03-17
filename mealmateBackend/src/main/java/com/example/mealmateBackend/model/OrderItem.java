@@ -35,6 +35,6 @@ public class OrderItem {
         this.itemQuantity = itemQuantity;
     }
 
-    @OneToMany(mappedBy = "Order", cascade = CascadeType.ALL)
-    private Set<OrderItem> orderItems;
+//    @OneToMany(mappedBy = "Order", cascade = CascadeType.ALL)
+//    private Set<OrderItem> orderItems;
 }

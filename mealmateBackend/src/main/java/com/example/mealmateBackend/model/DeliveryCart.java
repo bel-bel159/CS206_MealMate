@@ -11,29 +11,26 @@ import java.util.List;
 @Table(name = "DeliveryCart")
 public class DeliveryCart {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deliveryCartId;
 
     @Column(nullable = false)
     private Long ordererId;
 
-    @Column(nullable = true)
+    @ElementCollection
     private List<Long> orderItemsId;
 
     @Column(nullable = true)
     private float totalPrice;
 
-    @Column(nullable = true)
-    private String location;
-
     public DeliveryCart() {
     }
 
-    public DeliveryCart(Long deliveryCartId, Long ordererId, List<Long> orderItemsId, float totalPrice, String location) {
+    public DeliveryCart(Long deliveryCartId, Long ordererId, List<Long> orderItemsId, float totalPrice) {
         this.deliveryCartId = deliveryCartId;
         this.ordererId = ordererId;
         this.orderItemsId = orderItemsId;
         this.totalPrice = totalPrice;
-        this.location = location;
     }
 
 

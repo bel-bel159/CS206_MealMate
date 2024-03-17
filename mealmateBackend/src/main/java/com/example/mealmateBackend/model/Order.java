@@ -5,6 +5,7 @@ import lombok.Data;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -18,12 +19,13 @@ public class Order {
     private Long orderId;
 
     @Column(nullable = false)
-    private Long ordererId;
+    private String ordererId;
+
+    @Column(nullable = true)
+    private String delivererId;
 
     @Column(nullable = false)
-    private Long delivererId;
-
-    @Column(nullable = false)
+    @ElementCollection
     private List<Long> orderItemsId;
 
     @Column(nullable = true)
@@ -39,7 +41,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long ordererId, Long delivererId, List<Long> orderItemsId, String location, float totalPrice, OrderStatus status) {
+    public Order(String ordererId, String delivererId, List<Long> orderItemsId, String location, float totalPrice, OrderStatus status) {
         this.ordererId = ordererId;
         this.delivererId = delivererId;
         this.orderItemsId = orderItemsId;
