@@ -37,7 +37,9 @@ public class DeliveryCartServiceImpl implements DeliveryCartService {
         itemList.add(orderId);
 
         float totalPrice = deliveryCart.getTotalPrice() + orderItem.getItemPrice();
+//        float totalPrice = deliveryCart.getTotalPrice() + 1;
         deliveryCart.setTotalPrice(totalPrice);
+
 
         return deliveryCart;
     }

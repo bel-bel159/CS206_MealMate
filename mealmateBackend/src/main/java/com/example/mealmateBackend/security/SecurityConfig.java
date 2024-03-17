@@ -42,8 +42,13 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             // other configuration details
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/users/**").permitAll() // Allow anyone to access "/users/** */
-                .requestMatchers("/users/login").permitAll()
+                .requestMatchers("/users/**").permitAll() // Allow anyone to access "/users/** */"
+                    .requestMatchers("/users/login").permitAll()
+                    .requestMatchers("/deliveryCarts/**").permitAll() // Allow anyone to access "/deliveryCarts/**"
+                    .requestMatchers("/orderItems/**").permitAll() // Allow anyone to access "/orderItems/**"
+                    .requestMatchers("/orders/**").permitAll() // Allow anyone to access "/orders/**"
+
+
                 .anyRequest().authenticated() // All other paths require authentication
             )
             // other configurations like .httpBasic(), .formLogin() if needed
