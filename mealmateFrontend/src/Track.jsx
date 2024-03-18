@@ -20,7 +20,6 @@ const Circle = ({ src }) => (
             alignItems: "center",
             justifyContent: "center",
             backgroundColor: "#fff",
-            marginTop: src === user ? "-130px" : 0
         }}
     >
         {src === walking ? (
@@ -32,6 +31,40 @@ const Circle = ({ src }) => (
         ) : (
             <img src={src} alt="icon" style={{ maxWidth: "50%", maxHeight: "50%" }} />
         )}
+    </div>
+);
+
+const PhoneCircle = ({ src }) => (
+    <div
+        style={{
+            width: "45px",
+            height: "45px",
+            borderRadius: "50%",
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#fff",
+        }}
+    >
+        <img src={src} alt="icon" style={{ maxWidth: "50%", maxHeight: "50%" }} />
+    </div>
+);
+
+const LocationCircle = ({ src }) => (
+    <div
+        style={{
+            width: "45px",
+            height: "45px",
+            borderRadius: "50%",
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#fff",
+        }}
+    >
+        <img src={src} alt="icon" style={{ maxWidth: "50%", maxHeight: "50%" }} />
     </div>
 );
 
@@ -117,24 +150,25 @@ const Track = () => {
                 {/* Order collected box */}
                 <div
                     className="order-collected-box"
-                    style={{ position: "absolute", transform: "translateY(50%)" }}
+                    style={{ position: "absolute", transform: "translateY(50%)", maxHeight: "450px" }}
                 >
-                    <div className="card mb-3 mt-4 text-bg-warning mx-4 p-4 border rounded-5">
+                    <div className="card mb-3 mt-4 text-bg-warning mx-4 p-4 border rounded-5 overflow-auto" style={{maxHeight:"500px"}}>
                         <div className="row g-0">
-                            <div className="col-9">
+                            <div>
                                 <div className="card-body">
-                                    <h4 className="card-title">Order has been collected</h4>
-                                    <p className="card-text pt-2">
-                                        Arriving between <strong>11:53AM - 11:58AM</strong>
-                                        <small className="text-body-secondary"></small>
-                                    </p>
-                                    <div
+                                    <div className="row g-0">
+                                        <h4 className="card-title">Order has been collected</h4>
+                                        <p className="card-text pt-2">
+                                            Arriving between <strong>11:53AM - 11:58AM</strong>
+                                            <small className="text-body-secondary"></small>
+                                        </p>
+                                    </div>
+                                    <div className="row g-0"
                                         style={{
                                             display: "flex",
                                             alignItems: "center",
                                             justifyContent: "space-between",
                                             margin: "10px auto",
-                                            width: "135%"
                                         }}
                                     >
                                         <Circle src={cart} />
@@ -144,77 +178,78 @@ const Track = () => {
                                         <Circle src={location} />
                                     </div>
 
-                                    <p className="card-text">
-                                        Deliverer is on the way in <strong>6 min</strong>
-                                        <small className="text-body-secondary"></small>
-                                    </p>
-                                </div>
-                            </div>
-                            {/* Deliverer details */}
-                            {showDetails && (
-                                <div>
-                                    <div
-                                        className="card mb-4 mt-4 mx-4 p-4 border rounded-5"
-                                        style={{ backgroundColor: "#ffea96" }}
-                                    >
-                                        <div className="row g-0">
-                                            <div className="col-9">
-                                                <div
-                                                    className="card-body"
-                                                    style={{ display: "flex", alignItems: "center" }}
-                                                >
-                                                    <Circle src={user} />
-                                                    <div style={{ marginLeft: "10px" }} >
+                                    <div className="row g-0">
+                                        <p className="card-text">
+                                            Deliverer is on the way in <strong>6 min</strong>
+                                            <small className="text-body-secondary"></small>
+                                        </p>
+                                    </div>
+                                    {showDetails && (<div className="row g-0">
+                                        <div
+                                            className="card mt-4 border rounded-5 w-100"
+                                            style={{backgroundColor: "#ffea96"}}
+                                        >
+                                            <div
+                                                className="card-body"
+                                                style={{alignItems: "center"}}
+                                            >
+                                                <div className="row g-0 mb-3">
+                                                    <div className="col-4 d-flex justify-content-center">
+                                                        <Circle src={user}/>
+                                                    </div>
+                                                    <div className="col-7" style={{marginLeft: "10px"}}>
                                                         <h5 className="card-title">Alex Tan</h5>
                                                         <h6 className="card-text pt-2">
                                                             4.8/5.0<small className="text-body-secondary"></small>
                                                         </h6>
-
-                                                        {/* Typable box with button */}
-                                                        <div
-                                                            style={{
-                                                                display: "flex",
-                                                                flexDirection: "column", // Adjusted to display items vertically
-                                                                marginTop: "20px"
-                                                            }}
-                                                        >
-                                                            <div style={{ display: "flex", alignItems: "center" }}>
-                                                                <input
-                                                                    type="text"
-                                                                    placeholder="Chat with deliverer"
-                                                                    style={{
-                                                                        padding: "10px",
-                                                                        flex: 1,
-                                                                        borderRadius: "10px",
-                                                                        border: "1px solid #ccc"
-                                                                    }}
-                                                                />
-                                                                <button
-                                                                    style={{
-                                                                        background: "none",
-                                                                        border: "none",
-                                                                        cursor: "pointer",
-                                                                        marginLeft: "10px",
-                                                                    }}
-                                                                >
-                                                                    <Circle src={phone} />
-                                                                </button>
-                                                            </div>
-                                                            <div style={{ display: "flex", alignItems: "center" }}>
-                                                                <Circle src={location} />
-                                                                <span style={{ marginLeft: "10px" }}>
-                                                                    SMU SCIS1 IS Lounge SR B1-01, <br />
-                                                                    80 Stamford Rd, Singapore 178902
-                                                                </span>
-                                                            </div>
+                                                    </div>
+                                                </div>
+                                                {/* Typable box with button */}
+                                                <div className="row g-0">
+                                                    <div style={{display: "flex", alignItems: "center"}}>
+                                                        <div className="col-9">
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Chat with deliverer"
+                                                                style={{
+                                                                    padding: "10px",
+                                                                    flex: 1,
+                                                                    borderRadius: "10px",
+                                                                    border: "1px solid #ccc",
+                                                                    width: "100%"
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <div className="col-3 d-flex justify-content-center">
+                                                            <button
+                                                                style={{
+                                                                    background: "none",
+                                                                    border: "none",
+                                                                    cursor: "pointer",
+                                                                    marginLeft: "10px",
+                                                                }}
+                                                            >
+                                                                <PhoneCircle src={phone}/>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="row g-0 mt-3">
+                                                    <div style={{display: "flex", alignItems: "center"}}>
+                                                        <div className="col-3">
+                                                            <LocationCircle src={location}/>
+                                                        </div>
+                                                        <div className="col-9">
+                                                            <span className="fs-6"> SMU SCIS1 IS Lounge SR B1-01</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>)}
                                 </div>
-                            )}
+
+                            </div>
                             <hr
                                 style={{
                                     width: "100%",
