@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.mealmateBackend.model.OrderItem;
 
 import jakarta.annotation.security.PermitAll;
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +31,7 @@ public class OrderItemController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderItem> createItem(@RequestBody OrderItem item) {
+    public ResponseEntity<OrderItem> createItem(@Valid @RequestBody OrderItem item) {
         OrderItem createdItem = orderItemService.createItem(item);
         return ResponseEntity.ok(createdItem);
     }

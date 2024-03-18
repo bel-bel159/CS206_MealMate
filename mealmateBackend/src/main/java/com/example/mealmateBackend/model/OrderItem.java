@@ -3,6 +3,9 @@ package com.example.mealmateBackend.model;
 import java.util.*;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -13,17 +16,19 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itemId;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Item name is required")
     private String itemName;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Item description is required")
     private String itemDescription;
 
-    @Column(nullable = false)
-    private float itemPrice;
+    @NotNull(message = "Item price is required")
+    @Min(value = 0, message = "Item price must be a positive number")
+    private Float itemPrice;
 
-    @Column(nullable = false)
-    private int itemQuantity;
+    @NotNull(message = "Item quantity is required")
+    @Min(value = 1, message = "Item quantity must be at least 1")
+    private Integer itemQuantity;
 
     public OrderItem() {
     }
