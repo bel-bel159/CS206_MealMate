@@ -46,17 +46,17 @@ export const BottomNavbar = () => {
           }
         />
       </Link>
-      <Link to="/favorites">
-        <BottomNavigationAction
-          icon={
-            <img
-              src={heart}
-              alt="heart"
-              style={{ width: "30px", height: "auto" }}
-            />
-          }
-        />
-      </Link>
+
+      <BottomNavigationAction
+        icon={
+          <img
+            src={heart}
+            alt="heart"
+            style={{ width: "30px", height: "auto" }}
+          />
+        }
+      />
+
       <Link to="/profile">
         <BottomNavigationAction
           icon={
