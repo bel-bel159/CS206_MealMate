@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar.jsx";
 import Restaurant from "./Restaurant.jsx";
 import Cart from "./Cart.jsx";
 import { BottomNavbar } from "./components/BottomNavbar.jsx";
+import { DeliverBottomNavbar } from "./components/DeliverBottomNavbar.jsx";
+import ShowDelivererBottomNavbar from "./components/ShowDeliverBottomNav.jsx";
 import Profile from "./Profile.jsx";
 import FilterResults from "./FilterResults.jsx"
 
@@ -21,6 +23,9 @@ import Track from "./Track.jsx";
 import ConfirmOrder from "./ConfirmOrder.jsx";
 
 function App() {
+
+  const isDeliverer = false;
+
   return (
     <BrowserRouter>
       <ShowNavbar>
@@ -42,9 +47,15 @@ function App() {
         <Route path="/track" element={<Track />}></Route>
         <Route path="/confirm" element={<ConfirmOrder />}></Route>
       </Routes>
-      <ShowBottomNavbar>
-        <BottomNavbar />
-      </ShowBottomNavbar>
+      {isDeliverer ? (
+        <ShowDelivererBottomNavbar>
+          <DeliverBottomNavbar />
+        </ShowDelivererBottomNavbar>
+      ) : (
+        <ShowBottomNavbar>
+          <BottomNavbar />
+        </ShowBottomNavbar>
+      )}
     </BrowserRouter>
   );
 }

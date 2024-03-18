@@ -5,10 +5,6 @@ import bell from "../Assets/bell.svg";
 import cart from "../Assets/cart.svg";
 
 const Navbar = () => {
-  const location = useLocation();
-  if (location.pathname === "/restaurant" || location.pathname === "/cart") {
-    return null;
-  }
   return (
     <nav className="navbar bg-light">
   <div className="d-flex justify-content-between align-items-center" style={{ width: "100%" }}>
