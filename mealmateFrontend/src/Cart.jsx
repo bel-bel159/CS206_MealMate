@@ -108,23 +108,30 @@ const Cart = () => {
                       <h4>Zhang Liang Mala Tang Bencoolen</h4>
                       <p>Tomato Soup Base</p>
                     </div>
-              
-                    {/* View Button */}
-                    <button style={{
-                      padding: '10px 20px',
-                      cursor: 'pointer',
-                      backgroundColor: '#FFC218',
-                      borderRadius: '20px',
-                      border: 'none',
-                      fontWeight: 'bold',
-                      marginRight: '10px'
-                    }} onClick={() => navigate('/checkout')}>
-                      View
-                    </button>
+
+                    {/* Price */}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', marginRight: '10px', fontWeight: 'bold', fontSize: '20px' }}>
+                    <h4 style={{ fontWeight: 'bold', fontSize: '20px' }}>$ 10.00</h4>
+                    </div>
                   </div>
                 ))}
                 {/* Horizontal Line */}
                 <hr style={{ width: '100%', color: '#FFC218', marginTop: '10px' }} />
+                {/* Checkout Button */}
+                <button style={{
+                    padding: '10px 20px',
+                    cursor: 'pointer',
+                    backgroundColor: '#FFC218',
+                    borderRadius: '20px',
+                    border: 'none',
+                    fontWeight: 'bold',
+                    position: 'absolute',
+                    bottom: '80px',
+                    left : '50%',
+                    transform: 'translateX(-50%)'
+                }} onClick={() => navigate('/checkout')}>
+                    Checkout
+                </button>
               </div>              
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '20px' }}>
