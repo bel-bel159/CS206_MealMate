@@ -3,6 +3,7 @@ import "./style.css";
 import backbutton from "./Assets/backbutton.png"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Cart = () => {
 
@@ -12,6 +13,43 @@ const Cart = () => {
     const [cartItems, setCartItems] = useState([
         { id: 1, name: "Sample Item", quantity: 1 },
     ]);
+
+    // fetch cart items 
+    useEffect(() => {
+      fetch('http://localhost:8080/api.cart')
+        .then(response => response.json())
+        .then(data => setCartItems(data))
+        .catch(error => console.error('Failed to fetch cart items:', error));
+    }, []);
+
+    // update cart item quantity
+    const updateCartItemQuantity = (itemId, newQuantity) => {
+      fetch('http://localhost:8080/api/cart/${itemId}', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantity: newQuantity }),
+      })
+      .then(response => response.json())
+      .then(() => {
+        setCartItems(cartItems.map(item => 
+          item.id === itemId ? { ...item, quantity: newQuantity } : item
+        ));
+      })
+      .catch(error => console.error('Failed to update cart item:', error));
+    }
+
+    //remove item from cart
+    const removeCartItem = (itemId) => {
+      fetch('http://localhost:8080/api/cart/${itemId}', {
+        method: 'DELETE',
+      })
+      .then(() => {
+        setCartItems(cartItems.filter(item => item.id !== itemId));
+      })
+      .catch(error => console.error('Failed to remove cart item:', error));
+    }
 
     const hasItemsInCart = cartItems.some(item => item.quantity > 0);
 
