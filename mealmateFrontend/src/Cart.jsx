@@ -71,7 +71,7 @@ const Cart = () => {
                     <div key={key} style={{ top:"100px", padding: '10px' }}>
                         {/* Quantity Card */}
                         <div className="row pt-2 pb-2">
-                            <div className="col-5 d-flex justify-content-center align-self-center" style={{
+                            <div className="col-4 d-flex justify-content-center align-self-center" style={{
                                 width: "55px",
                                 height: "55px",
                                 backgroundColor: '#FFC218',
@@ -90,8 +90,8 @@ const Cart = () => {
                                 <p className="m-0">{value.name}</p>
                             </div>
                             {/* Price */}
-                            <div className="col-2" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', marginRight: '10px', fontWeight: 'bold', fontSize: '20px' }}>
-                                <h4 style={{ fontWeight: 'bold', fontSize: '20px' }}>$ {value.price}</h4>
+                            <div className="col-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', marginRight: '10px', fontWeight: 'bold', fontSize: '20px' }}>
+                                <h4 style={{ fontWeight: 'bold', fontSize: '20px' }}>$ {value.price.toFixed(2)}</h4>
                             </div>
                         </div>
                         {/* Horizontal Line */}
@@ -101,7 +101,7 @@ const Cart = () => {
                     </div>
                 ))}
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', marginRight: '10px', fontWeight: 'bold', fontSize: '20px'}}>
-                    <h4 style={{ fontWeight: 'bold', fontSize: '20px' }}>Total: $ {price}</h4>
+                    <h4 style={{ fontWeight: 'bold', fontSize: '20px' }}>Total: $ {price.toFixed(2)}</h4>
                 </div>
                 {/* Checkout Button */}
                 <button style={{
@@ -111,7 +111,7 @@ const Cart = () => {
                     borderRadius: '20px',
                     border: 'none',
                     fontWeight: 'bold',
-                    position: 'absolute',
+                    position: 'fixed',
                     bottom: '80px',
                     left : '50%',
                     transform: 'translateX(-50%)'
@@ -124,23 +124,29 @@ const Cart = () => {
 
 
     return (
-        <div className="header bg-light" style={{ width: "100%", height: "50px", boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-            <div className="d-flex justify-content-between align-items-center mb-4" style={{ width: "100%", height: "50px", position: 'relative' }}>
-                <button style={{ background: 'none', border: 'none', cursor: 'pointer', transform: 'translateY(50%)'}}>
-                    <img
-                    src={backbutton}
-                    alt="Back"
-                    style={{ width: "20px", height: "auto" }} // Adjust size as needed
-                    onClick={() => navigate(-1)}
-                    />
-                </button>
-                <div style={{ position: 'absolute', width: "100%", top: '90%', transform: 'translateY(-50%)', textAlign: 'center' , fontWeight: 'bold'}}>
-                    My Cart
+        <div>
+            <div className="row">
+                <div className="header bg-light" style={{ width: "100%", height: "50px", boxShadow: '0 2px 4px rgba(0,0,0,0.1)', position: 'fixed' }}>
+                    <div className="d-flex justify-content-between align-items-center mb-4" style={{ width: "100%", height: "50px", position: 'relative' }}>
+                        <button style={{ background: 'none', border: 'none', cursor: 'pointer', transform: 'translateY(50%)'}}>
+                            <img
+                                src={backbutton}
+                                alt="Back"
+                                style={{ width: "20px", height: "auto" }} // Adjust size as needed
+                                onClick={() => navigate(-1)}
+                            />
+                        </button>
+                        <div style={{ position: 'absolute', width: "100%", top: '90%', transform: 'translateY(-50%)', textAlign: 'center' , fontWeight: 'bold'}}>
+                            My Cart
+                        </div>
+                        {/* If you plan to add another element (like a cart icon) on the right, you can add it here. */}
+                        <div style={{ width: '30px' }}> {/* Placeholder for right-side symmetry, adjust as needed */}</div>
+                    </div>
                 </div>
-                {/* If you plan to add another element (like a cart icon) on the right, you can add it here. */}
-                <div style={{ width: '30px' }}> {/* Placeholder for right-side symmetry, adjust as needed */}</div>
             </div>
-            <ListItems />
+            <div className='row overflow-auto' style={{paddingTop:'60px',maxHeight:"800px"}}>
+                <ListItems />
+            </div>
         </div>
     );
 }
