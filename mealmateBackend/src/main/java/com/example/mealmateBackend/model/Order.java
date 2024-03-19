@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @Table(name = "Orders")
 public class Order {
-    public enum OrderStatus {ORDER_SENT, PREPARING, COLLECTED, DELIVERED}
+    public enum OrderStatus {ORDER_SENT, COLLECTED, DELIVERED}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

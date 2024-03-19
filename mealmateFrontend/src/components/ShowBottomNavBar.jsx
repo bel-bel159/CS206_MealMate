@@ -3,7 +3,9 @@ import {useLocation} from "react-router-dom";
 
 const ShowBottomNavbar = ({children}) => {
     const location = useLocation();
-
+    if (location.pathname === "/cart") {
+        return null;
+    }
     const[showBottomNavBar, setShowBottomNavBar] = useState(false);
     useEffect(() => {
         console.log('this is location:', location)

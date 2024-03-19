@@ -62,4 +62,14 @@ public class OrderController {
             return ResponseEntity.badRequest().body("Invalid deliverer id.");
         }
     }
+
+    @GetMapping("/pendingorders")
+    public ResponseEntity<?> getPendingOrders(){
+        try{
+            List<Order> orders = orderService.findPendingOrders();
+            return ResponseEntity.ok(orders);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

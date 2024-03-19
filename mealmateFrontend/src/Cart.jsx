@@ -3,6 +3,7 @@ import "./style.css";
 import backbutton from "./Assets/backbutton.png"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Cart = () => {
 
@@ -12,6 +13,43 @@ const Cart = () => {
     const [cartItems, setCartItems] = useState([
         { id: 1, name: "Sample Item", quantity: 1 },
     ]);
+
+    // fetch cart items 
+    useEffect(() => {
+      fetch('http://localhost:8080/api.cart')
+        .then(response => response.json())
+        .then(data => setCartItems(data))
+        .catch(error => console.error('Failed to fetch cart items:', error));
+    }, []);
+
+    // update cart item quantity
+    const updateCartItemQuantity = (itemId, newQuantity) => {
+      fetch('http://localhost:8080/api/cart/${itemId}', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ quantity: newQuantity }),
+      })
+      .then(response => response.json())
+      .then(() => {
+        setCartItems(cartItems.map(item => 
+          item.id === itemId ? { ...item, quantity: newQuantity } : item
+        ));
+      })
+      .catch(error => console.error('Failed to update cart item:', error));
+    }
+
+    //remove item from cart
+    const removeCartItem = (itemId) => {
+      fetch('http://localhost:8080/api/cart/${itemId}', {
+        method: 'DELETE',
+      })
+      .then(() => {
+        setCartItems(cartItems.filter(item => item.id !== itemId));
+      })
+      .catch(error => console.error('Failed to remove cart item:', error));
+    }
 
     const hasItemsInCart = cartItems.some(item => item.quantity > 0);
 
@@ -70,23 +108,30 @@ const Cart = () => {
                       <h4>Zhang Liang Mala Tang Bencoolen</h4>
                       <p>Tomato Soup Base</p>
                     </div>
-              
-                    {/* View Button */}
-                    <button style={{
-                      padding: '10px 20px',
-                      cursor: 'pointer',
-                      backgroundColor: '#FFC218',
-                      borderRadius: '20px',
-                      border: 'none',
-                      fontWeight: 'bold',
-                      marginRight: '10px'
-                    }} onClick={() => navigate('/checkout')}>
-                      View
-                    </button>
+
+                    {/* Price */}
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center', marginRight: '10px', fontWeight: 'bold', fontSize: '20px' }}>
+                    <h4 style={{ fontWeight: 'bold', fontSize: '20px' }}>$ 10.00</h4>
+                    </div>
                   </div>
                 ))}
                 {/* Horizontal Line */}
                 <hr style={{ width: '100%', color: '#FFC218', marginTop: '10px' }} />
+                {/* Checkout Button */}
+                <button style={{
+                    padding: '10px 20px',
+                    cursor: 'pointer',
+                    backgroundColor: '#FFC218',
+                    borderRadius: '20px',
+                    border: 'none',
+                    fontWeight: 'bold',
+                    position: 'absolute',
+                    bottom: '80px',
+                    left : '50%',
+                    transform: 'translateX(-50%)'
+                }} onClick={() => navigate('/checkout')}>
+                    Checkout
+                </button>
               </div>              
             ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '20px' }}>
