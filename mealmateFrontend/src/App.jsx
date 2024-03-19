@@ -22,6 +22,8 @@ import Orders from "./Orders.jsx";
 import Track from "./Track.jsx";
 import ConfirmOrder from "./ConfirmOrder.jsx";
 
+import DelivererHome from "./DelivererHome.jsx";
+
 
 function App() {
 
@@ -47,6 +49,8 @@ function App() {
         <Route path="/orders" element={<Orders />} />
         <Route path="/track" element={<Track />}></Route>
         <Route path="/confirm" element={<ConfirmOrder />}></Route>
+
+        <Route path="/deliverer-home" element={<DelivererHome />}></Route>
         
       </Routes>
       {isDeliverer ? (
