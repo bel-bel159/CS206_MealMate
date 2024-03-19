@@ -22,6 +22,7 @@ import Orders from "./Orders.jsx";
 import Track from "./Track.jsx";
 import ConfirmOrder from "./ConfirmOrder.jsx";
 
+
 function App() {
 
   const isDeliverer = false;
@@ -46,6 +47,7 @@ function App() {
         <Route path="/orders" element={<Orders />} />
         <Route path="/track" element={<Track />}></Route>
         <Route path="/confirm" element={<ConfirmOrder />}></Route>
+        
       </Routes>
       {isDeliverer ? (
         <ShowDelivererBottomNavbar>
