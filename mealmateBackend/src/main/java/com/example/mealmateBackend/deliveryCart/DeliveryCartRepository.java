@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface DeliveryCartRepository extends JpaRepository<DeliveryCart, Long> {
     // Custom query methods defined here
     Optional<DeliveryCart> findByDeliveryCartId(Long deliveryCartId);
-    Optional<DeliveryCart> findByOrdererId(Long ordererId);
+    Optional<DeliveryCart> findByOrdererId(String ordererId);
 }

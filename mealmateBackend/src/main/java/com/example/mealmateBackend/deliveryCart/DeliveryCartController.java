@@ -38,7 +38,7 @@ public class DeliveryCartController {
     }
 
     @GetMapping("/orderer/{ordererId}")
-    public ResponseEntity<?> getDeliveryCartByOrdererId(@PathVariable Long ordererId) {
+    public ResponseEntity<?> getDeliveryCartByOrdererId(@PathVariable String ordererId) {
         try {
             DeliveryCart deliveryCart = deliveryCartService.findDeliveryCartByOrdererId(ordererId);
             return ResponseEntity.ok(deliveryCart);
@@ -48,7 +48,7 @@ public class DeliveryCartController {
     }
 
     @GetMapping("/itemList/{ordererId}")
-    public ResponseEntity<?> getCollatedItemList(@PathVariable Long ordererId) {
+    public ResponseEntity<?> getCollatedItemList(@PathVariable String ordererId) {
         try {
             HashMap<Long, Integer> deliveryCart = deliveryCartService.findCollatedItemListByOrdererId(ordererId);
             return ResponseEntity.ok(deliveryCart);
@@ -57,11 +57,11 @@ public class DeliveryCartController {
         }
     }
 
-    @PutMapping("/update/{deliveryCartId}")
-    public ResponseEntity<?> updateDeliveryCart(@PathVariable Long deliveryCartId, @RequestBody DeliveryCartDto deliveryCartDTO) {
+    @PutMapping("/update/{ordererId}")
+    public ResponseEntity<?> updateDeliveryCartByOrdererId(@PathVariable String ordererId, @RequestBody DeliveryCartDto deliveryCartDTO) {
         long orderId = deliveryCartDTO.getOrderItemsId().get(0);
         try {
-            DeliveryCart updatedDeliveryCart = deliveryCartService.updateDeliveryCart(deliveryCartId, orderId);
+            DeliveryCart updatedDeliveryCart = deliveryCartService.updateDeliveryCartByOrdererId(ordererId, orderId);
             return ResponseEntity.ok(updatedDeliveryCart);
         } catch (DeliveryCartNotFoundException | OrderItemNotFoundException e) {
             return ResponseEntity.notFound().build();
