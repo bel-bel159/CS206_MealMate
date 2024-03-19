@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -29,8 +31,8 @@ public class DeliveryCartServiceImpl implements DeliveryCartService {
 
     @Override
     @Transactional
-    public DeliveryCart updateDeliveryCart(Long deliveryCartId, Long orderId) throws DeliveryCartNotFoundException {
-        DeliveryCart deliveryCart = findDeliveryCartById(deliveryCartId);
+    public DeliveryCart updateDeliveryCartByOrdererId(String ordererId, Long orderId) throws DeliveryCartNotFoundException {
+        DeliveryCart deliveryCart = findDeliveryCartByOrdererId(ordererId);
         OrderItem orderItem = orderItemService.findItemById(orderId);
 
         List<Long> itemList = deliveryCart.getOrderItemsId();
@@ -48,6 +50,27 @@ public class DeliveryCartServiceImpl implements DeliveryCartService {
     public DeliveryCart findDeliveryCartById(Long deliveryCartId) throws DeliveryCartNotFoundException {
         return deliveryCartRepository.findById(deliveryCartId)
                 .orElseThrow(() -> new DeliveryCartNotFoundException("DeliveryCart with id " + deliveryCartId + " not found."));
+    }
+
+    @Override
+    public DeliveryCart findDeliveryCartByOrdererId(String ordererId) throws DeliveryCartNotFoundException {
+        return deliveryCartRepository.findByOrdererId(ordererId)
+                .orElseThrow(() -> new DeliveryCartNotFoundException("DeliveryCart with orderer id " + ordererId + " not found."));
+    }
+
+    @Override
+    public HashMap<Long, Integer> findCollatedItemListByOrdererId(String ordererId) throws DeliveryCartNotFoundException {
+        DeliveryCart cart = findDeliveryCartByOrdererId(ordererId);
+        List<Long> itemList = cart.getOrderItemsId();
+        HashMap<Long, Integer> collatedItemList = new HashMap<>();
+        for (Long itemId : itemList) {
+            if (collatedItemList.containsKey(itemId)) {
+                collatedItemList.put(itemId, collatedItemList.get(itemId) + 1);
+            } else {
+                collatedItemList.put(itemId, 1);
+            }
+        }
+        return collatedItemList;
     }
 
     @Override

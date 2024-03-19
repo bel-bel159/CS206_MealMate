@@ -9,7 +9,8 @@ const ShowBottomNavbar = ({children}) => {
     const[showBottomNavBar, setShowBottomNavBar] = useState(false);
     useEffect(() => {
         console.log('this is location:', location)
-        if(location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/notification'){
+        if(location.pathname === '/login' || location.pathname === '/signup' || location.pathname === '/notification' || location.pathname === '/orders' || location.pathname === '/checkout' || location.pathname === '/cart'){
+
             setShowBottomNavBar(false);
         }else{
             setShowBottomNavBar(true);
