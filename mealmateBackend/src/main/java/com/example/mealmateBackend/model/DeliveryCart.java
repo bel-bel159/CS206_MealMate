@@ -15,7 +15,7 @@ public class DeliveryCart {
     private Long deliveryCartId;
 
     @Column(nullable = false)
-    private Long ordererId;
+    private String ordererId;
 
     @ElementCollection
     private List<Long> orderItemsId;
@@ -26,7 +26,7 @@ public class DeliveryCart {
     public DeliveryCart() {
     }
 
-    public DeliveryCart(Long deliveryCartId, Long ordererId, List<Long> orderItemsId, float totalPrice) {
+    public DeliveryCart(Long deliveryCartId, String ordererId, List<Long> orderItemsId, float totalPrice) {
         this.deliveryCartId = deliveryCartId;
         this.ordererId = ordererId;
         this.orderItemsId = orderItemsId;

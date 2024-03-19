@@ -31,8 +31,8 @@ public class DeliveryCartServiceImpl implements DeliveryCartService {
 
     @Override
     @Transactional
-    public DeliveryCart updateDeliveryCart(Long deliveryCartId, Long orderId) throws DeliveryCartNotFoundException {
-        DeliveryCart deliveryCart = findDeliveryCartById(deliveryCartId);
+    public DeliveryCart updateDeliveryCartByOrdererId(String ordererId, Long orderId) throws DeliveryCartNotFoundException {
+        DeliveryCart deliveryCart = findDeliveryCartByOrdererId(ordererId);
         OrderItem orderItem = orderItemService.findItemById(orderId);
 
         List<Long> itemList = deliveryCart.getOrderItemsId();
@@ -53,13 +53,13 @@ public class DeliveryCartServiceImpl implements DeliveryCartService {
     }
 
     @Override
-    public DeliveryCart findDeliveryCartByOrdererId(Long ordererId) throws DeliveryCartNotFoundException {
+    public DeliveryCart findDeliveryCartByOrdererId(String ordererId) throws DeliveryCartNotFoundException {
         return deliveryCartRepository.findByOrdererId(ordererId)
                 .orElseThrow(() -> new DeliveryCartNotFoundException("DeliveryCart with orderer id " + ordererId + " not found."));
     }
 
     @Override
-    public HashMap<Long, Integer> findCollatedItemListByOrdererId(Long ordererId) throws DeliveryCartNotFoundException {
+    public HashMap<Long, Integer> findCollatedItemListByOrdererId(String ordererId) throws DeliveryCartNotFoundException {
         DeliveryCart cart = findDeliveryCartByOrdererId(ordererId);
         List<Long> itemList = cart.getOrderItemsId();
         HashMap<Long, Integer> collatedItemList = new HashMap<>();

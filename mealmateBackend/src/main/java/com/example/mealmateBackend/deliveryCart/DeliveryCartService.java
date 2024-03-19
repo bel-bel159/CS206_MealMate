@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public interface DeliveryCartService {
     DeliveryCart createDeliveryCart(DeliveryCart deliveryCart);
-    DeliveryCart updateDeliveryCart(Long cartId, Long orderId);
+    DeliveryCart updateDeliveryCartByOrdererId(String ordererId, Long orderId);
     DeliveryCart findDeliveryCartById(Long deliveryCartId);
-    DeliveryCart findDeliveryCartByOrdererId(Long ordererId);
-    HashMap<Long, Integer> findCollatedItemListByOrdererId(Long ordererId);
+    DeliveryCart findDeliveryCartByOrdererId(String ordererId);
+    HashMap<Long, Integer> findCollatedItemListByOrdererId(String ordererId);
     void deleteDeliveryCartById(Long deliveryCartId);
     List<DeliveryCart> findAllDeliveryCarts();
 }

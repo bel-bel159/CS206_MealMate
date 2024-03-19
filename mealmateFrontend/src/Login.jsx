@@ -10,6 +10,7 @@ function Login() {
   
   const handleSubmit = async (event) => {
     event.preventDefault();
+    localStorage.setItem('userEmail', email);
 
     const userData = {
       email: email,
