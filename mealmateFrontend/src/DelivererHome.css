@@ -1,0 +1,94 @@
+.deliverer-home {
+    padding: 2rem;
+    background: #e9ffeb;
+    min-height: 100vh;
+  }
+  
+  .deliverer-home h3,
+  .deliverer-home h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .order-card {
+    position: relative; /* Set relative positioning context for the button */
+    background: #34c759;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.1s ease-in-out;
+  }
+  .order-details h3 {
+    color: #000000;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 0.5rem;
+  }
+
+ .order-details p {
+  color: #000000;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 0.3rem;
+}
+
+  
+  /* Container for order details to align text */
+  .order-details {
+    flex-grow: 1; /* Takes up remaining space */
+    padding-right: 10px; /* Ensure it doesn't touch the button */
+  }
+  
+  /* Order item list styling */
+  .order-details ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  
+  /* Adjust other styles as necessary... */
+  
+  .take-order-btn {
+    background: #e9ffeb;
+    color: black;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .take-order-btn:hover {
+    background: #A4E5CA;
+  }
+  
+  
+  /* Footer navigation */
+  .footer-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .footer-nav-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .footer-nav-icon img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .footer-nav-icon span {
+    font-size: 0.8rem;
+  }
+  

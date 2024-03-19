@@ -3,7 +3,7 @@ import "./style.css";
 import backbutton from "./Assets/backbutton.png"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 const Cart = () => {
     const navigate = useNavigate();
