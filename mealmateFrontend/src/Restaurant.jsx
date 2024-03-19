@@ -13,27 +13,85 @@ import star from "./Assets/star.png"
 import { Container, Row, Col, Card, Button, Image } from 'react-bootstrap';
 import { useState } from "react";
 import { Navigate, useNavigate } from 'react-router-dom';
+import { useEffect } from "react";
 
 function Restaurant() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    fetch('http://localhost:8080/orderItems')
+      .then(response => response.json())
+      .then(data => {
+        setOrderItems(data);
+      })
+      .catch(error => console.error('Error fetching order items:', error));
+  }, []);
+
+  const[orderItems, setOrderItems] = useState([]);
   //hardcode the no. of items in cart
   const [cartCount, setCartCount] = useState(0);
 
+  // // add an item to the cart 
+  // const addToCart = (itemId) => {
+  //   fetch('http://localhost:8080/deliveryCarts', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({ itemId, quantity: 1 }),
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     console.log('Item added to cart:', data);
+  //     setCartCount(cartCount => cartCount + 1);
+  //   })
+  //   .catch(error => console.error('Error adding item to cart:', error))
+  // }
+
+  // const handleAddToCart = (itemId) => {
+  //   setCartCount(cartCount + 1);
+  //   addToCart(itemId);
+  // }
+   
   return (
-    <div className="header bg-light" style={{ width: "100%", height: "50px", boxShadow: '0 2px 4px rgba(0,0,0,0,1)' }}>
-      <div className="d-flex justify-content-between align-items-center" style={{ width: "100%", height: "50px", position: 'relative' }}>
-        <button style={{ background: 'none', border: 'none' }}>
-          <img
-            src={backbutton}
-            alt="Back"
-            style={{ width: "30px", height: "auto" }} // Adjust size as needed
-            onClick={() => navigate(-1)}
-          />
-        </button>
-        <div style={{ position: 'absolute', width: "100%", textAlign: 'center', fontWeight: 'bold'}}>
-          Zhang Liang Mala Tang Bencoolen
+    <div className="header bg-light">
+      <div style={{ position: 'fixed', top: 0, width: '100%', zIndex: 1020, backgroundColor: '#f8f9fa' }}>
+        <div className="d-flex justify-content-between align-items-center" style={{ padding: '10px' }}>
+          <button style={{ background: 'none', border: 'none' }}>
+            <img
+              src={backbutton}
+              alt="Back"
+              style={{ width: "30px", height: "auto" }} // Adjust size as needed
+              onClick={() => navigate(-1)}
+            />
+          </button>
+          <button style={{ background: 'none', border: 'none' }}
+            onClick={() => navigate('/cart')}>
+            <img
+              src={cart}
+              alt="cart"
+              style={{ width: "30px", height: "auto" }}
+            />
+            {cartCount > 0 && (
+            <span style={{
+              position: 'absolute',
+              top: '5px',
+              right: '3px',
+              backgroundColor: 'red',
+              color: 'white',
+              borderRadius: '50%',
+              width: '20px',
+              height: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '12px',
+            }}>
+              {cartCount} {/* Display the dynamic count */}
+            </span>
+          )}
+          </button>
         </div>
       </div>
       <div style={{ position: 'relative', width: '100%', marginTop: '0px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -244,48 +302,6 @@ function Restaurant() {
         alt="ZLMLT Bottom"
         style={{ width: '100%', height: 'auto' }} // Adjust as needed
       />
-      <button
-        style={{
-          position: 'absolute',
-          top: '-10px', // Adjust the position as needed
-          left: '10%', // Adjust for positioning closer to the left, slightly overlapping with the image
-          backgroundColor: '#FFC218', // Use your desired button color
-          borderRadius: '50%',
-          width: '70px', // Diameter of the button, adjust as needed
-          height: '70px', // Diameter of the button, adjust as needed
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          border: 'none',
-          zIndex: 1000, // Ensuring it's on top
-        }}
-        onClick={() => navigate('/cart')}
-      >
-        <img
-          src={cart} // Ensure this is the correct path to your image
-          alt="Cart"
-          style={{ width: "40px", height: "auto" }} // Adjust icon size as needed
-        />
-        {cartCount > 0 && (
-          <span style={{
-            position: 'absolute',
-            top: '0',
-            right: '0',
-            backgroundColor: 'red',
-            color: 'white',
-            borderRadius: '50%',
-            width: '20px',
-            height: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '12px',
-            border: '2px solid #FFC218', // Match the button color
-          }}>
-            {cartCount} {/* Display the dynamic count */}
-          </span>
-        )}
-      </button>
     </div>
   </div>
   );

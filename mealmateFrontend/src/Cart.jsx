@@ -3,6 +3,7 @@ import "./style.css";
 import backbutton from "./Assets/backbutton.png"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Cart = () => {
     const navigate = useNavigate();
@@ -23,9 +24,9 @@ const Cart = () => {
                     console.error('There was an error!', error);
                 }
             };
-
             fetchItemDetails();
         }, []);
+
 
         const fetchItemNames = async (initialMap) => {
             const promises = Array.from(initialMap.keys()).map(key =>

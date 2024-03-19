@@ -13,6 +13,8 @@ public interface OrderService {
     void updateOrderStatus(Long orderId, Order.OrderStatus status);
     void updateDelivererId(Long orderId, String delivererId);
 
+    List<Order> findPendingOrders();
+
     Order getOrderById(Long orderId);
 
 

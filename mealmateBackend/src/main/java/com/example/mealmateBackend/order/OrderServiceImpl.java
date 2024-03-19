@@ -3,6 +3,7 @@ import com.example.mealmateBackend.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +57,18 @@ public class OrderServiceImpl implements OrderService{
         Order order = orderRepository.findByOrderId(orderId);
         order.setDelivererId(delivererId);
         orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> findPendingOrders() {
+        List<Order> orders = orderRepository.findAll();
+        List<Order> pendingOrders = new ArrayList<>();
+        for(Order order: orders){
+            if(order.getStatus() == Order.OrderStatus.ORDER_SENT){
+                pendingOrders.add(order);
+            }
+        }
+        return pendingOrders;
     }
 
 
