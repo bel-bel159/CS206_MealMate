@@ -3,6 +3,7 @@ package com.example.mealmateBackend.deliveryCart;
 import com.example.mealmateBackend.model.DeliveryCart;
 import com.example.mealmateBackend.orderItem.OrderItemNotFoundException;
 
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,26 @@ public class DeliveryCartController {
     public ResponseEntity<?> getDeliveryCartById(@PathVariable Long deliveryCartId) {
         try {
             DeliveryCart deliveryCart = deliveryCartService.findDeliveryCartById(deliveryCartId);
+            return ResponseEntity.ok(deliveryCart);
+        } catch (DeliveryCartNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/orderer/{ordererId}")
+    public ResponseEntity<?> getDeliveryCartByOrdererId(@PathVariable Long ordererId) {
+        try {
+            DeliveryCart deliveryCart = deliveryCartService.findDeliveryCartByOrdererId(ordererId);
+            return ResponseEntity.ok(deliveryCart);
+        } catch (DeliveryCartNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/itemList/{ordererId}")
+    public ResponseEntity<?> getCollatedItemList(@PathVariable Long ordererId) {
+        try {
+            HashMap<Long, Integer> deliveryCart = deliveryCartService.findCollatedItemListByOrdererId(ordererId);
             return ResponseEntity.ok(deliveryCart);
         } catch (DeliveryCartNotFoundException e) {
             return ResponseEntity.notFound().build();
