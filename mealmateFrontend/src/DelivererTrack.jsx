@@ -10,7 +10,7 @@ import tick from "./Assets/tick.png";
 import phone from "./Assets/phone.jpg";
 import pin from "./Assets/pin.svg";
 import dots from "./Assets/dots.png";
-
+ 
 const Circle = ({ src, color = "#fff" }) => (
   <div
         style={{
@@ -51,23 +51,6 @@ const PhoneCircle = ({ src }) => (
   >
     <img src={src} alt="icon" style={{ maxWidth: "50%", maxHeight: "50%" }} />
   </div>
-);
-
-const LocationCircle = ({ src }) => (
-    <div
-        style={{
-            width: "45px",
-            height: "45px",
-            borderRadius: "50%",
-            overflow: "hidden",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "#fff",
-        }}
-    >
-        <img src={src} alt="icon" style={{ maxWidth: "50%", maxHeight: "50%" }} />
-    </div>
 );
 
 const Line = ({color = "white"}) => (
