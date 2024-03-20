@@ -72,4 +72,24 @@ public class OrderController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/{orderId}/location")
+    public ResponseEntity<?> getLocationByOrderId(@PathVariable Long orderId){
+        try {
+            String location = orderService.getLocation(orderId);
+            return ResponseEntity.ok(location);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid order id.");
+        }
+    }
+    @GetMapping("/{orderId}/orderitems")
+    public ResponseEntity<?> getOrderItemsById(@PathVariable Long orderId){
+        try {
+            Order order = orderService.getOrderById(orderId);
+            List<Long> orderItemsId = order.getOrderItemsId();
+            return ResponseEntity.ok(orderItemsId);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid order id.");
+        }
+    }
 }

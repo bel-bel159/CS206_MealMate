@@ -17,5 +17,7 @@ public interface OrderService {
 
     Order getOrderById(Long orderId);
 
+    String getLocation(Long orderId);
+
 
 }
