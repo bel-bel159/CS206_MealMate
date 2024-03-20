@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import back from "./assets/back.svg";
-import { useState, useEffect } from "react";
+import css from "./Orders.css"; // Make sure to create a corresponding CSS file for styling
 
 const Orders = () => {
   const [order, setOrder] = useState({
@@ -12,11 +12,11 @@ const Orders = () => {
     ordererId: "",
     status: "",
     totalPrice: 0,
+    itemsDetails: [], // This will now include counts
   });
 
   useEffect(() => {
-    // Replace with the correct orderer ID and your server's base URL
-    const ordererId = "ben@gmail.com"; // As an example, it could be dynamic based on user session
+    const ordererId = "eaint@gmail.com"; // Assume dynamic based on user session
     const url = `http://localhost:8080/orders/orderer/${ordererId}`;
 
     fetch(url, {
@@ -31,19 +31,46 @@ const Orders = () => {
         }
         return response.json();
       })
-      .then((data) => {
-        // If the backend response structure is as shown above
-        console.log("Received order data: ", data);
+      .then(async (data) => {
         const orderData = data[0];
-        setOrder({
-          delivererId: orderData.delivererId,
-          location: orderData.location,
-          orderId: orderData.orderId,
-          orderItemsId: orderData.orderItemsId, // This is an array of IDs
-          ordererId: orderData.ordererId,
-          status: orderData.status,
-          totalPrice: orderData.totalPrice,
-        });
+
+        // Create a map to count occurrences of each itemId
+        const itemCounts = orderData.orderItemsId.reduce((acc, itemId) => {
+          acc[itemId] = (acc[itemId] || 0) + 1;
+          return acc;
+        }, {});
+
+        // Fetch details for each unique item in the order
+        const uniqueItemIds = [...new Set(orderData.orderItemsId)];
+        const itemsDetailsPromises = uniqueItemIds.map((itemId) =>
+          fetch(`http://localhost:8080/orderItems/${itemId}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              return response.json();
+            })
+            .catch((error) =>
+              console.error(
+                "There was an error fetching the item details:",
+                error
+              )
+            )
+        );
+
+        const itemsDetails = await Promise.all(itemsDetailsPromises);
+
+        // Combine item details with counts
+        const itemsWithDetailsAndCounts = itemsDetails.map((item) => ({
+          ...item,
+          count: itemCounts[item.itemId], // Ensure 'item.id' matches the property from your item details response
+        }));
+
+        setOrder((prevOrder) => ({
+          ...prevOrder,
+          ...orderData,
+          itemsDetails: itemsWithDetailsAndCounts,
+        }));
       })
       .catch((error) => {
         console.error("Error fetching order data:", error);
@@ -96,33 +123,21 @@ const Orders = () => {
           {/* Placeholder for right-side symmetry, adjust as needed */}
         </div>
       </div>
-      <div className="row mt-4 p-2 ">
+      <div className=" p-2 mt-2 pt-2 ">
         {" "}
-        <h3>Current Order</h3>
+        <h3 className="current-order">Current Order</h3>
       </div>
 
-      <div className="container-fluid bg-warning m-2 p-2 border rounded-4 ">
-        <div className="row m-2 p-2 ">
-          <div className="col-2 m-2 pt-2 ">
-            <button
-              type="button"
-              className="btn btn-light btn-lg border rounded-5"
-            >
-              {" "}
-              x1
-            </button>
-          </div>
-          <div className="col-6 m-2  pt-2">
-            <h4>Order Items:</h4>
-            <ul>
-              {(order.orderItemsId || []).map((itemId, index) => (
-                <li key={index}>Item ID: {itemId}</li> // Display each item ID
-              ))}
-            </ul>
-          </div>
-          <div className="col-2 m-2 pt-2">
-            <p> $57.99</p>
-          </div>
+      <div className="order-container bg-warning m-2 p-2 border rounded-4 ">
+        <div className="row m-1 p-2 ">
+          {order.itemsDetails.map((item, index) => (
+            <div key={index} className="col-12 m-2 pt-2">
+              <h5>
+                {item.itemName} x{item.count}: ${item.itemPrice}{" "}
+              </h5>{" "}
+              {/* Adjust these fields based on your actual item details structure */}
+            </div>
+          ))}
         </div>
 
         <div className="row m-2 border-bottom">
@@ -147,28 +162,14 @@ const Orders = () => {
           </Link>
         </div>
       </div>
-      <div className="row mt-2 p-2 d-flex justify-content-start ">
+      <div className="past-orders-title">
         {" "}
         <h3>Past Orders</h3>
       </div>
-      <div className="container-fluid m-2 p-2 bg-warning border rounded-4 ">
+      <div className="order-container m-2 p-2 bg-warning border rounded-4 ">
         <div className="row m-2 p-2  border-bottom">
-          <div className="col-2 m-2 pt-2 ">
-            <button
-              type="button"
-              className="btn btn-light btn-lg border rounded-5"
-            >
-              {" "}
-              x1
-            </button>
-          </div>
-          <div className="col-6 m-2  pt-3">
-            <div className="">
-              <h4> Pasta Express</h4>
-            </div>
-          </div>
-          <div className="col-2 m-2 pt-3">
-            <p> $7.60</p>
+          <div className="">
+            <h5> Cream Pasta with Bacon x1 : $7.60</h5>
           </div>
         </div>
 
@@ -180,42 +181,28 @@ const Orders = () => {
             <p> $8.60</p>
           </div>
         </div>
-        <div className="row m-2">
+        <div className="row m-2 ">
           <p>12 Mar 2024, 12:55 pm</p>
         </div>
       </div>
 
-      <div className="container-fluid m-3 p-3 bg-warning border rounded-4 ">
-        <div className="row border-bottom m-2 p-2 ">
-          <div className="col-2 m-2 pt-2 ">
-            <button
-              type="button"
-              className="btn btn-light btn-lg border rounded-5"
-            >
-              {" "}
-              x1
-            </button>
-          </div>
-          <div className="col-6 m-2  pt-3">
-            <div className="">
-              <h4> Kuro Kare</h4>
-            </div>
-          </div>
-          <div className="col-2 m-2 pt-3">
-            <p> $8.90</p>
+      <div className="order-container m-2 p-2 bg-warning border rounded-4 ">
+        <div className="row m-2 p-2  border-bottom">
+          <div className="">
+            <h5> Triplets Chocolate Waffle x1 : $2.60</h5>
           </div>
         </div>
 
-        <div className="row m-2 ">
+        <div className="row m-2">
           <div className="col-8 m-2 pt-1">
             <p>Total</p>
           </div>
           <div className="col-2 m-2 pt-1">
-            <p> $9.90</p>
+            <p> $3.60</p>
           </div>
         </div>
-        <div className="row m-2">
-          <p>8 Mar 2024, 4:34 pm</p>
+        <div className="row m-2 ">
+          <p>12 Mar 2024, 12:55 pm</p>
         </div>
       </div>
     </div>
