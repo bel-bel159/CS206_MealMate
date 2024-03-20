@@ -68,9 +68,29 @@ function Signup() {
     .then(data => {
       console.log('Success:', data); // This should log the data from the response body
       navigate('/login');
+      const deliveryCartData = {
+        ordererId: email, orderItemsId: [], totalPrice: 0
+      };
+      return fetch('http://localhost:8080/deliveryCarts/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(deliveryCartData)
+      });
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to create delivery cart');
+      }
+      return response.json(); // Proceed with the next step after successfully creating the delivery cart
+    })
+    .then(deliveryCartData => {
+      console.log('Delivery cart created successfully:', deliveryCartData);
+      navigate('/login'); // Navigate to login page or any other page as needed
     })
     .catch(error => {
-      console.error('Error during signup:', error);
+      console.error('Error during signup or delivery cart creation:', error);
       alert(error.message);
     });
   };

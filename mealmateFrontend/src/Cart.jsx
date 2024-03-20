@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
     const navigate = useNavigate();
+    const email = localStorage.getItem('userEmail') || 'No email found';
     const ListItems = () => {
         const [myMap, setMap] = useState(new Map());
         const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +17,7 @@ const Cart = () => {
             const fetchItemDetails = async () => {
                 setIsLoading(true);
                 try {
-                    const response = await fetch('http://localhost:8080/deliveryCarts/itemList/12345');
+                    const response = await fetch(`http://localhost:8080/deliveryCarts/itemList/${email}`);
                     const data = await response.json();
                     const newMap = new Map(Object.entries(data));
                     fetchItemNames(newMap);
@@ -25,12 +26,17 @@ const Cart = () => {
                 }
             };
             fetchItemDetails();
-        }, []);
+        }, [email]);
 
 
         const fetchItemNames = async (initialMap) => {
             const promises = Array.from(initialMap.keys()).map(key =>
-                fetch(`http://localhost:8080/orderItems/${key}`).then(response => response.json())
+                fetch(`http://localhost:8080/orderItems/${key}`).then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch item details');
+                }
+                return response.json();
+            })
             );
 
             const results = await Promise.all(promises);
