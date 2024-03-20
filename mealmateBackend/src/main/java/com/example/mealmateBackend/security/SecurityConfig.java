@@ -60,7 +60,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(List.of(CorsConfiguration.ALL));
         
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Frontend server address
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "x-auth-token"));
         configuration.setAllowCredentials(true);
         

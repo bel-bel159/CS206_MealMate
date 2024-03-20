@@ -4,6 +4,7 @@ import React, { useState,useEffect} from 'react';
 import './style.css'; // Make sure to create a corresponding CSS file
 import location from './Assets/location.jpg';
 import ordernumber from './Assets/1x.png';
+import { useNavigate } from "react-router-dom";
 
 // Function to fetch drop-off location data from an API
 const fetchDropOffLocation = async (orderId) => {
@@ -69,6 +70,36 @@ const TakeOrder = () => {
         loadOrderItems();
       }, []); // The empty dependency array means this effect runs only once on mount
     
+      const delivererIdToUpdate = "ben@gmail.com"; // Replace with actual deliverer ID
+      const orderId = "1"; // Replace with the actual order ID from your application's state or props
+      const navigate = useNavigate();
+      // Function to handle the API call for updating the deliverer ID
+    const handleUpdateDelivererId = async () => {
+    const url = `http://localhost:8080/orders/update/${orderId}/deliverer`;
+    const requestBody = {
+      delivererId: delivererIdToUpdate,
+    };
+
+    try {
+      const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.text();
+      navigate('/deliverer-home');
+    } catch (error) {
+      console.error('Error updating deliverer ID:', error);
+      alert('Failed to update deliverer ID.'); // Or handle error in another way
+    }
+  };
 
     return (
       <div className="container my-4">
@@ -191,10 +222,15 @@ const TakeOrder = () => {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col text-center">
-                                        <button className="btn btn-primary">Confirm Take Order</button>
-                                    </div>
-                                </div>
+        <div className="col text-center">
+          <button 
+            className="btn btn-primary" 
+            onClick={handleUpdateDelivererId}
+          >
+            Confirm Take Order
+          </button>
+        </div>
+      </div>
 
                             </div>
                         </div>
