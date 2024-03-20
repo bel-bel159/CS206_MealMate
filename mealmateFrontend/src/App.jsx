@@ -24,6 +24,7 @@ import ConfirmOrder from "./ConfirmOrder.jsx";
 import DelivererTrack from "./DelivererTrack.jsx";
 
 import DelivererHome from "./DelivererHome.jsx";
+import TakeOrder from "./TakeOrder.jsx";
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
         <Route path="/confirm" element={<ConfirmOrder />}></Route>
         <Route path="/deliverer-home" element={<DelivererHome />}></Route>
         <Route path="/deliver-track" element={<DelivererTrack />}></Route>
+        <Route path="/takeorder" element={<TakeOrder />} />
 
       </Routes>
       {isDeliverer ? (
