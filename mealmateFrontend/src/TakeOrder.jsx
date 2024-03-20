@@ -25,7 +25,7 @@ const fetchDropOffLocation = async (orderId) => {
     }
   };
 
-  const fetchOrderItemsIds = async (orderId) => {
+  const fetchOrderItems = async (orderId) => {
     try {
       const response = await fetch(`http://localhost:8080/orders/${orderId}/orderitems`);
       
@@ -34,8 +34,8 @@ const fetchDropOffLocation = async (orderId) => {
       }
   
       // Assuming the response is JSON containing an array of item IDs
-      const itemsIds = await response.json();
-      return itemsIds;
+      const orderItemsDetails = await response.json();
+      return orderItemsDetails;
   
     } catch (error) {
       console.error('Error fetching order items:', error);
@@ -46,7 +46,7 @@ const fetchDropOffLocation = async (orderId) => {
 
 const TakeOrder = () => {
     const [dropOffAddress, setDropOffAddress] = useState('');
-    const [orderItemsIds, setOrderItemsIds] = useState([]);
+    const [orderItemsDetails, setOrderItemsDetails] = useState([]);
     useEffect(() => {
         // Retrieve orderId from local storage
         const orderId = "1"//localStorage.getItem('orderId'); // Make sure 'orderId' matches the key you used to store
@@ -59,9 +59,9 @@ const TakeOrder = () => {
         };
 
         const loadOrderItems = async () => {
-            const itemsIds = await fetchOrderItemsIds(orderId);
-          if (itemsIds) {
-            setOrderItemsIds(itemsIds); // Set the array directly to your state
+            const itemDetails = await fetchOrderItems(orderId);
+          if (itemDetails) {
+            setOrderItemsDetails(itemDetails); // Set the array directly to your state
           }
         };
         
@@ -177,31 +177,15 @@ const TakeOrder = () => {
                                     </div>
                                     <div className="col">
                                         <div className="row">
-                                        <h2 className="order-heading">Tomato Base Soup MalaTang</h2>
+                                        <h2 className="order-heading">MalaTang</h2>
                                         </div>
                                         <div className="row">
-                                        {orderItemsIds.map((orderItemsIds, index) => (
+                                        {orderItemsDetails.map((itemDetail, index) => (
                                             <div key={index} className="row">
-                                                <div className="order-item col-12">{orderItemsIds}</div>
+                                                <div className="order-item col-12">{itemDetail.itemName} - Quantity: {itemDetail.quantity}</div>
                                             </div>
                                         ))}
                                         
-                                            <div className="order-item col-12">Enoki Mushroom</div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="order-item col-12">Pork Belly</div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="order-item">Tteokbokki</div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="order-item">Spinach</div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="order-item">Soft Tofu</div>
-                                        </div>
-                                        <div className="row">
-                                            <div className="order-item">Chicken</div>
                                         </div>
 
                                     </div>

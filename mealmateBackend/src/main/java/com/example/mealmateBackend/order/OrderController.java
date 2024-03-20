@@ -83,11 +83,13 @@ public class OrderController {
         }
     }
     @GetMapping("/{orderId}/orderitems")
-    public ResponseEntity<?> getOrderItemsById(@PathVariable Long orderId){
+    public ResponseEntity<?> getItemDetailsByOrderId(@PathVariable Long orderId){
+        List<Map<String, Object>> itemDetailsList = new ArrayList<>();
         try {
             Order order = orderService.getOrderById(orderId);
             List<Long> orderItemsId = order.getOrderItemsId();
-            return ResponseEntity.ok(orderItemsId);
+            itemDetailsList = orderService.getItemNamesWithQuantities(orderItemsId);
+            return ResponseEntity.ok(itemDetailsList);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body("Invalid order id.");
         }

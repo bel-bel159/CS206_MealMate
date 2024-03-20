@@ -14,4 +14,5 @@ public interface OrderItemService {
     OrderItem findItemById(Long itemId);
     void deleteItemById(Long itemId);
     List<OrderItem> findAllItems();
+    String getItemName(Long itemId);
 }

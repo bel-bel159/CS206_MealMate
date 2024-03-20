@@ -19,5 +19,6 @@ public interface OrderService {
 
     String getLocation(Long orderId);
 
+    List<Map<String, Object>> getItemNamesWithQuantities(List<Long> itemIds);
 
 }

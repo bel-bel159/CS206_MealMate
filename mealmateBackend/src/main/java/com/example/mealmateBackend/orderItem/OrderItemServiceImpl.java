@@ -1,6 +1,7 @@
 package com.example.mealmateBackend.orderItem;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,18 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public List<OrderItem> findAllItems() {
         return orderItemRepository.findAll();
-    } 
+    }
+
+    @Override
+    public String getItemName(Long itemId){
+        try{
+            OrderItem item = orderItemRepository.findByItemId(itemId);
+            return item.getItemName();
+
+        } catch(Exception e){
+            throw new IllegalArgumentException("No item found for itemId: " + itemId);
+        }
+
+
+    }
 }
