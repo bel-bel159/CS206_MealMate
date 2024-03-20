@@ -13,8 +13,7 @@ import lombok.*;
 @Table(name = "OrderItems")
 public class OrderItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long itemId;
+    private Long itemId; // Removed @GeneratedValue annotation
 
     @NotBlank(message = "Item name is required")
     private String itemName;
@@ -33,7 +32,8 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(String itemName, String itemDescription, float itemPrice, int itemQuantity) {
+    public OrderItem(Long itemId, String itemName, String itemDescription, float itemPrice, int itemQuantity) {
+        this.itemId = itemId; // Ensure itemId is passed in the constructor
         this.itemName = itemName;
         this.itemDescription = itemDescription;
         this.itemPrice = itemPrice;
