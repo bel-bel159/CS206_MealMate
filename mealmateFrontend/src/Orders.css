@@ -1,0 +1,25 @@
+.header {
+  width: 100%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-container {
+  background-color: #ffc107; /* Bootstrap warning color */
+}
+
+.current-order,
+.past-orders-title {
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding: 10px;
+}
+
+/* If you want to apply specific styles to the track order button, add a class to it in the JSX and define styles here. */
+
+/* Add responsive padding or margin as needed for different screen sizes */
+@media (min-width: 768px) {
+  .order-container {
+    margin: auto; /* Centers the container */
+    max-width: 80%; /* You can adjust this percentage to control the width */
+  }
+}
