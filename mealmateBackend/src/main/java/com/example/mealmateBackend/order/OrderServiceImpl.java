@@ -69,6 +69,14 @@ public class OrderServiceImpl implements OrderService{
             }
         }
         return pendingOrders;
+
+
+    }
+
+    @Override
+    public String getLocation(Long orderId){
+        Order order = orderRepository.findByOrderId(orderId);
+        return order.getLocation();
     }
 
 
