@@ -26,6 +26,7 @@ import DelivererTrack from "./DelivererTrack.jsx";
 import DelivererProfile from "./DelivererProfile.jsx";
 import DelivererHome from "./DelivererHome.jsx";
 import TakeOrder from "./TakeOrder.jsx";
+import DelivererAllOrders from "./DelivererAllOrders.jsx"
 
 import NotificationOrderCompleted from "./NotificationOrderCompleted.jsx";
 
@@ -58,6 +59,7 @@ function App() {
         <Route path="/deliver-track" element={<DelivererTrack />}></Route>
         <Route path="/takeorder" element={<TakeOrder />} />
         <Route path="/deliverer-profile" element={<DelivererProfile />} />
+        <Route path="/deliverer-all-orders" element={<DelivererAllOrders />} />
         <Route path="/notification-order-completed" element={<NotificationOrderCompleted />}></Route>
 
       </Routes>

@@ -1,0 +1,54 @@
+/* Assuming you have a root class for the main component */
+.order-summary {
+    font-family: 'Arial', sans-serif; /* Set the font */
+}
+
+/* Styling the header where shift time is displayed */
+.shift-header {
+    text-align: center;
+    margin-top: 20px; /* Add some top margin */
+}
+
+/* Tab styles - using Bootstrap utility classes with some adjustments */
+.nav-tabs .nav-link {
+    color: #495057; /* Default color */
+    border-color: #dee2e6 #dee2e6 #fff; /* Borders for non-active tabs */
+}
+
+.nav-tabs .nav-link.active {
+    color: #fff; /* Active tab text color */
+    background-color: #007bff; /* Active tab background color */
+    border-color: #dee2e6 #dee2e6 #fff; /* Active tab borders */
+}
+
+/* Card component */
+.card {
+    border-radius: 15px; /* Rounded corners for card */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Card shadow */
+    margin-top: 20px; /* Spacing from tabs to card */
+}
+
+.card-header, .card-title {
+    font-weight: bold; /* Bold for titles */
+}
+
+.card-body {
+    text-align: left; /* Align text to the left */
+}
+
+/* Button customization */
+.btn-view-delivery {
+    border-radius: 20px; /* Rounded button */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Button shadow */
+    background-color: #0066ff; /* Button background color */
+    color: white; /* Text color */
+    font-size: 16px; /* Text size */
+    padding: 10px 20px; /* Padding around text */
+}
+
+/* Custom image styling */
+.card-img {
+    border: 1px solid #dee2e6; /* Border around the image */
+    float: right; /* Align the image to the right */
+    margin-left: 15px; /* Space between image and text */
+}
