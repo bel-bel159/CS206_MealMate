@@ -5,24 +5,19 @@ import chinese from "./Assets/chinese.png";
 import walking from "./Assets/walking.svg";
 import { useNavigate } from "react-router-dom";
 import shieldExclamation from "./Assets/shieldExclamation.png";
+import tick from "./Assets/tick.png";
 
-const Notification = () => {
+const NotificationOrderCompleted = () => {
     const navigate = useNavigate();
 
-    const [showThirdNotification, setShowThirdNotification] = useState(false);
+    const [showFourthNotification, setShowFourthNotification] = useState(true);
+    const [showThirdNotification, setShowThirdNotification] = useState(true);
     const [showSecondNotification, setShowSecondNotification] = useState(true);
     const [showFirstNotification, setShowFirstNotification] = useState(true);
     const [showHorizontalLines, setShowHorizontalLines] = useState(true);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setShowThirdNotification(true);
-        }, 1000);
-
-        return () => clearTimeout(timer);
-    }, []); // Run only once when component mounts
-
     const clearNotifications = () => {
+        setShowFourthNotification(false);
         setShowThirdNotification(false);
         setShowSecondNotification(false);
         setShowFirstNotification(false);
@@ -58,6 +53,24 @@ const Notification = () => {
                 </div>
             </div>
 
+            {/* Display Notification 4 */}
+            {showFourthNotification && (
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px', marginBottom: '20px', padding: '10px', marginRight: '150px'}}>
+                    <button style={{ background: 'none', border: 'none', cursor: 'pointer'}}>
+                        <img
+                            src={tick}
+                            style={{ width: "30px", height: "auto" }}
+                        />
+                    </button>
+
+                    <div style={{ flex: 1, paddingLeft: '20px', textAlign: 'left', paddingTop: '20px', marginBottom: '0px' }}>
+                        <h4>Order Completed!</h4>
+                    </div>
+                </div>
+            )}
+            {showHorizontalLines && <hr style={{ width: '100%', color: '#FFC218', marginTop: '10px' }} />}
+
+
             {/* Display Notification 3 */}
             {showThirdNotification && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', padding: '10px' }}>
@@ -86,7 +99,6 @@ const Notification = () => {
             )}
             {showHorizontalLines && <hr style={{ width: '100%', color: '#FFC218', marginTop: '10px' }} />}
 
-            {/* Display existing notifications */}
             {showSecondNotification && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', padding: '10px' }}>
                     <button style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
@@ -135,4 +147,4 @@ const Notification = () => {
     );
 }
 
-export default Notification;
+export default NotificationOrderCompleted;
