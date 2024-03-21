@@ -15,12 +15,12 @@ import { useState } from "react";
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useEffect } from "react";
 
-function Restaurant() {
+const Restaurant=()=> {
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:8080/orderItems')
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/orderItems`)
       .then(response => response.json())
       .then(data => {
         setOrderItems(data);
@@ -29,30 +29,42 @@ function Restaurant() {
   }, []);
 
   const[orderItems, setOrderItems] = useState([]);
+  const email = localStorage.getItem('userEmail') || 'No email found';
   //hardcode the no. of items in cart
   const [cartCount, setCartCount] = useState(0);
 
-  // // add an item to the cart 
-  // const addToCart = (itemId) => {
-  //   fetch('http://localhost:8080/deliveryCarts', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ itemId, quantity: 1 }),
-  //   })
-  //   .then(response => response.json())
-  //   .then(data => {
-  //     console.log('Item added to cart:', data);
-  //     setCartCount(cartCount => cartCount + 1);
-  //   })
-  //   .catch(error => console.error('Error adding item to cart:', error))
-  // }
+  const handleAddToCart = (itemId) => {
+    setCartCount(cartCount + 1);
+    const updatedOrderItems = [...orderItems, itemId];
 
-  // const handleAddToCart = (itemId) => {
-  //   setCartCount(cartCount + 1);
-  //   addToCart(itemId);
-  // }
+    const deliveryCartData = {
+      ordererId: email, // Adjust based on your application's needs
+      orderItemsId: updatedOrderItems,
+      totalPrice: 0, // Implement this function based on your needs
+      // Add any other necessary data
+    };
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/deliveryCarts/update/${email}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        // Include any required authentication headers
+      },
+      body: JSON.stringify(deliveryCartData)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to update delivery cart');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('Cart updated successfully', data);
+      // Optionally reset cartItems state or provide feedback to the user
+    })
+    .catch(error => {
+      console.error('Error updating cart:', error);
+    });
+  }
    
   return (
     <div className="header bg-light">
@@ -187,7 +199,7 @@ function Restaurant() {
                   width: '30px',
                   height: '30px',
                   border: 'none',
-                }} onClick={() => setCartCount(cartCount + 1)} >
+                }} onClick={() => handleAddToCart(1)} >
                   +
                 </button>
               </div>
@@ -219,7 +231,7 @@ function Restaurant() {
                   width: '30px',
                   height: '30px',
                   border: 'none',
-                }} onClick={() => setCartCount(cartCount + 1)} >
+                }} onClick={() => handleAddToCart(4)} >
                   +
                 </button>
               </div>
@@ -255,7 +267,7 @@ function Restaurant() {
                   width: '30px',
                   height: '30px',
                   border: 'none',
-                }} onClick={() => setCartCount(cartCount + 1)} >
+                }} onClick={() => handleAddToCart(2)} >
                   +
                 </button>
               </div>
@@ -287,7 +299,7 @@ function Restaurant() {
                   width: '30px',
                   height: '30px',
                   border: 'none',
-                }} onClick={() => setCartCount(cartCount + 1)} >
+                }} onClick={() => handleAddToCart(3)} >
                   +
                 </button>
               </div>

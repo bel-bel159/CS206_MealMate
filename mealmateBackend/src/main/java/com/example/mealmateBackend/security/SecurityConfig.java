@@ -45,7 +45,7 @@ public class SecurityConfig {
                     .requestMatchers("/deliveryCarts/**").permitAll() // Allow anyone to access "/deliveryCarts/**"
                     .requestMatchers("/orderItems/**").permitAll() // Allow anyone to access "/orderItems/**"
                     .requestMatchers("/orders/**").permitAll() // Allow anyone to access "/orders/**"
-                .anyRequest().authenticated() // All other paths require authentication
+                .anyRequest().permitAll() // All other paths require authentication
             )
             // other configurations like .httpBasic(), .formLogin() if needed
             ;
@@ -59,7 +59,7 @@ public class SecurityConfig {
         configuration.addAllowedOriginPattern(CorsConfiguration.ALL);
         configuration.setAllowedMethods(List.of(CorsConfiguration.ALL));
         
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173")); // Frontend server address
+        configuration.setAllowedOrigins(Arrays.asList("http://10.119.153.103:5173")); // Frontend server address
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type", "x-auth-token"));
         configuration.setAllowCredentials(true);

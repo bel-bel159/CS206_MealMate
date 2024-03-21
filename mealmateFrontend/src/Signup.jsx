@@ -4,6 +4,7 @@ import "./style.css";
 import mealmateLogoYellow from "./Assets/mealmateLogoYellow.png";
 
 function Signup() {
+
   const [email, setEmail] = useState('');
   const [isEmailValid, setEmailValid] = useState(true);
   const [name, setName] = useState('');
@@ -51,7 +52,7 @@ function Signup() {
       password: password
     };
 
-    fetch('http://localhost:8080/users', {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -71,7 +72,7 @@ function Signup() {
       const deliveryCartData = {
         ordererId: email, orderItemsId: [], totalPrice: 0
       };
-      return fetch('http://localhost:8080/deliveryCarts/create', {
+      return fetch(`${import.meta.env.VITE_API_BASE_URL}/deliveryCarts/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

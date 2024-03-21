@@ -17,7 +17,7 @@ const Orders = () => {
   useEffect(() => {
     // Replace with the correct orderer ID and your server's base URL
     const ordererId = "ben@gmail.com"; // As an example, it could be dynamic based on user session
-    const url = `http://localhost:8080/orders/orderer/${ordererId}`;
+    const url = `${import.meta.env.VITE_API_BASE_URL}/orders/orderer/${ordererId}`;
 
     fetch(url, {
       method: "GET",

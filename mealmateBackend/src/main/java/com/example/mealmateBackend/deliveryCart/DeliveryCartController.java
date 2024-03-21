@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/deliveryCarts") // Base path for all endpoints in this controller
+@CrossOrigin
 public class DeliveryCartController {
     private final DeliveryCartService deliveryCartService;
 
@@ -59,7 +60,7 @@ public class DeliveryCartController {
 
     @PutMapping("/update/{ordererId}")
     public ResponseEntity<?> updateDeliveryCartByOrdererId(@PathVariable String ordererId, @RequestBody DeliveryCartDto deliveryCartDTO) {
-        long orderId = deliveryCartDTO.getOrderItemsId().get(0);
+        List<Long> orderId = deliveryCartDTO.getOrderItemsId();
         try {
             DeliveryCart updatedDeliveryCart = deliveryCartService.updateDeliveryCartByOrdererId(ordererId, orderId);
             return ResponseEntity.ok(updatedDeliveryCart);

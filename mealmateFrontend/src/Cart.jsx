@@ -17,7 +17,7 @@ const Cart = () => {
             const fetchItemDetails = async () => {
                 setIsLoading(true);
                 try {
-                    const response = await fetch(`http://localhost:8080/deliveryCarts/itemList/${email}`);
+                    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/deliveryCarts/itemList/${email}`);
                     const data = await response.json();
                     const newMap = new Map(Object.entries(data));
                     fetchItemNames(newMap);
@@ -31,7 +31,7 @@ const Cart = () => {
 
         const fetchItemNames = async (initialMap) => {
             const promises = Array.from(initialMap.keys()).map(key =>
-                fetch(`http://localhost:8080/orderItems/${key}`).then(response => {
+                fetch(`${import.meta.env.VITE_API_BASE_URL}/orderItems/${key}`).then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch item details');
                 }

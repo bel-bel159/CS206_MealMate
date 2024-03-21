@@ -4,8 +4,14 @@ import backbutton from "./assets/backbutton.png";
 import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
+
+    const [location, setLocation] = useState('');
+    const[orderItems, setOrderItems] = useState([]);
+    const email = localStorage.getItem('userEmail') || 'No email found';
+
     const navigate = useNavigate();
     let [subtotal, setSubtotal] = useState(0.00);
+    let [price, setPrice] = useState(0.00);
 
     const ListItems = () => {
         const [myMap, setMap] = useState(new Map());
@@ -15,7 +21,7 @@ const Checkout = () => {
             const fetchItemDetails = async () => {
                 setIsLoading(true);
                 try {
-                    const response = await fetch('http://localhost:8080/deliveryCarts/itemList/12345');
+                    const response = await fetch(`http://localhost:8080/deliveryCarts/itemList/${email}`);
                     const data = await response.json();
                     const newMap = new Map(Object.entries(data));
                     fetchItemNames(newMap);
@@ -40,10 +46,12 @@ const Checkout = () => {
                 const quantity = initialMap.get(key);
                 updatedMap.set(key, { name: result.itemName, quantity: quantity, price: result.itemPrice });
                 newPrice += result.itemPrice * quantity;
+                setOrderItems(orderItems=>[orderItems, key])
             });
 
             setMap(updatedMap);
             setSubtotal(newPrice); // Update price state
+            setPrice(subtotal+1)
             setIsLoading(false);
         };
 
@@ -86,6 +94,62 @@ const Checkout = () => {
         );
     };
 
+    const HandleCheckout = () => {
+        const orderData = {
+            ordererId: email,
+            orderItemsId: orderItems,
+            location: location,
+            totalPrice: price,
+            status: "ORDER_SENT"
+        }
+        fetch('http://localhost:8080/orders/create', {
+            method: 'POST', // Set the request method to POST
+            headers: {
+                'Content-Type': 'application/json' // Indicate that the request body format is JSON
+            },
+            body: JSON.stringify(orderData) // Convert the JavaScript object to a JSON string
+        })
+            .then(response => {
+                if (!response.ok) {
+                    // If the response status code is not in the 2xx range,
+                    // throw an error with the status text (e.g., "Not Found", "Forbidden")
+                    throw new Error('Failed to create order');
+                }
+                return response.json(); // Parse the JSON response body
+            })
+            .then(data => {
+                console.log('Order created successfully:', data); // Handle the success case
+                const emptyCartData = {
+                    ordererId: email, // Use the appropriate identifier for the cart
+                    orderItemsId: [], // Empty array to signify no items
+                    totalPrice: 0 // Reset the total price
+                };
+                return fetch(`http://localhost:8080/deliveryCarts/${email}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // Include any authentication headers if required
+                    },
+                    body: JSON.stringify(emptyCartData)
+                });
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to clear cart');
+                }
+                return response.json(); // Assuming the API responds with the updated cart details
+            })
+            .then(cartUpdateResponse => {
+                console.log('Cart clear successfully:', cartUpdateResponse);
+                // Handle successful cart update (e.g., redirect user, show confirmation, etc.)
+                navigate('/home');
+            })
+            .catch(error => {
+                console.error('An error occurred:', error);
+                // Handle any errors that occurred during order creation or cart update
+            });
+    };
+
     return (
     <div className="100-w vh-100 bg-white">
         <div className="container p-0">
@@ -107,74 +171,76 @@ const Checkout = () => {
                 </div>
             </div>
         </div>
-        <div className="container p-3 px-4">
-            <div className="row my-3 d-flex justify-content-center">
-                <div className="col-auto px-3 p-2 border-0 rounded-start-pill" style={{backgroundColor:"#FFC218"}}>
-                    <label className="col-form-label fw-bold" htmlFor="location">DELIVER TO:</label>
+        <form onSubmit={HandleCheckout}>
+            <div className="container p-3 px-4">
+                <div className="row my-3 d-flex justify-content-center">
+                    <div className="col-auto px-3 p-2 border-0 rounded-start-pill" style={{backgroundColor:"#FFC218"}}>
+                        <label className="col-form-label fw-bold" htmlFor="location">DELIVER TO:</label>
+                    </div>
+                    <div className="col-auto px-3 p-2 border-0 rounded-end-pill" style={{backgroundColor:"#FFC218"}}>
+                        <input type="location" id="location" placeholder="Location" className="form-control" aria-describedby="locationInline" value={location} onChange={e => setLocation(e.target.value)}/>
+                    </div>
                 </div>
-                <div className="col-auto px-3 p-2 border-0 rounded-end-pill" style={{backgroundColor:"#FFC218"}}>
-                    <input type="location" id="location" placeholder="Location" className="form-control" aria-describedby="locationInline"></input>
+                <div className="row mt-4 px-2 pt-3 overflow-auto" style={{backgroundColor:"#FFC218"}}>
+                    <div className="row">
+                        <h5 >Order Summary</h5 >
+                    </div>
+                    <div className="row pb-2">
+                        <hr className="m-0 ms-2" style={{ width: '200%', height:"2px", color: '#FFFFFF', backgroundColor:"#FFFFFF" }} />
+                    </div>
+                    <ListItems />
+                    <div className="row pt-3">
+                        <div className="col ">
+                            <p>Subtotal</p>
+                        </div>
+                        <div className="col d-flex justify-content-end">
+                            <p>${subtotal.toFixed(2)}</p>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col ">
+                            <p>Delivery Fees</p>
+                        </div>
+                        <div className="col d-flex justify-content-end">
+                            <p>$1.00</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div className="row mt-4 px-2 pt-3 overflow-auto" style={{backgroundColor:"#FFC218"}}>
-                <div className="row">
-                    <h5 >Order Summary</h5 >
-                </div>
-                <div className="row pb-2">
-                    <hr className="m-0 ms-2" style={{ width: '200%', height:"2px", color: '#FFFFFF', backgroundColor:"#FFFFFF" }} />
-                </div>
-                <ListItems />
-                <div className="row pt-3">
-                    <div className="col ">
-                        <p>Subtotal</p>
+            <div className="container ">
+                <div className="row mt -4 px-2 py-3 justify-content-center" style={{backgroundColor:"#FEDD82", position:"fixed", bottom:'0', width:'100%'}}>
+                    <div className="row pb-2">
+                        <div className="col">
+                            <h3>Total</h3>
+                        </div>
+                        <div className="col d-flex justify-content-end">
+                            <h3>${price.toFixed(2)}</h3>
+                        </div>
                     </div>
-                    <div className="col d-flex justify-content-end">
-                        <p>${subtotal.toFixed(2)}</p>
+                    <div className="row">
+                        <div className='col pe-0'>
+                            <p className="fw-bold">Payment Type &nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                        </div>
+                        <div className='col-7 d-flex justify-content-start ps-0'>
+                            <p> Cash on deivery</p>
+                        </div>
                     </div>
-                </div>
-                <div className="row">
-                    <div className="col ">
-                        <p>Delivery Fees</p>
-                    </div>
-                    <div className="col d-flex justify-content-end">
-                        <p>$1.00</p>
+                    <div className="row">
+                        {/* Checkout Button */}
+                        <button type="submit" style={{
+                            padding: '10px 20px',
+                            cursor: 'pointer',
+                            backgroundColor: '#FFC218',
+                            borderRadius: '20px',
+                            border: 'none',
+                            fontWeight: 'bold',
+                        }}>
+                            Place Order
+                        </button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div className="container ">
-            <div className="row mt -4 px-2 py-3 justify-content-center" style={{backgroundColor:"#FEDD82", position:"fixed", bottom:'0', width:'100%'}}>
-                <div className="row pb-2">
-                    <div className="col">
-                        <h3>Total</h3>
-                    </div>
-                    <div className="col d-flex justify-content-end">
-                        <h3>${(subtotal + 1).toFixed(2)}</h3>
-                    </div>
-                </div>
-                <div className="row">
-                <div className='col pe-0'>
-                    <p className="fw-bold">Payment Type &nbsp;&nbsp;&nbsp;&nbsp;:</p>
-                </div>
-                    <div className='col-7 d-flex justify-content-start ps-0'>
-                    <p> Cash on deivery</p>
-                    </div>
-                </div>
-                <div className="row">
-                    {/* Checkout Button */}
-                    <button style={{
-                        padding: '10px 20px',
-                        cursor: 'pointer',
-                        backgroundColor: '#FFC218',
-                        borderRadius: '20px',
-                        border: 'none',
-                        fontWeight: 'bold',
-                    }} onClick={() => navigate('/checkout')}>
-                        Place Order
-                    </button>
-                </div>
-            </div>
-        </div>
+        </form>
     </div>
     );
 }

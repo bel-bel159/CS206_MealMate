@@ -13,6 +13,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/orders")
+@CrossOrigin
 public class OrderController {
 
     private final OrderService orderService;

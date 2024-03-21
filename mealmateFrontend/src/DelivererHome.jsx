@@ -7,7 +7,7 @@ function DelivererHome() {
 
   useEffect(() => {
     const fetchItemDetails = async (itemId) => {
-      const url = `http://localhost:8080/orderItems/${itemId}`; // Construct URL
+      const url = `${import.meta.env.VITE_API_BASE_URL}/orderItems/${itemId}`; // Construct URL
       console.log("Fetching item details:", url); // Debugging: Log the URL
       const response = await fetch(url);
       if (!response.ok) {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,18 +32,23 @@ public class DeliveryCartServiceImpl implements DeliveryCartService {
 
     @Override
     @Transactional
-    public DeliveryCart updateDeliveryCartByOrdererId(String ordererId, Long orderId) throws DeliveryCartNotFoundException {
+    public DeliveryCart updateDeliveryCartByOrdererId(String ordererId, List<Long> orderIdList) throws DeliveryCartNotFoundException {
         DeliveryCart deliveryCart = findDeliveryCartByOrdererId(ordererId);
-        OrderItem orderItem = orderItemService.findItemById(orderId);
+        if(orderIdList == null || orderIdList.isEmpty()) {
+            List<Long> itemList = new ArrayList<>();
+            deliveryCart.setOrderItemsId(itemList);
+            deliveryCart.setTotalPrice(0);
+        }else {
+            Long orderId = orderIdList.get(0);
+            OrderItem orderItem = orderItemService.findItemById(orderId);
 
-        List<Long> itemList = deliveryCart.getOrderItemsId();
-        itemList.add(orderId);
+            List<Long> itemList = deliveryCart.getOrderItemsId();
+            itemList.add(orderId);
 
-        float totalPrice = deliveryCart.getTotalPrice() + orderItem.getItemPrice();
+            float totalPrice = deliveryCart.getTotalPrice() + orderItem.getItemPrice();
 //        float totalPrice = deliveryCart.getTotalPrice() + 1;
-        deliveryCart.setTotalPrice(totalPrice);
-
-
+            deliveryCart.setTotalPrice(totalPrice);
+        }
         return deliveryCart;
     }
 
