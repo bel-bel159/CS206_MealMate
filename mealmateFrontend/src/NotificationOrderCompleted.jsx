@@ -63,7 +63,7 @@ const NotificationOrderCompleted = () => {
                         />
                     </button>
 
-                    <div style={{ flex: 1, paddingLeft: '20px', textAlign: 'left', paddingTop: '20px', marginBottom: '0px' }}>
+                    <div style={{ flex: 1, paddingLeft: '20px', textAlign: 'left', paddingTop: '20px' }}>
                         <h4>Order Completed!</h4>
                     </div>
                 </div>
@@ -80,19 +80,20 @@ const NotificationOrderCompleted = () => {
                             style={{ width: "45px", height: "auto" }}
                         />
                     </button>
-                    <div style={{ flex: 1, paddingLeft: '20px', textAlign: 'left', paddingTop: '20px', marginBottom: '0px' }}>
+                    <div style={{ flex: 1, paddingLeft: '20px', textAlign: 'left', paddingTop: '20px'}}>
                         <h4>Confirm Order Completion!</h4>
                     </div>
                     <button style={{
                         padding: '10px 20px',
                         cursor: 'pointer',
-                        backgroundColor: '#FFC218',
+                        backgroundColor: '#CCCCCC',
                         borderRadius: '20px',
                         border: 'none',
                         fontWeight: 'bold',
                         marginRight: '10px',
-                        transform: 'translateY(15%) translateX(15%)'
-                    }} onClick={() => navigate('/confirm')}>
+                        transform: 'translateY(15%) translateX(15%)',
+                        color: '#555555'
+                    }}>
                         Confirm
                     </button>
                 </div>
@@ -108,20 +109,21 @@ const NotificationOrderCompleted = () => {
                         />
                     </button>
 
-                    <div style={{ flex: 1, paddingLeft: '20px', textAlign: 'left', paddingTop: '20px', marginBottom: '0px' }}>
+                    <div style={{ flex: 1, paddingLeft: '20px', textAlign: 'left', paddingTop: '20px' }}>
                         <h4>Your order has been collected!</h4>
                     </div>
 
                     <button style={{
                         padding: '10px 20px',
                         cursor: 'pointer',
-                        backgroundColor: '#FFC218',
+                        backgroundColor: '#CCCCCC',
                         borderRadius: '20px',
                         border: 'none',
                         fontWeight: 'bold',
                         marginRight: '10px',
-                        transform: 'translateY(15%) translateX(15%)'
-                    }} onClick={() => navigate('/track')}>
+                        transform: 'translateY(15%) translateX(15%)',
+                        color: '#555555'
+                    }}>
                         Track
                     </button>
                 </div>
@@ -137,7 +139,7 @@ const NotificationOrderCompleted = () => {
                         />
                     </button>
 
-                    <div style={{ flex: 1, paddingLeft: '20px', textAlign: 'left', paddingTop: '20px', marginBottom: '0px' }}>
+                    <div style={{ flex: 1, paddingLeft: '20px', textAlign: 'left', paddingTop: '20px' }}>
                         <h4>Your order has been sent to the kitchen!</h4>
                     </div>
                 </div>
