@@ -69,6 +69,16 @@ public class DeliveryCartController {
         }
     }
 
+    @PutMapping("/empty/{ordererId}")
+    public ResponseEntity<?> emptyDeliveryCartByOrdererId(@PathVariable String ordererId) {
+        try {
+            DeliveryCart emptyDeliveryCart = deliveryCartService.emptyDeliveryCartByOrdererId(ordererId);
+            return ResponseEntity.ok(emptyDeliveryCart);
+        } catch (DeliveryCartNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/delete/{deliveryCartId}")
     public ResponseEntity<?> deleteDeliveryCartById(@PathVariable Long deliveryCartId) {
         try {

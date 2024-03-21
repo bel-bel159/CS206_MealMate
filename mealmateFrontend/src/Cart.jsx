@@ -26,7 +26,7 @@ const Cart = () => {
                 }
             };
             fetchItemDetails();
-        }, [email]);
+        }, []);
 
 
         const fetchItemNames = async (initialMap) => {

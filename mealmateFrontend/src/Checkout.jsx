@@ -21,21 +21,25 @@ const Checkout = () => {
             const fetchItemDetails = async () => {
                 setIsLoading(true);
                 try {
-                    const response = await fetch(`http://localhost:8080/deliveryCarts/itemList/${email}`);
+                    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/deliveryCarts/itemList/${email}`);
                     const data = await response.json();
                     const newMap = new Map(Object.entries(data));
                     fetchItemNames(newMap);
                 } catch (error) {
-                    console.error('There was an error!', error);
+                    console.error('There was an error!', error, "itemList");
                 }
             };
-
             fetchItemDetails();
         }, []);
 
         const fetchItemNames = async (initialMap) => {
             const promises = Array.from(initialMap.keys()).map(key =>
-                fetch(`http://localhost:8080/orderItems/${key}`).then(response => response.json())
+                fetch(`${import.meta.env.VITE_API_BASE_URL}/orderItems/${key}`).then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch item details');
+                    }
+                    return response.json();
+                })
             );
 
             const results = await Promise.all(promises);
@@ -46,13 +50,14 @@ const Checkout = () => {
                 const quantity = initialMap.get(key);
                 updatedMap.set(key, { name: result.itemName, quantity: quantity, price: result.itemPrice });
                 newPrice += result.itemPrice * quantity;
-                setOrderItems(orderItems=>[orderItems, key])
+                orderItems.push(key);
             });
 
             setMap(updatedMap);
             setSubtotal(newPrice); // Update price state
-            setPrice(subtotal+1)
+            setPrice(newPrice+1)
             setIsLoading(false);
+            setOrderItems(orderItems);
         };
 
         if (isLoading) {
@@ -99,55 +104,54 @@ const Checkout = () => {
             ordererId: email,
             orderItemsId: orderItems,
             location: location,
-            totalPrice: price,
-            status: "ORDER_SENT"
+            totalPrice: price
+            //status: "ORDER_SENT"
         }
-        fetch('http://localhost:8080/orders/create', {
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/create`, {
             method: 'POST', // Set the request method to POST
             headers: {
                 'Content-Type': 'application/json' // Indicate that the request body format is JSON
             },
             body: JSON.stringify(orderData) // Convert the JavaScript object to a JSON string
         })
-            .then(response => {
-                if (!response.ok) {
-                    // If the response status code is not in the 2xx range,
-                    // throw an error with the status text (e.g., "Not Found", "Forbidden")
-                    throw new Error('Failed to create order');
-                }
-                return response.json(); // Parse the JSON response body
+        .then(response => {
+            console.log(response);
+            if (!response.ok) {
+                // If the response status code is not in the 2xx range,
+                // throw an error with the status text (e.g., "Not Found", "Forbidden")
+                throw new Error('Failed to create order');
+            }
+            return response.json(); // Parse the JSON response body
+        })
+        .then(data => {
+            console.log('Order created successfully:', data); // Handle the success case
+        })
+        .catch(error => {
+            console.error('An error occurred:', error, "ORDER");
+            // Handle any errors that occurred during order creation or cart update
+        });
+        fetch(`${import.meta.env.VITE_API_BASE_URL}/deliveryCarts/empty/${email}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to clear cart');
+            }
+            return response.json(); // Assuming the API responds with the updated cart details
+        })
+        .then(cartUpdateResponse => {
+            console.log('Cart clear successfully:', cartUpdateResponse);
+            // Handle successful cart update (e.g., redirect user, show confirmation, etc.)
+            navigate('/');
             })
-            .then(data => {
-                console.log('Order created successfully:', data); // Handle the success case
-                const emptyCartData = {
-                    ordererId: email, // Use the appropriate identifier for the cart
-                    orderItemsId: [], // Empty array to signify no items
-                    totalPrice: 0 // Reset the total price
-                };
-                return fetch(`http://localhost:8080/deliveryCarts/${email}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        // Include any authentication headers if required
-                    },
-                    body: JSON.stringify(emptyCartData)
-                });
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to clear cart');
-                }
-                return response.json(); // Assuming the API responds with the updated cart details
-            })
-            .then(cartUpdateResponse => {
-                console.log('Cart clear successfully:', cartUpdateResponse);
-                // Handle successful cart update (e.g., redirect user, show confirmation, etc.)
-                navigate('/home');
-            })
-            .catch(error => {
-                console.error('An error occurred:', error);
+        .catch(error => {
+                console.error('An error occurred:', error, "CLEAR CART");
                 // Handle any errors that occurred during order creation or cart update
-            });
+        });
+        navigate('/');
     };
 
     return (

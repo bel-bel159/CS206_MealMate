@@ -35,10 +35,10 @@ const Restaurant=()=> {
 
   const handleAddToCart = (itemId) => {
     setCartCount(cartCount + 1);
-    const updatedOrderItems = [...orderItems, itemId];
+    const updatedOrderItems = [itemId];
 
     const deliveryCartData = {
-      ordererId: email, // Adjust based on your application's needs
+      ordererId: 1, // Adjust based on your application's needs
       orderItemsId: updatedOrderItems,
       totalPrice: 0, // Implement this function based on your needs
       // Add any other necessary data

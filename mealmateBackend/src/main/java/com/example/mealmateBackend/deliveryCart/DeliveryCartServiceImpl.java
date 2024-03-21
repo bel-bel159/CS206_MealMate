@@ -34,21 +34,26 @@ public class DeliveryCartServiceImpl implements DeliveryCartService {
     @Transactional
     public DeliveryCart updateDeliveryCartByOrdererId(String ordererId, List<Long> orderIdList) throws DeliveryCartNotFoundException {
         DeliveryCart deliveryCart = findDeliveryCartByOrdererId(ordererId);
-        if(orderIdList == null || orderIdList.isEmpty()) {
-            List<Long> itemList = new ArrayList<>();
-            deliveryCart.setOrderItemsId(itemList);
-            deliveryCart.setTotalPrice(0);
-        }else {
-            Long orderId = orderIdList.get(0);
-            OrderItem orderItem = orderItemService.findItemById(orderId);
 
-            List<Long> itemList = deliveryCart.getOrderItemsId();
-            itemList.add(orderId);
+        Long orderId = orderIdList.get(0);
+        OrderItem orderItem = orderItemService.findItemById(orderId);
 
-            float totalPrice = deliveryCart.getTotalPrice() + orderItem.getItemPrice();
+        List<Long> itemList = deliveryCart.getOrderItemsId();
+        itemList.add(orderId);
+
+        float totalPrice = deliveryCart.getTotalPrice() + orderItem.getItemPrice();
 //        float totalPrice = deliveryCart.getTotalPrice() + 1;
-            deliveryCart.setTotalPrice(totalPrice);
-        }
+        deliveryCart.setTotalPrice(totalPrice);
+
+        return deliveryCart;
+    }
+
+    @Override
+    @Transactional
+    public DeliveryCart emptyDeliveryCartByOrdererId(String ordererId) throws DeliveryCartNotFoundException {
+        DeliveryCart deliveryCart = findDeliveryCartByOrdererId(ordererId);
+        deliveryCart.setOrderItemsId(new ArrayList<Long>());
+        deliveryCart.setTotalPrice(0);
         return deliveryCart;
     }
 
