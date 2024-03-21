@@ -3,8 +3,10 @@ import user from "./assets/user.svg";
 import next from "./assets/next.svg";
 import "./style.css";
 import { Link } from "react-router-dom";
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function Profile() {
+  const navigate = useNavigate();
   return (
     <div className="profile-page">
       <div className="card mb-3 mt-4 text-bg-warning mx-3 p-4 border rounded-5">
@@ -31,7 +33,8 @@ function Profile() {
         </div>
       </div>
       <div className="d-flex justify-content-center m-3 p-2">
-        <button className="btn btn-warning border rounded-4 ">
+        <button className="btn btn-warning border rounded-4 "
+                onClick={() => navigate('/deliverer-profile')}>
           Switch to Deliverer
         </button>
       </div>

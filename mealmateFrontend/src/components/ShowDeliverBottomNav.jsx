@@ -1,30 +1,15 @@
-import React, { useEffect, useState} from "react";
-import {useLocation} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 const ShowDelivererBottomNavbar = ({ children }) => {
     const location = useLocation();
     const [showDelivererBottomNavBar, setShowDelivererBottomNavBar] = useState(true);
 
     useEffect(() => {
-        const hideOnRoutes = [
-            '/cart', 
-            '/checkout', 
-            '/confirm', 
-            '/filter-results', 
-            '/home',
-            '/login',
-            '/notification',
-            '/orders',
-            '/profile',
-            '/restaurant',
-            '/signup',
-            '/track',
-            '/'
-        ];
-
-        // Show the bottom navbar on all pages except those listed in hideOnRoutes
-        setShowDelivererBottomNavBar(!hideOnRoutes.includes(location.pathname));
-    }, [location]);
+        // Determine if the current path is one of the paths that should show the deliverer's navbar
+        const shouldShowNavbar = ["/deliverer-home", "/deliverer-profile", "/deliverer-all-orders"].includes(location.pathname);
+        setShowDelivererBottomNavBar(shouldShowNavbar);
+    }, [location]);    
 
     return <div>{showDelivererBottomNavBar ? children : null}</div>;
 };

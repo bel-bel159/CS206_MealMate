@@ -2,9 +2,12 @@ import React, { useEffect } from "react";
 import user from "./assets/user.svg";
 import next from "./assets/next.svg";
 import "./style.css";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; 
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function Profile() {
+  const navigate = useNavigate();
+
   return (
     <div className="profile-page">
       <div className="card mb-3 mt-4 mx-3 p-4 border rounded-5" 
@@ -30,10 +33,12 @@ function Profile() {
       </div>
       <div className="d-flex justify-content-center m-3 p-2" >
         <button className="btn rounded-4 " 
-                style={{backgroundColor: '#34c759'}}>
+                style={{backgroundColor: '#34c759'}}
+                onClick={() => navigate('/profile')}>
+
           Switch to Orderer
         </button>
-      </div>
+      </div> 
 
       <div className="container-fluid  mb-4 pb-4">
         <div className="row p-1 border-bottom">

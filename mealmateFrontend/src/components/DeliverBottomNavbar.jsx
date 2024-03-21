@@ -32,14 +32,14 @@ export const DeliverBottomNavbar = () => {
         value="home"
         icon={<img src={home} alt="home" style={{ width: "30px", height: "auto" }} />}
         component={Link}
-        to="/delivererHome"
+        to="/deliverer-home"
       />
       <BottomNavigationAction
         label="Orders"
         value="orderSummary"
         icon={<img src={calendar} alt="calendar" style={{ width: "30px", height: "auto" }} />}
         component={Link}
-        to="/orderSummary"
+        to="/deliverer-all-orders"
       />
       <BottomNavigationAction
         label="Earnings"
@@ -53,7 +53,7 @@ export const DeliverBottomNavbar = () => {
         value="profile"
         icon={<img src={user} alt="user" style={{ width: "30px", height: "auto" }} />}
         component={Link}
-        to="/delivererProfile"
+        to="/deliverer-profile"
       />
     </BottomNavigation>
   );

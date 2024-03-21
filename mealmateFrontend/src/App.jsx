@@ -9,13 +9,13 @@ import Restaurant from "./Restaurant.jsx";
 import Cart from "./Cart.jsx";
 import { BottomNavbar } from "./components/BottomNavbar.jsx";
 import { DeliverBottomNavbar } from "./components/DeliverBottomNavbar.jsx";
-import ShowDelivererBottomNavbar from "./components/ShowDeliverBottomNav.jsx";
 import Profile from "./Profile.jsx";
 import FilterResults from "./FilterResults.jsx"
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import ShowNavbar from "./components/ShowNavbar.jsx";
 import ShowBottomNavbar from "./components/ShowBottomNavBar.jsx";
+import ShowDelivererBottomNavbar from "./components/ShowDeliverBottomNav.jsx";
 import Checkout from "./Checkout.jsx";
 import Orders from "./Orders.jsx";
 
@@ -33,13 +33,17 @@ import NotificationOrderCompleted from "./NotificationOrderCompleted.jsx";
 
 function App() {
 
-  const isDeliverer = false;
-
   return (
     <BrowserRouter>
       <ShowNavbar>
         <Navbar />
       </ShowNavbar>
+      <ShowBottomNavbar>
+        <BottomNavbar />
+      </ShowBottomNavbar>
+      <ShowDelivererBottomNavbar>
+        <DeliverBottomNavbar />
+      </ShowDelivererBottomNavbar>
 
       <Routes>
         <Route path="/" element={<Home />}></Route>
@@ -63,15 +67,6 @@ function App() {
         <Route path="/notification-order-completed" element={<NotificationOrderCompleted />}></Route>
 
       </Routes>
-      {isDeliverer ? (
-        <ShowDelivererBottomNavbar>
-          <DeliverBottomNavbar />
-        </ShowDelivererBottomNavbar>
-      ) : (
-        <ShowBottomNavbar>
-          <BottomNavbar />
-        </ShowBottomNavbar>
-      )}
     </BrowserRouter>
   );
 }
