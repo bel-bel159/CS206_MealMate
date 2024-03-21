@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import cross from "./Assets/cross.svg";
 import map from "./Assets/map.png";
@@ -8,7 +8,8 @@ import cart from "./Assets/cart.png";
 import walking from "./Assets/walking.svg";
 import pin from "./Assets/pin.svg";
 import phone from "./Assets/phone.jpg";
-import dots from "./Assets/dots.png"
+import dots from "./Assets/dots.png";
+import tick from "./Assets/tick.png";
 
 const Circle = ({ src, color = "#fff"}) => (
     <div
@@ -82,16 +83,58 @@ const Line = ({color = "white"}) => (
 
 const Track = () => {
     const [showDetails, setShowDetails] = useState(false);
-    const [orderStatus, setOrderStatus] = useState("Order is preparing")
+    const [orderStatus, setOrderStatus] = useState("Order is preparing");
     const navigate = useNavigate();
-
-    const handleOrderStatusChange = () => {
-        setOrderStatus(nextStatus);
-    };
 
     const toggleDetails = () => {
         setShowDetails(!showDetails);
-    }
+    };
+
+    useEffect(() => {
+        const websocket = new WebSocket('ws://localhost:8084');
+      
+        websocket.onopen = (event) => {
+          console.log("WebSocket connection established", event);
+        };
+      
+        websocket.onmessage = (event) => {
+            // Check if the received data is a Blob
+            if (event.data instanceof Blob) {
+              event.data.text().then((text) => {
+                try {
+                  const data = JSON.parse(text);
+                  if (data.action === 'updateStatus') {
+                    setOrderStatus(data.status); // Update the status based on the message
+                  }
+                } catch (error) {
+                  console.error("Error parsing the blob as JSON", error);
+                }
+              });
+            } else {
+              try {
+                const data = JSON.parse(event.data);
+                if (data.action === 'updateStatus') {
+                  setOrderStatus(data.status); // Directly use the received status message
+                }
+              } catch (error) {
+                console.error("Error parsing message", error);
+              }
+            }
+          };
+    
+        websocket.onerror = (error) => {
+          console.error("WebSocket error:", error);
+        };
+      
+        websocket.onclose = (event) => {
+          console.log("WebSocket connection closed", event);
+        };
+      
+        return () => {
+          websocket.close();
+        };
+      }, []);
+      
 
     return (
         <div className="background-container">
@@ -164,7 +207,7 @@ const Track = () => {
                             <div>
                                 <div className="card-body">
                                     <div className="row g-0">
-                                        <h4 className="card-title">Order is almost ready</h4>
+                                        <h4 className="card-title" style={{ color: "black", marginTop: "-10px", marginBottom: "20px" }}>{orderStatus}</h4>
                                         {orderStatus === "Order is preparing" && (
                                             <>
                                             <p className="card-text pt-2">
@@ -201,13 +244,13 @@ const Track = () => {
                                                 >
                                                     <Circle src={cart} />
                                                     <Line />
-                                                    <Circle src={dots} />
+                                                    <Circle src={walking} />
                                                     <Line color="#B4B4B4"/>
                                                     <Circle src={pin} color="#B4B4B4" />
                                                 </div>
                                             </>
                                         )}    
-                                        {orderStatus === "Order has been completed" && (
+                                        {orderStatus === "Order is completed" && (
                                         <>
                                             <div className="row g-0"
                                                 style={{
@@ -246,7 +289,6 @@ const Track = () => {
                                                         </h6>
                                                     </div>
                                                 </div>
-                                                {/* Typable box with button */}
                                                 <div className="row g-0">
                                                     <div style={{display: "flex", alignItems: "center"}}>
                                                         <div className="col-9">
@@ -305,7 +347,7 @@ const Track = () => {
                                     border: "none",
                                     cursor: "pointer",
                                     fontWeight: "bold",
-                                    fontSize: "16px", // Adjusted font size
+                                    fontSize: "16px",
                                 }}
                                 onClick={toggleDetails}
                             >
