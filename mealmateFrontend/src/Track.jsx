@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 import cross from "./Assets/cross.svg";
 import map from "./Assets/map.png";
@@ -6,10 +6,12 @@ import { useNavigate } from "react-router-dom";
 import user from "./assets/user.svg";
 import cart from "./Assets/cart.png";
 import walking from "./Assets/walking.svg";
-import location from "./Assets/location.jpg";
+import pin from "./Assets/pin.svg";
 import phone from "./Assets/phone.jpg";
+import dots from "./Assets/dots.png";
+import tick from "./Assets/tick.png";
 
-const Circle = ({ src }) => (
+const Circle = ({ src, color = "#fff"}) => (
     <div
         style={{
             width: "60px",
@@ -19,7 +21,7 @@ const Circle = ({ src }) => (
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "#fff",
+            backgroundColor: color,
         }}
     >
         {src === walking ? (
@@ -69,22 +71,70 @@ const LocationCircle = ({ src }) => (
 );
 
 
-const Line = () => (
+const Line = ({color = "white"}) => (
     <div
         style={{
             flex: 1,
-            border: "2px solid white"
+            height: "2px",
+            backgroundColor: color
         }}
     ></div>
 );
 
 const Track = () => {
     const [showDetails, setShowDetails] = useState(false);
+    const [orderStatus, setOrderStatus] = useState("Order is preparing");
     const navigate = useNavigate();
 
     const toggleDetails = () => {
         setShowDetails(!showDetails);
     };
+
+    useEffect(() => {
+        const websocket = new WebSocket('ws://localhost:8084');
+      
+        websocket.onopen = (event) => {
+          console.log("WebSocket connection established", event);
+        };
+      
+        websocket.onmessage = (event) => {
+            // Check if the received data is a Blob
+            if (event.data instanceof Blob) {
+              event.data.text().then((text) => {
+                try {
+                  const data = JSON.parse(text);
+                  if (data.action === 'updateStatus') {
+                    setOrderStatus(data.status); // Update the status based on the message
+                  }
+                } catch (error) {
+                  console.error("Error parsing the blob as JSON", error);
+                }
+              });
+            } else {
+              try {
+                const data = JSON.parse(event.data);
+                if (data.action === 'updateStatus') {
+                  setOrderStatus(data.status); // Directly use the received status message
+                }
+              } catch (error) {
+                console.error("Error parsing message", error);
+              }
+            }
+          };
+    
+        websocket.onerror = (error) => {
+          console.error("WebSocket error:", error);
+        };
+      
+        websocket.onclose = (event) => {
+          console.log("WebSocket connection closed", event);
+        };
+      
+        return () => {
+          websocket.close();
+        };
+      }, []);
+      
 
     return (
         <div className="background-container">
@@ -157,32 +207,67 @@ const Track = () => {
                             <div>
                                 <div className="card-body">
                                     <div className="row g-0">
-                                        <h4 className="card-title">Order has been collected</h4>
-                                        <p className="card-text pt-2">
-                                            Arriving between <strong>11:53AM - 11:58AM</strong>
-                                            <small className="text-body-secondary"></small>
-                                        </p>
-                                    </div>
-                                    <div className="row g-0"
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "space-between",
-                                            margin: "10px auto",
-                                        }}
-                                    >
-                                        <Circle src={cart} />
-                                        <Line />
-                                        <Circle src={walking} />
-                                        <Line />
-                                        <Circle src={location} />
-                                    </div>
-
-                                    <div className="row g-0">
-                                        <p className="card-text">
-                                            Deliverer is on the way in <strong>6 min</strong>
-                                            <small className="text-body-secondary"></small>
-                                        </p>
+                                        <h4 className="card-title" style={{ color: "black", marginTop: "-10px", marginBottom: "20px" }}>{orderStatus}</h4>
+                                        {orderStatus === "Order is preparing" && (
+                                            <>
+                                            <p className="card-text pt-2">
+                                                Arriving between <strong>11:53AM - 11:58AM</strong>
+                                                <small className="text-body-secondary"></small>
+                                            </p>
+                                            <div className="row g-0"
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "space-between",
+                                                }}
+                                            >
+                                                <Circle src={cart} />
+                                                <Line />
+                                                <Circle src={dots} />
+                                                <Line color="#B4B4B4"/>
+                                                <Circle src={pin} color="#B4B4B4" />
+                                            </div>
+                                            </>
+                                        )}  
+                                        {orderStatus === "Order is on the way" && (
+                                            <>
+                                                <p className="card-text pt-2">
+                                                    Arriving between <strong>11:53AM - 11:58AM</strong>
+                                                    <small className="text-body-secondary"></small>
+                                                </p>
+                                                <div className="row g-0"
+                                                    style={{
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "space-between",
+                                                    }}
+                                                >
+                                                    <Circle src={cart} />
+                                                    <Line />
+                                                    <Circle src={walking} />
+                                                    <Line color="#B4B4B4"/>
+                                                    <Circle src={pin} color="#B4B4B4" />
+                                                </div>
+                                            </>
+                                        )}    
+                                        {orderStatus === "Order is completed" && (
+                                        <>
+                                            <div className="row g-0"
+                                                style={{
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "space-between",
+                                                }}
+                                            >
+                                                <Circle src={cart} />
+                                                <Line />
+                                                <Circle src={walking} />
+                                                <Line />
+                                                <Circle src={tick} />
+                                            </div>
+                                            <p style={{color: "black", marginTop: "15px"}}>Your order has been successfully completed.</p>
+                                        </>
+                                    )}   
                                     </div>
                                     {showDetails && (<div className="row g-0">
                                         <div
@@ -198,13 +283,12 @@ const Track = () => {
                                                         <Circle src={user}/>
                                                     </div>
                                                     <div className="col-7" style={{marginLeft: "10px"}}>
-                                                        <h5 className="card-title">Alex Tan</h5>
-                                                        <h6 className="card-text pt-2">
+                                                        <h5 className="card-title" style={{marginTop: "7px"}}>Alex Tan</h5>
+                                                        <h6 className="card-text pt-2" style={{marginTop: "-15px"}}>
                                                             4.8/5.0<small className="text-body-secondary"></small>
                                                         </h6>
                                                     </div>
                                                 </div>
-                                                {/* Typable box with button */}
                                                 <div className="row g-0">
                                                     <div style={{display: "flex", alignItems: "center"}}>
                                                         <div className="col-9">
@@ -237,18 +321,18 @@ const Track = () => {
                                                 <div className="row g-0 mt-3">
                                                     <div style={{display: "flex", alignItems: "center"}}>
                                                         <div className="col-3">
-                                                            <LocationCircle src={location}/>
+                                                            <LocationCircle src={pin}/>
                                                         </div>
                                                         <div className="col-9">
-                                                            <span className="fs-6"> SMU SCIS1 IS Lounge SR B1-01</span>
+                                                            <span className="fs-6" style={{marginLeft: "-15px"}}> SMU SCIS1 IS Lounge SR B1-01</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>)}
+                                    </div>
+                                    )}
                                 </div>
-
                             </div>
                             <hr
                                 style={{
@@ -263,7 +347,7 @@ const Track = () => {
                                     border: "none",
                                     cursor: "pointer",
                                     fontWeight: "bold",
-                                    fontSize: "16px", // Adjusted font size
+                                    fontSize: "16px",
                                 }}
                                 onClick={toggleDetails}
                             >
