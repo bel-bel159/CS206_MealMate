@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 // Function to fetch drop-off location data from an API
 const fetchDropOffLocation = async (orderId) => {
-    const url = `http://localhost:8080/orders/${orderId}/location`;
+    const url = `${import.meta.env.VITE_API_BASE_URL}/orders/${orderId}/location`;
     try {
       const response = await fetch(url);
       
@@ -28,7 +28,7 @@ const fetchDropOffLocation = async (orderId) => {
 
   const fetchOrderItems = async (orderId) => {
     try {
-      const response = await fetch(`http://localhost:8080/orders/${orderId}/orderitems`);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/${orderId}/orderitems`);
       
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -75,7 +75,7 @@ const TakeOrder = () => {
       const navigate = useNavigate();
       // Function to handle the API call for updating the deliverer ID
     const handleUpdateDelivererId = async () => {
-    const url = `http://localhost:8080/orders/update/${orderId}/deliverer`;
+    const url = `${import.meta.env.VITE_API_BASE_URL}/orders/update/${orderId}/deliverer`;
     const requestBody = {
       delivererId: delivererIdToUpdate,
     };

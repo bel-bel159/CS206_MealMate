@@ -18,7 +18,7 @@ const Orders = () => {
   useEffect(() => {
 
     // Replace with the correct orderer ID and your server's base URL
-    const ordererId = localstorage.getItem('userEmail') || 'No email found';
+    const ordererId = localStorage.getItem('userEmail') || 'No email found';
     const url = `${import.meta.env.VITE_API_BASE_URL}/orders/orderer/${ordererId}`;
 
     fetch(url, {

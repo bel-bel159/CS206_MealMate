@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './style.css';
 import './DelivererHome.css'; // Make sure to create a corresponding CSS file for styling
+import { useNavigate } from 'react-router-dom';
 
 function DelivererHome() {
   const [orders, setOrders] = useState([]);
+    const navigate = useNavigate();
+
+    const handleTakeOrder = async (orderId) => {
+        localStorage.setItem('orderId', orderId);
+        console.log(orderId);
+        navigate('/takeorder');
+    }
 
   useEffect(() => {
     const fetchItemDetails = async (itemId) => {
@@ -15,18 +23,17 @@ function DelivererHome() {
       }
       return response.json();
     };
-
     const fetchOrders = async () => {
       try {
-        const ordersResponse = await fetch('http://localhost:8080/orders/pendingorders');
+        const ordersResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/pendingorders`);
         console.log("Fetching order details:", ordersResponse); // Debugging: Log the URL
 
         if (!ordersResponse.ok) {
           throw new Error(`HTTP order error! status: ${ordersResponse.status}`);
         }
 
-        const text = await ordersResponse.text(); // Get the response body as text
-        const pendingOrders = JSON.parse(text); // Try to parse it as JSON
+            const text = await ordersResponse.text(); // Get the response body as text
+            const pendingOrders = JSON.parse(text); // Try to parse it as JSON
             // const pendingOrders = await ordersResponse.json();
         console.log("JSON text", pendingOrders)
 
@@ -82,13 +89,13 @@ function DelivererHome() {
       <h3>Shift: 2.01pm-3.01pm</h3>
       <h2>List of Orders Near You</h2>
       {orders.map((order) => (
-        <div key={order.id} className="order-card">
+        <div key={order.orderId} className="order-card">
           <div className="order-details">
             <h3>Zhang Liang Mala Tang</h3>
             <p>{order.location}</p>
             <p>Items: {order.items}</p>
           </div>
-          <button className="take-order-btn">Take Order</button>
+          <button className="take-order-btn" onClick={() => handleTakeOrder(order.orderId)}>Take Order</button>
         </div>
       ))}
     </div>
