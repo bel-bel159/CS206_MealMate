@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users") // Base path for all endpoints in this controller
+@CrossOrigin
 public class UserController {
 
     private final UserService userService;

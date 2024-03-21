@@ -16,8 +16,10 @@ const Orders = () => {
   });
 
   useEffect(() => {
-    const ordererId = "eaint@gmail.com"; // Assume dynamic based on user session
-    const url = `http://localhost:8080/orders/orderer/${ordererId}`;
+
+    // Replace with the correct orderer ID and your server's base URL
+    const ordererId = localstorage.getItem('userEmail') || 'No email found';
+    const url = `${import.meta.env.VITE_API_BASE_URL}/orders/orderer/${ordererId}`;
 
     fetch(url, {
       method: "GET",
@@ -43,7 +45,7 @@ const Orders = () => {
         // Fetch details for each unique item in the order
         const uniqueItemIds = [...new Set(orderData.orderItemsId)];
         const itemsDetailsPromises = uniqueItemIds.map((itemId) =>
-          fetch(`http://localhost:8080/orderItems/${itemId}`)
+          fetch(`${import.meta.env.VITE_API_BASE_URL}/orderItems/${itemId}`)
             .then((response) => {
               if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

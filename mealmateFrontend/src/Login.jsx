@@ -17,7 +17,7 @@ function Login() {
       password: password
     };
 
-    fetch('http://localhost:8080/users/login', {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/users/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +32,10 @@ public class DeliveryCartServiceImpl implements DeliveryCartService {
 
     @Override
     @Transactional
-    public DeliveryCart updateDeliveryCartByOrdererId(String ordererId, Long orderId) throws DeliveryCartNotFoundException {
+    public DeliveryCart updateDeliveryCartByOrdererId(String ordererId, List<Long> orderIdList) throws DeliveryCartNotFoundException {
         DeliveryCart deliveryCart = findDeliveryCartByOrdererId(ordererId);
+
+        Long orderId = orderIdList.get(0);
         OrderItem orderItem = orderItemService.findItemById(orderId);
 
         List<Long> itemList = deliveryCart.getOrderItemsId();
@@ -42,7 +45,15 @@ public class DeliveryCartServiceImpl implements DeliveryCartService {
 //        float totalPrice = deliveryCart.getTotalPrice() + 1;
         deliveryCart.setTotalPrice(totalPrice);
 
+        return deliveryCart;
+    }
 
+    @Override
+    @Transactional
+    public DeliveryCart emptyDeliveryCartByOrdererId(String ordererId) throws DeliveryCartNotFoundException {
+        DeliveryCart deliveryCart = findDeliveryCartByOrdererId(ordererId);
+        deliveryCart.setOrderItemsId(new ArrayList<Long>());
+        deliveryCart.setTotalPrice(0);
         return deliveryCart;
     }
 
