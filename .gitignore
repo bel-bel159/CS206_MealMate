@@ -28,3 +28,4 @@ replay_pid*
 /mealmateFrontend/node_modules
 /mealmateFrontend/node_modules/.vite
 /mealmateFrontend/node_modules/.vite/deps
+/mealmateFrontend/node_modules
