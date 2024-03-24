@@ -7,6 +7,12 @@ import { Navigate, useNavigate } from 'react-router-dom';
 
 function Profile() {
   const navigate = useNavigate();
+
+  const HandleSwitch = () => {
+    localStorage.setItem('delivererEmail', localStorage.getItem('userEmail'));
+    localStorage.removeItem('userEmail');
+    navigate('/deliverer-profile');
+  };
   return (
     <div className="profile-page">
       <div className="card mb-3 mt-4 text-bg-warning mx-3 p-4 border rounded-5">
@@ -34,7 +40,7 @@ function Profile() {
       </div>
       <div className="d-flex justify-content-center m-3 p-2">
         <button className="btn btn-warning border rounded-4 "
-                onClick={() => navigate('/deliverer-profile')}>
+                onClick={HandleSwitch}>
           Switch to Deliverer
         </button>
       </div>

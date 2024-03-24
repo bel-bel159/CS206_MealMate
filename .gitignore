@@ -24,8 +24,6 @@ hs_err_pid*
 replay_pid*
 /.idea/
 /mealmateBackend/node_modules
-/mealmateBackend/node_modules
 /mealmateFrontend/node_modules
 /mealmateFrontend/node_modules/.vite
 /mealmateFrontend/node_modules/.vite/deps
-/mealmateFrontend/node_modules

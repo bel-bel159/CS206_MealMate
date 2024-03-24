@@ -9,7 +9,7 @@ const ShowBottomNavbar = ({children}) => {
     const[showBottomNavBar, setShowBottomNavBar] = useState(false);
     useEffect(() => {
         // Determine if the current path is one of the paths that should show the navbar
-        const shouldShowNavbar = ["/", "/home", "/profile", "/cart"].includes(location.pathname);
+        const shouldShowNavbar = ["/", "/home", "/profile", "/cart", "/track"].includes(location.pathname);
         setShowBottomNavBar(shouldShowNavbar);
     }, [location]);
 

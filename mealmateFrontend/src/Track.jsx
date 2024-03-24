@@ -10,6 +10,7 @@ import pin from "./Assets/pin.svg";
 import phone from "./Assets/phone.jpg";
 import dots from "./Assets/dots.png";
 import tick from "./Assets/tick.png";
+import delivererHome from "./DelivererHome.jsx";
 
 const Circle = ({ src, color = "#fff"}) => (
     <div
@@ -83,8 +84,47 @@ const Line = ({color = "white"}) => (
 
 const Track = () => {
     const [showDetails, setShowDetails] = useState(false);
-    const [orderStatus, setOrderStatus] = useState("Order is preparing");
+    const [orderStatus, setOrderStatus] = useState('');
     const navigate = useNavigate();
+    const orderId = localStorage.getItem('ordererTrackOrder');
+    const [orderer, setOrderer] = useState(null);
+
+    const [order, setOrder] = useState(null);
+
+    useEffect(() => {
+        const fetchOrder = async () => {
+            console.log("Trying to fetch order");
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/order/${orderId}`);
+                if (!response.ok) {
+                    throw new Error('Order not found');
+                }
+                const orderData = await response.json();
+                setOrder(orderData);
+                console.log("Fetch order successful!");
+            } catch (error) {
+                console.error('An error occurred:', error, "CANNOT GET ORDER");
+            }
+        };
+
+        fetchOrder();
+    }, []);
+
+    useEffect(() => {
+        if(order && order.delivererId) {
+            console.log("trying to fetch deliverer: ", order.delivererId);
+            fetch(`${import.meta.env.VITE_API_BASE_URL}/users/get/${order.delivererId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('User not found');
+                    }
+                    return response.json();
+                })
+                .then(data => setOrderer(data))
+                .catch(error => console.error('An error occurred:', error, "CANNOT GET USER"));
+        }
+    }, [order]);
+
 
     const toggleDetails = () => {
         setShowDetails(!showDetails);
@@ -169,7 +209,7 @@ const Track = () => {
                     <img
                         src={cross}
                         style={{ width: "30px", height: "auto" }}
-                        onClick={() => navigate(-1)}
+                        onClick={() => navigate("/orders")}
                     />
                 </button>
 
@@ -200,37 +240,60 @@ const Track = () => {
                 {/* Order collected box */}
                 <div
                     className="order-collected-box"
-                    style={{ position: "absolute", transform: "translateY(50%)", maxHeight: "450px" }}
+                    style={{ position: "fixed", maxHeight: "450px", bottom:"140px" }}
                 >
-                    <div className="card mb-3 mt-4 text-bg-warning mx-4 p-4 border rounded-5 overflow-auto" style={{maxHeight:"500px"}}>
+                    <div className="card mb-3 mt-4 text-bg-warning mx-4 p-4 border rounded-5 overflow-auto" style={{maxHeight:"550px"}}>
                         <div className="row g-0">
                             <div>
                                 <div className="card-body">
                                     <div className="row g-0">
-                                        <h4 className="card-title" style={{ color: "black", marginTop: "-10px", marginBottom: "20px" }}>{orderStatus}</h4>
-                                        {orderStatus === "Order is preparing" && (
+                                        {order && order.status === "ORDER_SENT" && (
                                             <>
-                                            <p className="card-text pt-2">
-                                                Arriving between <strong>11:53AM - 11:58AM</strong>
-                                                <small className="text-body-secondary"></small>
-                                            </p>
-                                            <div className="row g-0"
-                                                style={{
-                                                    display: "flex",
-                                                    alignItems: "center",
-                                                    justifyContent: "space-between",
-                                                }}
-                                            >
-                                                <Circle src={cart} />
-                                                <Line />
-                                                <Circle src={dots} />
-                                                <Line color="#B4B4B4"/>
-                                                <Circle src={pin} color="#B4B4B4" />
-                                            </div>
+                                                <h4 className="card-title" style={{ color: "black", marginTop: "-10px", marginBottom: "20px" }}>Order has been sent</h4>
+                                                <p className="card-text pt-2">
+                                                    Arriving between <strong>11:53AM - 11:58AM</strong>
+                                                    <small className="text-body-secondary"></small>
+                                                </p>
+                                                <div className="row g-0"
+                                                     style={{
+                                                         display: "flex",
+                                                         alignItems: "center",
+                                                         justifyContent: "space-between",
+                                                     }}
+                                                >
+                                                    <Circle src={cart} />
+                                                    <Line color="#B4B4B4" />
+                                                    <Circle src={walking} color="#B4B4B4" />
+                                                    <Line color="#B4B4B4"/>
+                                                    <Circle src={pin} color="#B4B4B4" />
+                                                </div>
                                             </>
-                                        )}  
-                                        {orderStatus === "Order is on the way" && (
+                                        )}
+                                        {/*{order && order.status === "PREPARING" && (*/}
+                                        {/*    <>*/}
+                                        {/*    <h4 className="card-title" style={{ color: "black", marginTop: "-10px", marginBottom: "20px" }}>Order is preparing</h4>*/}
+                                        {/*    <p className="card-text pt-2">*/}
+                                        {/*        Arriving between <strong>11:53AM - 11:58AM</strong>*/}
+                                        {/*        <small className="text-body-secondary"></small>*/}
+                                        {/*    </p>*/}
+                                        {/*    <div className="row g-0"*/}
+                                        {/*        style={{*/}
+                                        {/*            display: "flex",*/}
+                                        {/*            alignItems: "center",*/}
+                                        {/*            justifyContent: "space-between",*/}
+                                        {/*        }}*/}
+                                        {/*    >*/}
+                                        {/*        <Circle src={cart} />*/}
+                                        {/*        <Line />*/}
+                                        {/*        <Circle src={dots} />*/}
+                                        {/*        <Line color="#B4B4B4"/>*/}
+                                        {/*        <Circle src={pin} color="#B4B4B4" />*/}
+                                        {/*    </div>*/}
+                                        {/*    </>*/}
+                                        {/*)}  */}
+                                        {order && order.status === "COLLECTED" && (
                                             <>
+                                                <h4 className="card-title" style={{ color: "black", marginTop: "-10px", marginBottom: "20px" }}>Order has been collected</h4>
                                                 <p className="card-text pt-2">
                                                     Arriving between <strong>11:53AM - 11:58AM</strong>
                                                     <small className="text-body-secondary"></small>
@@ -243,14 +306,14 @@ const Track = () => {
                                                     }}
                                                 >
                                                     <Circle src={cart} />
-                                                    <Line />
+                                                    <Line/>
                                                     <Circle src={walking} />
                                                     <Line color="#B4B4B4"/>
                                                     <Circle src={pin} color="#B4B4B4" />
                                                 </div>
                                             </>
                                         )}    
-                                        {orderStatus === "Order is completed" && (
+                                        {order && order.status === "DELIVERED" && (
                                         <>
                                             <div className="row g-0"
                                                 style={{
@@ -278,16 +341,22 @@ const Track = () => {
                                                 className="card-body"
                                                 style={{alignItems: "center"}}
                                             >
-                                                <div className="row g-0 mb-3">
+                                                <div className="row g-0 mb-3 align-items-center">
                                                     <div className="col-4 d-flex justify-content-center">
                                                         <Circle src={user}/>
                                                     </div>
-                                                    <div className="col-7" style={{marginLeft: "10px"}}>
-                                                        <h5 className="card-title" style={{marginTop: "7px"}}>Alex Tan</h5>
-                                                        <h6 className="card-text pt-2" style={{marginTop: "-15px"}}>
-                                                            4.8/5.0<small className="text-body-secondary"></small>
-                                                        </h6>
-                                                    </div>
+                                                    {orderer ? (
+                                                        <div className="col-7" style={{marginLeft: "10px"}}>
+                                                            <h5 className="card-title">{orderer.name}</h5>
+                                                            <h6 className="card-text pt-2" style={{marginTop: "-15px"}}>
+                                                                4.8/5.0<small className="text-body-secondary"></small>
+                                                            </h6>
+                                                        </div>
+                                                    ): (
+                                                        <div className="col-7" style={{marginLeft: "10px"}}>
+                                                            <h5 className="card-title">No deliverer yet.</h5>
+                                                        </div>
+                                                        )}
                                                 </div>
                                                 <div className="row g-0">
                                                     <div style={{display: "flex", alignItems: "center"}}>
@@ -324,7 +393,7 @@ const Track = () => {
                                                             <LocationCircle src={pin}/>
                                                         </div>
                                                         <div className="col-9">
-                                                            <span className="fs-6" style={{marginLeft: "-15px"}}> SMU SCIS1 IS Lounge SR B1-01</span>
+                                                            <span className="fs-6" style={{marginLeft: "-15px"}}>{order.location}</span>
                                                         </div>
                                                     </div>
                                                 </div>

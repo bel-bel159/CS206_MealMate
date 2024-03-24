@@ -4,24 +4,15 @@ import back from "./assets/back.svg";
 import css from "./Orders.css"; // Make sure to create a corresponding CSS file for styling
 
 const Orders = () => {
-  const [order, setOrder] = useState({
-    delivererId: null,
-    location: "",
-    orderId: 0,
-    orderItemsId: [],
-    ordererId: "",
-    status: "",
-    totalPrice: 0,
-    itemsDetails: [], // This will now include counts
-  });
+  const orderId = localStorage.getItem('ordererTrackOrder') || 'No order found';
+  const [order, setOrder] = useState(null);
+  const [orderList, setOrderList] = useState([]);
 
   useEffect(() => {
 
     // Replace with the correct orderer ID and your server's base URL
-    const ordererId = localStorage.getItem('userEmail') || 'No email found';
-    const url = `${import.meta.env.VITE_API_BASE_URL}/orders/orderer/${ordererId}`;
 
-    fetch(url, {
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/order/${orderId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -34,50 +25,33 @@ const Orders = () => {
         return response.json();
       })
       .then(async (data) => {
-        const orderData = data[0];
-
-        // Create a map to count occurrences of each itemId
-        const itemCounts = orderData.orderItemsId.reduce((acc, itemId) => {
-          acc[itemId] = (acc[itemId] || 0) + 1;
-          return acc;
-        }, {});
-
-        // Fetch details for each unique item in the order
-        const uniqueItemIds = [...new Set(orderData.orderItemsId)];
-        const itemsDetailsPromises = uniqueItemIds.map((itemId) =>
-          fetch(`${import.meta.env.VITE_API_BASE_URL}/orderItems/${itemId}`)
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              return response.json();
-            })
-            .catch((error) =>
-              console.error(
-                "There was an error fetching the item details:",
-                error
-              )
-            )
-        );
-
-        const itemsDetails = await Promise.all(itemsDetailsPromises);
-
-        // Combine item details with counts
-        const itemsWithDetailsAndCounts = itemsDetails.map((item) => ({
-          ...item,
-          count: itemCounts[item.itemId], // Ensure 'item.id' matches the property from your item details response
-        }));
-
-        setOrder((prevOrder) => ({
-          ...prevOrder,
-          ...orderData,
-          itemsDetails: itemsWithDetailsAndCounts,
-        }));
+        setOrder(data);
       })
       .catch((error) => {
         console.error("Error fetching order data:", error);
       });
+
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/${orderId}/orderitems`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then(async (data) => {
+          setOrderList(data);
+        })
+        .catch((error) => {
+          console.error("Error fetching order list data:", error);
+        });
   }, []);
+
+
   return (
     <div
       className="header bg-light"
@@ -130,24 +104,29 @@ const Orders = () => {
         <h3 className="current-order">Current Order</h3>
       </div>
 
-      <div className="order-container bg-warning m-2 p-2 border rounded-4 ">
-        <div className="row m-1 p-2 ">
-          {order.itemsDetails.map((item, index) => (
-            <div key={index} className="col-12 m-2 pt-2">
-              <h5>
-                {item.itemName} x{item.count}: ${item.itemPrice}{" "}
-              </h5>{" "}
-              {/* Adjust these fields based on your actual item details structure */}
-            </div>
-          ))}
+      <div className="order-container bg-warning p-2 border rounded-4 ">
+        {orderList.map((item, index) => (
+        <div key={index} className="row m-1 p-2 align-items-center">
+          <div className="col-8 m-2 pt-2">
+            <h5>
+              {item.itemName}
+            </h5>
+            {/* Adjust these fields based on your actual item details structure */}
+          </div>
+          <div className="col-2 m-2 pt-2">
+            <h5>
+              x{item.quantity}
+            </h5>{" "}
+            {/* Adjust these fields based on your actual item details structure */}
+          </div>
         </div>
-
+            ))}
         <div className="row m-2 border-bottom">
           <div className="col-8 m-2 pt-2">
             <p>Delivery Fees</p>
           </div>
           <div className="col-2 m-3 pt-2">
-            <p> $2.00</p>
+            <p> $1.00</p>
           </div>
         </div>
         <div className="row m-2">
@@ -155,7 +134,7 @@ const Orders = () => {
             <p>Total</p>
           </div>
           <div className="col-2 m-2 ">
-            <p> ${order.totalPrice}</p>
+            <p> ${order && order.totalPrice}</p>
           </div>
         </div>
         <div className="d-grid gap-2 p-1">
@@ -164,14 +143,14 @@ const Orders = () => {
           </Link>
         </div>
       </div>
-      <div className="past-orders-title">
+      <div className="past-orders-title mb-0 mt-2 ">
         {" "}
-        <h3>Past Orders</h3>
+        <h3 pb-0>Past Orders</h3>
       </div>
       <div className="order-container m-2 p-2 bg-warning border rounded-4 ">
         <div className="row m-2 p-2  border-bottom">
           <div className="">
-            <h5> Cream Pasta with Bacon x1 : $7.60</h5>
+            <h5> Cream Pasta with Bacon x1 </h5>
           </div>
         </div>
 
@@ -191,7 +170,7 @@ const Orders = () => {
       <div className="order-container m-2 p-2 bg-warning border rounded-4 ">
         <div className="row m-2 p-2  border-bottom">
           <div className="">
-            <h5> Triplets Chocolate Waffle x1 : $2.60</h5>
+            <h5> Triplets Chocolate Waffle x1 </h5>
           </div>
         </div>
 
