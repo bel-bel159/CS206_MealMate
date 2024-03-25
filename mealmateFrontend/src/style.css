@@ -15,3 +15,9 @@
 .mealmate-bg-colour{
     background-attachment: #FFC218;
 }
+
+.deliverer-all-orders-row {
+    margin-bottom: 60px; /* Adds space below the row */
+    padding-bottom: 20px; /* Adds space inside the row, at the bottom */
+    overflow-y: auto; /* Ensures that a scrollbar appears if the content overflows vertically */
+  }

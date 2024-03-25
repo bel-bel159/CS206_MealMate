@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/orders")
@@ -71,6 +72,32 @@ public class OrderController {
             return ResponseEntity.ok(orders);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/{delivererId}/currentorders")
+    public ResponseEntity<?> getDelivererCurrentOrders(@PathVariable String delivererId){
+        try {
+            List<Order> currentOrders = orderRepository.findByDelivererId(delivererId)
+                    .stream()
+                    .filter(order -> order.getStatus() != Order.OrderStatus.DELIVERED)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(currentOrders);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid order id.");
+        }
+    }
+
+    @GetMapping("/{delivererId}/pastorders")
+    public ResponseEntity<?> getDelivererPastOrders(@PathVariable String delivererId){
+        try {
+            List<Order> pastOrders = orderRepository.findByDelivererId(delivererId)
+                    .stream()
+                    .filter(order -> order.getStatus() == Order.OrderStatus.DELIVERED)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(pastOrders);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid order id.");
         }
     }
 
