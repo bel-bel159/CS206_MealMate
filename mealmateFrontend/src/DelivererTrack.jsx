@@ -10,6 +10,8 @@ import tick from "./Assets/tick.png";
 import phone from "./Assets/phone.jpg";
 import pin from "./Assets/pin.svg";
 import dots from "./Assets/dots.png";
+import { useLocation } from 'react-router-dom';
+
 
 const Circle = ({ src, color = "#fff" }) => (
   <div
@@ -82,11 +84,63 @@ const Line = ({color = "white"}) => (
 
 const DelivererTrack = () => {
   const [showDetails, setShowDetails] = useState(false);
-  const [orderStatus, setOrderStatus] = useState("Order is almost ready");
+  const [orderStatus, setOrderStatus] = useState("ORDER_SENT");
   const navigate = useNavigate();
 
-  const handleOrderStatusChange = (nextStatus) => {
-    setOrderStatus(nextStatus);
+  const location = useLocation();
+  const { orderId } = location.state || {}; // Assuming orderId is passed, else default to an empty object
+
+  const nextStatusMap = {
+    "ORDER_SENT": "COLLECTED",
+    "COLLECTED": "DELIVERED",
+  };
+
+  const handleOrderStatusChange = () => {
+    const nextStatus = nextStatusMap[orderStatus];
+  
+    if (!nextStatus) {
+      console.error('No next status defined for:', orderStatus);
+      return; // Exit if no next status is defined
+    }
+  
+    const updateOrderStatus = async () => {
+      try {
+        console.log(orderId, nextStatus);
+        const requestBody = JSON.stringify({ orderStatus: nextStatus });
+        console.log('Request Body:', requestBody);
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/orders/update/${orderId}/status`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            // 'Authorization': 'Bearer YOUR_TOKEN_HERE', // Uncomment and replace if authorization is needed
+          },
+          body: requestBody,
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        // Assuming the API returns a success message or similar indicator
+        const responseData = await response.text();
+        
+        // Check if the API indicates success before updating the local state
+        if (responseData === 'Order status updated.') {
+          // Successfully updated the order status
+          setOrderStatus(nextStatus);
+          console.log('Order status updated:', responseData);
+        } else {
+          console.error('API did not indicate success:', responseData);
+          // Handle cases where API does not report success as expected
+        }
+      } catch (error) {
+        console.error('Error updating order status:', error);
+        // Handle any errors, possibly by showing an error message to the user
+      }
+    };
+  
+    // Call the function to update the order status
+    updateOrderStatus();
   };
 
   const toggleDetails = () => {
@@ -152,7 +206,7 @@ const DelivererTrack = () => {
                     <div>
                         <div className="card-body">
                             <h4 className="card-title" style={{ color: "black", marginTop: "-10px", marginBottom: "20px" }}>{orderStatus}</h4>
-                            {orderStatus === "Order is almost ready" && (
+                            {orderStatus === "ORDER_SENT" && (
                                 <>
                                     <div className="row g-0"
                                         style={{
@@ -170,6 +224,7 @@ const DelivererTrack = () => {
 
                                     <p className="card-text" style={{ color:  "black", marginTop: "15px"}}>
                                         Deliverer to arrive in <strong>10 mins</strong>
+                                        
                                     </p>
                                     <button
                                         style={{
@@ -181,13 +236,14 @@ const DelivererTrack = () => {
                                             fontWeight: "bold",
                                             width: "100%"
                                         }}
-                                        onClick={() => handleOrderStatusChange("Order has been collected")}
-                                    >
-                                        Order Picked Up
+                                        onClick={handleOrderStatusChange}
+>
+  {orderStatus === 'ORDER_SENT' ? 'COLLECTED' : 'DELIVERED'}
+                                        
                                     </button>
                                 </>
                             )}
-                            {orderStatus === "Order has been collected" && (
+                            {orderStatus === "COLLECTED" && (
                                 <>
                                     <p className="card-text pt-2" style={{color: "black", marginTop: "-15px"}}>
                                         Arriving between <strong>11:53AM - 11:58AM</strong>
@@ -219,13 +275,13 @@ const DelivererTrack = () => {
                                             fontWeight: "bold",
                                             width: "100%"
                                         }}
-                                        onClick={() => handleOrderStatusChange("Order has been completed")}
+                                        onClick={() => handleOrderStatusChange()}
                                     >
                                         Complete Order
                                     </button>
                                 </>
                             )}
-                            {orderStatus === "Order has been completed" && (
+                            {orderStatus === "DELIVERED" && (
                                 <>
                                     <div className="row g-0"
                                         style={{

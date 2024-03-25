@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Nav, Card, Button, Navbar } from 'react-bootstrap';
-
+import { useNavigate } from "react-router-dom";
 
 
 function App() {
@@ -16,9 +16,14 @@ function App() {
   const [currentOrders, setCurrentOrders] = useState([]);
   const pickupLocation = "9 Bras Basah Rd, #01-02 Rendezvous Hotel, 189559";
 
+
+  const navigate = useNavigate();
+
   const viewDelivery = (orderId) => {
-    console.log('View delivery for order', orderId);
+    navigate('/deliver-track', { state: { orderId: orderId } });
   };
+
+  
   
   const fetchOrders = (ordersType) => {
     const ordererId = localStorage.getItem('userEmail');
