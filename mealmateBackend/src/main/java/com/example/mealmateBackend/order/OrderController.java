@@ -44,6 +44,16 @@ public class OrderController {
         }
     }
 
+    @GetMapping("/order/{orderId}")
+    public ResponseEntity<?> getOrderById(@PathVariable Long orderId){
+        try{
+            Order order = orderService.getOrderById(orderId);
+            return ResponseEntity.ok(order);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PatchMapping("/update/{orderId}/status")
     public ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId, @RequestBody StatusUpdateRequest statusUpdate){
         try {

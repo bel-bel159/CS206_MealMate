@@ -6,12 +6,28 @@ import { useNavigate } from "react-router-dom";
 const Checkout = () => {
 
     const [location, setLocation] = useState('');
+    const [orderId, setOrderId] = useState('');
     const[orderItems, setOrderItems] = useState([]);
     const email = localStorage.getItem('userEmail') || 'No email found';
+    const [isOrderPlaced, setIsOrderPlaced] = useState(false);
 
     const navigate = useNavigate();
     let [subtotal, setSubtotal] = useState(0.00);
     let [price, setPrice] = useState(0.00);
+
+    useEffect(() => {
+        const fetchItemDetails = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/deliveryCarts/orderer/${email}`);
+                const data = await response.json();
+                setOrderItems(data.orderItemsId);
+                console.log(data.orderItemsId);
+            } catch (error) {
+                console.error('There was an error!', error, "orderItemList");
+            }
+        };
+        fetchItemDetails();
+    }, []);
 
     const ListItems = () => {
         const [myMap, setMap] = useState(new Map());
@@ -50,14 +66,12 @@ const Checkout = () => {
                 const quantity = initialMap.get(key);
                 updatedMap.set(key, { name: result.itemName, quantity: quantity, price: result.itemPrice });
                 newPrice += result.itemPrice * quantity;
-                orderItems.push(key);
             });
 
             setMap(updatedMap);
             setSubtotal(newPrice); // Update price state
             setPrice(newPrice+1)
             setIsLoading(false);
-            setOrderItems(orderItems);
         };
 
         if (isLoading) {
@@ -98,8 +112,9 @@ const Checkout = () => {
             </div>
         );
     };
-
-    const HandleCheckout = () => {
+    const HandleCheckout = (event) => {
+        setIsOrderPlaced(true);
+        event.preventDefault();
         const orderData = {
             ordererId: email,
             orderItemsId: orderItems,
@@ -124,10 +139,12 @@ const Checkout = () => {
             return response.json(); // Parse the JSON response body
         })
         .then(data => {
+            setOrderId(data.orderId); // Assuming the response includes an 'id' field for the order ID
+            console.log('Order ID:', orderId);
             console.log('Order created successfully:', data); // Handle the success case
         })
         .catch(error => {
-            console.error('An error occurred:', error, "ORDER");
+                console.error('An error occurred:', error, "ORDER");
             // Handle any errors that occurred during order creation or cart update
         });
         fetch(`${import.meta.env.VITE_API_BASE_URL}/deliveryCarts/empty/${email}`, {
@@ -145,14 +162,17 @@ const Checkout = () => {
         .then(cartUpdateResponse => {
             console.log('Cart clear successfully:', cartUpdateResponse);
             // Handle successful cart update (e.g., redirect user, show confirmation, etc.)
-            navigate('/');
             })
         .catch(error => {
                 console.error('An error occurred:', error, "CLEAR CART");
                 // Handle any errors that occurred during order creation or cart update
         });
-        navigate('/');
     };
+    const HandleTrackOrder = () => {
+        localStorage.setItem('ordererTrackOrder', orderId);
+        console.log('Going to track Order ID:', orderId);
+        navigate('/track');
+    }
 
     return (
     <div className="100-w vh-100 bg-white">
@@ -212,37 +232,60 @@ const Checkout = () => {
                 </div>
             </div>
             <div className="container ">
-                <div className="row mt -4 px-2 py-3 justify-content-center" style={{backgroundColor:"#FEDD82", position:"fixed", bottom:'0', width:'100%'}}>
-                    <div className="row pb-2">
-                        <div className="col">
-                            <h3>Total</h3>
+                {!isOrderPlaced ? (
+                    <div className="row mt -4 px-2 py-3 justify-content-center" style={{backgroundColor:"#FEDD82", position:"fixed", bottom:'0', width:'100%'}}>
+                        <div className="row pb-2">
+                            <div className="col">
+                                <h3>Total</h3>
+                            </div>
+                            <div className="col d-flex justify-content-end">
+                                <h3>${price.toFixed(2)}</h3>
+                            </div>
                         </div>
-                        <div className="col d-flex justify-content-end">
-                            <h3>${price.toFixed(2)}</h3>
+                        <div className="row">
+                            <div className='col pe-0'>
+                                <p className="fw-bold">Payment Type &nbsp;&nbsp;&nbsp;&nbsp;:</p>
+                            </div>
+                            <div className='col-7 d-flex justify-content-start ps-0'>
+                                <p> Cash on deivery</p>
+                            </div>
+                        </div>
+                        <div className="row">
+                            {/* Checkout Button */}
+                            <button type="submit" style={{
+                                padding: '10px 20px',
+                                cursor: 'pointer',
+                                backgroundColor: '#FFC218',
+                                borderRadius: '20px',
+                                border: 'none',
+                                fontWeight: 'bold',
+                            }}>
+                                Place Order
+                            </button>
+                        </div>
+                    </div>) : (
+                    <div className="row mt-4 px-2 py-3 justify-content-center" style={{backgroundColor:"#FEDD82", position:"fixed", bottom:'0', width:'100%'}}>
+                        <div className="row pb-2">
+                            <h4 className="text-center">Your order has been sent!</h4>
+                        </div>
+                        <div className="row pb-2">
+                            <h4 className="text-center">Would you like to track your order?</h4>
+                        </div>
+                        <div className="row">
+                            {/* Checkout Button */}
+                            <button style={{
+                                padding: '10px 20px',
+                                cursor: 'pointer',
+                                backgroundColor: '#FFC218',
+                                borderRadius: '20px',
+                                border: 'none',
+                                fontWeight: 'bold'
+                            }} onClick={HandleTrackOrder}>
+                                Track My Order
+                            </button>
                         </div>
                     </div>
-                    <div className="row">
-                        <div className='col pe-0'>
-                            <p className="fw-bold">Payment Type &nbsp;&nbsp;&nbsp;&nbsp;:</p>
-                        </div>
-                        <div className='col-7 d-flex justify-content-start ps-0'>
-                            <p> Cash on deivery</p>
-                        </div>
-                    </div>
-                    <div className="row">
-                        {/* Checkout Button */}
-                        <button type="submit" style={{
-                            padding: '10px 20px',
-                            cursor: 'pointer',
-                            backgroundColor: '#FFC218',
-                            borderRadius: '20px',
-                            border: 'none',
-                            fontWeight: 'bold',
-                        }}>
-                            Place Order
-                        </button>
-                    </div>
-                </div>
+                )}
             </div>
         </form>
     </div>
