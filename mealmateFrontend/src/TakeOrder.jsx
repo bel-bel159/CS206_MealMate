@@ -94,7 +94,7 @@ const TakeOrder = () => {
       }
 
       const result = await response.text();
-      navigate('/deliverer-home');
+      navigate('/deliverer-all-orders');
     } catch (error) {
       console.error('Error updating deliverer ID:', error);
       alert('Failed to update deliverer ID.'); // Or handle error in another way
