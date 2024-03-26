@@ -70,7 +70,7 @@ const TakeOrder = () => {
         loadOrderItems();
       }, []); // The empty dependency array means this effect runs only once on mount
     
-      const delivererIdToUpdate = "ben@gmail.com"; // Replace with actual deliverer ID
+      const delivererIdToUpdate = "bob@gmail.com"; // Replace with actual deliverer ID
       const orderId = "1"; // Replace with the actual order ID from your application's state or props
       const navigate = useNavigate();
       // Function to handle the API call for updating the deliverer ID
