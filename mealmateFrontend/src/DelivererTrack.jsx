@@ -342,7 +342,8 @@ const DelivererTrack = () => {
                                         <div className="col-7" style={{ display: "flex", alignItems: "center" }}>
                                             <img src={pin} alt="pin" style={{ width: "20px", height: "20px", marginRight: "10px", marginLeft: "5px"}} />
                                             <div>
-                                                <p style={{ fontSize: "10px", marginTop: "20px" }}>9 Bras Basah Rd, #01-02 Rendezvous Hotel, 189559</p>
+                                                <p style={{ fontSize: "10px", marginTop: "20px" }}></p>
+                                                9 Bras Basah Rd, #01-02 Rendezvous Hotel, 189559
                                             </div>
                                         </div>
                                     </div>
