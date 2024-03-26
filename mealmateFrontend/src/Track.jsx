@@ -247,7 +247,7 @@ const Track = () => {
                             <div>
                                 <div className="card-body">
                                     <div className="row g-0">
-                                        {order && (order.status === "ORDER_SENT" || orderStatus === "Order is preparing") && (
+                                        {order && order.status === "ORDER_SENT" && (
                                             <>
                                                 <h4 className="card-title" style={{ color: "black", marginTop: "-10px", marginBottom: "20px" }}>Order has been sent</h4>
                                                 <p className="card-text pt-2">
@@ -291,7 +291,7 @@ const Track = () => {
                                         {/*    </div>*/}
                                         {/*    </>*/}
                                         {/*)}  */}
-                                        {order && (order.status === "COLLECTED" || orderStatus === "Order is on the way") && (
+                                        {order && order.status === "COLLECTED" && (
                                             <>
                                                 <h4 className="card-title" style={{ color: "black", marginTop: "-10px", marginBottom: "20px" }}>Order has been collected</h4>
                                                 <p className="card-text pt-2">
@@ -313,7 +313,7 @@ const Track = () => {
                                                 </div>
                                             </>
                                         )}    
-                                        {order && (order.status === "DELIVERED" || orderStatus === "Order is completed") && (
+                                        {order && order.status === "DELIVERED" && (
                                         <>
                                             <div className="row g-0"
                                                 style={{
