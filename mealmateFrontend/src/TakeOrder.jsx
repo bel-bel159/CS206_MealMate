@@ -50,7 +50,7 @@ const TakeOrder = () => {
     const [orderItemsDetails, setOrderItemsDetails] = useState([]);
     useEffect(() => {
         // Retrieve orderId from local storage
-        const orderId = "1"//localStorage.getItem('orderId'); // Make sure 'orderId' matches the key you used to store
+        const orderId = localStorage.getItem('orderId'); // Make sure 'orderId' matches the key you used to store
     
         const loadDropOffLocation = async () => {
             const locationText = await fetchDropOffLocation(orderId);
@@ -127,7 +127,7 @@ const TakeOrder = () => {
                                         
                                     </div>
                                     <div className="col">
-                                        <div className="orderid-item">1</div>
+                                      <div className="orderid-item">{orderId}</div>
                                     </div>
                                     <div className="col">
 
@@ -190,7 +190,7 @@ const TakeOrder = () => {
                                         <div className="orderid-item">ORDER ID:</div>
                                     </div>
                                     <div className="col">
-                                        <div className="orderid-item">1</div>
+                                      <div className="orderid-item">{orderId}</div>
                                     </div>
                                     <div className="col">
 
