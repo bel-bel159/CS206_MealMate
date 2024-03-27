@@ -118,7 +118,7 @@ const Checkout = () => {
         const orderData = {
             ordererId: email,
             orderItemsId: orderItems,
-            location: location,
+            location: "SCIS SMU SR B1-01",
             totalPrice: price
             //status: "ORDER_SENT"
         }
@@ -202,7 +202,7 @@ const Checkout = () => {
                         <label className="col-form-label fw-bold" htmlFor="location">DELIVER TO:</label>
                     </div>
                     <div className="col-auto px-3 p-2 border-0 rounded-end-pill" style={{backgroundColor:"#FFC218"}}>
-                        <input type="location" id="location" placeholder="Location" className="form-control" aria-describedby="locationInline" value={location} onChange={e => setLocation(e.target.value)}/>
+                        <input type="location" id="location" placeholder="Location" className="form-control" aria-describedby="locationInline" value="SCIS SMU SR B1-01" onChange={e => setLocation(e.target.value)}/>
                     </div>
                 </div>
                 <div className="row mt-4 px-2 pt-3 overflow-auto" style={{backgroundColor:"#FFC218"}}>
