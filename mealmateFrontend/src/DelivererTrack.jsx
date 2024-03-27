@@ -81,7 +81,9 @@ const DelivererTrack = () => {
         if (storedOrderId) {
             setOrderId(storedOrderId);
         }
-        const websocket = new WebSocket('ws://localhost:8084');
+        // const websocket = new WebSocket('ws://localhost:8084');
+        const websocket = new WebSocket('ws://10.119.16.126:8084/');
+
         websocket.onopen = function(event) {
             console.log("Connection established");
             setIsConnected(true);

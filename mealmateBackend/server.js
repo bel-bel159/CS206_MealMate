@@ -32,8 +32,10 @@ wss.on('connection', function connection(ws) {
     });
 });
 
-server.listen(8084, function listening() {
-  console.log('Server is running on http://localhost:8084');
+// server.listen(8084, function listening() {
+//   console.log('Server is running on http://localhost:8084');
+// });
+
+server.listen(8084, '10.119.16.126', function listening() {
+  console.log('Server is running on http://10.119.16.126:8084');
 });
-
-
