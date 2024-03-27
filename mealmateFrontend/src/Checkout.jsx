@@ -247,7 +247,7 @@ const Checkout = () => {
                                 <p className="fw-bold">Payment Type &nbsp;&nbsp;&nbsp;&nbsp;:</p>
                             </div>
                             <div className='col-7 d-flex justify-content-start ps-0'>
-                                <p> Cash on deivery</p>
+                                <p> Cash on delivery</p>
                             </div>
                         </div>
                         <div className="row">

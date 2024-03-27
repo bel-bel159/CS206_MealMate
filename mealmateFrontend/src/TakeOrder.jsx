@@ -50,7 +50,7 @@ const TakeOrder = () => {
     const [orderItemsDetails, setOrderItemsDetails] = useState([]);
     useEffect(() => {
         // Retrieve orderId from local storage
-        const orderId = "1"//localStorage.getItem('orderId'); // Make sure 'orderId' matches the key you used to store
+        const orderId = localStorage.getItem('orderId'); // Make sure 'orderId' matches the key you used to store
     
         const loadDropOffLocation = async () => {
             const locationText = await fetchDropOffLocation(orderId);
@@ -69,9 +69,10 @@ const TakeOrder = () => {
         loadDropOffLocation();
         loadOrderItems();
       }, []); // The empty dependency array means this effect runs only once on mount
-    
-      const delivererIdToUpdate = "bob@gmail.com"; // Replace with actual deliverer ID
-      const orderId = "1"; // Replace with the actual order ID from your application's state or props
+
+      const delivererIdToUpdate = localStorage.getItem('delivererEmail'); // Replace with actual deliverer ID
+      const orderId = localStorage.getItem('orderId'); // Replace with the actual order ID from your application's state or props
+
       const navigate = useNavigate();
       // Function to handle the API call for updating the deliverer ID
     const handleUpdateDelivererId = async () => {
@@ -94,7 +95,7 @@ const TakeOrder = () => {
       }
 
       const result = await response.text();
-      navigate('/deliverer-home');
+      navigate('/deliverer-all-orders');
     } catch (error) {
       console.error('Error updating deliverer ID:', error);
       alert('Failed to update deliverer ID.'); // Or handle error in another way
@@ -127,7 +128,7 @@ const TakeOrder = () => {
                                         
                                     </div>
                                     <div className="col">
-                                        <div className="orderid-item">1</div>
+                                      <div className="orderid-item">{orderId}</div>
                                     </div>
                                     <div className="col">
 
@@ -190,7 +191,7 @@ const TakeOrder = () => {
                                         <div className="orderid-item">ORDER ID:</div>
                                     </div>
                                     <div className="col">
-                                        <div className="orderid-item">1</div>
+                                      <div className="orderid-item">{orderId}</div>
                                     </div>
                                     <div className="col">
 
