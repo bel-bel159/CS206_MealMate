@@ -69,9 +69,10 @@ const TakeOrder = () => {
         loadDropOffLocation();
         loadOrderItems();
       }, []); // The empty dependency array means this effect runs only once on mount
-    
+
       const delivererIdToUpdate = localStorage.getItem('delivererEmail'); // Replace with actual deliverer ID
       const orderId = localStorage.getItem('orderId'); // Replace with the actual order ID from your application's state or props
+
       const navigate = useNavigate();
       // Function to handle the API call for updating the deliverer ID
     const handleUpdateDelivererId = async () => {

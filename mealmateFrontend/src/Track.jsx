@@ -71,7 +71,6 @@ const LocationCircle = ({ src }) => (
     </div>
 );
 
-
 const Line = ({color = "white"}) => (
     <div
         style={{
@@ -84,7 +83,7 @@ const Line = ({color = "white"}) => (
 
 const Track = () => {
     const [showDetails, setShowDetails] = useState(false);
-    const [orderStatus, setOrderStatus] = useState('');
+    const [orderStatus, setOrderStatus] = useState('Order is preparing');
     const navigate = useNavigate();
     const orderId = localStorage.getItem('ordererTrackOrder');
     const [orderer, setOrderer] = useState(null);
@@ -125,56 +124,63 @@ const Track = () => {
         }
     }, [order]);
 
-
+ 
     const toggleDetails = () => {
         setShowDetails(!showDetails);
     };
 
     useEffect(() => {
-        const websocket = new WebSocket('ws://localhost:8084');
-      
-        websocket.onopen = (event) => {
-          console.log("WebSocket connection established", event);
-        };
-      
-        websocket.onmessage = (event) => {
-            // Check if the received data is a Blob
-            if (event.data instanceof Blob) {
-              event.data.text().then((text) => {
+        let websocket = null;
+
+        const connectWebSocket = () => {
+            const websocket = new WebSocket('ws://localhost:8084');
+        
+            websocket.onopen = (event) => {
+            console.log("WebSocket connection established", event);
+            };
+        
+            websocket.onmessage = (event) => {
+                // Check if the received data is a Blob
+                if (event.data instanceof Blob) {
+                event.data.text().then((text) => {
+                    try {
+                    const data = JSON.parse(text);
+                    if (data.action === 'updateStatus') {
+                        setOrderStatus(data.status); // Update the status based on the message
+                    }
+                    } catch (error) {
+                    console.error("Error parsing the blob as JSON", error);
+                    }
+                });
+                } else {
                 try {
-                  const data = JSON.parse(text);
-                  if (data.action === 'updateStatus') {
-                    setOrderStatus(data.status); // Update the status based on the message
-                  }
+                    const data = JSON.parse(event.data);
+                    if (data.action === 'updateStatus') {
+                    setOrderStatus(data.status); // Directly use the received status message
+                    }
                 } catch (error) {
-                  console.error("Error parsing the blob as JSON", error);
+                    console.error("Error parsing message", error);
                 }
-              });
-            } else {
-              try {
-                const data = JSON.parse(event.data);
-                if (data.action === 'updateStatus') {
-                  setOrderStatus(data.status); // Directly use the received status message
                 }
-              } catch (error) {
-                console.error("Error parsing message", error);
-              }
-            }
-          };
-    
-        websocket.onerror = (error) => {
-          console.error("WebSocket error:", error);
+            };
+        
+            websocket.onerror = (error) => {
+            console.error("WebSocket error:", error);
+            };
+        
+            websocket.onclose = (event) => {
+            console.log("WebSocket connection closed", event);
+            };
         };
-      
-        websocket.onclose = (event) => {
-          console.log("WebSocket connection closed", event);
-        };
+
+        connectWebSocket();
       
         return () => {
-          websocket.close();
+            if (websocket) {
+                websocket.close();
+            }
         };
-      }, []);
-      
+    }, []);
 
     return (
         <div className="background-container">
@@ -192,9 +198,7 @@ const Track = () => {
                 }}
             ></div>
 
-            {/* Content */}
             <div className="header bg-light" style={{ position: "relative", zIndex: 1 }}>
-                {/* Cross button */}
                 <button
                     style={{
                         background: "none",
@@ -213,7 +217,6 @@ const Track = () => {
                     />
                 </button>
 
-                {/* Help button */}
                 <div
                     style={{
                         width: "85px",
@@ -237,7 +240,6 @@ const Track = () => {
                     </button>
                 </div>
 
-                {/* Order collected box */}
                 <div
                     className="order-collected-box"
                     style={{ position: "fixed", maxHeight: "450px", bottom:"140px" }}
@@ -247,7 +249,7 @@ const Track = () => {
                             <div>
                                 <div className="card-body">
                                     <div className="row g-0">
-                                        {order && order.status === "ORDER_SENT" && (
+                                        {orderStatus === "Order is preparing" && (
                                             <>
                                                 <h4 className="card-title" style={{ color: "black", marginTop: "-10px", marginBottom: "20px" }}>Order has been sent</h4>
                                                 <p className="card-text pt-2">
@@ -269,29 +271,7 @@ const Track = () => {
                                                 </div>
                                             </>
                                         )}
-                                        {/*{order && order.status === "PREPARING" && (*/}
-                                        {/*    <>*/}
-                                        {/*    <h4 className="card-title" style={{ color: "black", marginTop: "-10px", marginBottom: "20px" }}>Order is preparing</h4>*/}
-                                        {/*    <p className="card-text pt-2">*/}
-                                        {/*        Arriving between <strong>11:53AM - 11:58AM</strong>*/}
-                                        {/*        <small className="text-body-secondary"></small>*/}
-                                        {/*    </p>*/}
-                                        {/*    <div className="row g-0"*/}
-                                        {/*        style={{*/}
-                                        {/*            display: "flex",*/}
-                                        {/*            alignItems: "center",*/}
-                                        {/*            justifyContent: "space-between",*/}
-                                        {/*        }}*/}
-                                        {/*    >*/}
-                                        {/*        <Circle src={cart} />*/}
-                                        {/*        <Line />*/}
-                                        {/*        <Circle src={dots} />*/}
-                                        {/*        <Line color="#B4B4B4"/>*/}
-                                        {/*        <Circle src={pin} color="#B4B4B4" />*/}
-                                        {/*    </div>*/}
-                                        {/*    </>*/}
-                                        {/*)}  */}
-                                        {order && order.status === "COLLECTED" && (
+                                        {orderStatus === "Order is on the way" && (
                                             <>
                                                 <h4 className="card-title" style={{ color: "black", marginTop: "-10px", marginBottom: "20px" }}>Order has been collected</h4>
                                                 <p className="card-text pt-2">
@@ -313,7 +293,7 @@ const Track = () => {
                                                 </div>
                                             </>
                                         )}    
-                                        {order && order.status === "DELIVERED" && (
+                                        {orderStatus === "Order is completed" && (
                                         <>
                                             <div className="row g-0"
                                                 style={{

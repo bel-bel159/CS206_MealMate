@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import back from "./assets/back.svg";
-import css from "./Orders.css"; // Make sure to create a corresponding CSS file for styling
+import css from "./Orders.css?inline"; // Make sure to create a corresponding CSS file for styling
 
 const Orders = () => {
   const orderId = localStorage.getItem('ordererTrackOrder') || 'No order found';
